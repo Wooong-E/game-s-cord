@@ -12,17 +12,22 @@ import lombok.Setter;
 @Table(name = "matches")
 public class Match {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "orders_id", nullable = false)
   private Long id;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.LAZY, optional = false)
+  @JoinColumn(name = "users_id", nullable = false)
+  private User users;
 
   @NotNull
   @Column(name = "ordered_users_id", nullable = false)
   private Long orderedUsersId;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "order_users_id", nullable = false)
-  private User orderUsers;
+  @Column(name = "order_users_id", nullable = false)
+  private Long orderUsersId;
 
   @NotNull
   @Column(name = "orders_game_id", nullable = false)

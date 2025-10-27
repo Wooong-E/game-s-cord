@@ -9,14 +9,8 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 // @SpringBootApplication
 // DB 제외한 테스트를 위한 코드
-@SpringBootApplication(exclude = {
-		        DataSourceAutoConfiguration.class,
-		        DataSourceTransactionManagerAutoConfiguration.class,
-		        JpaRepositoriesAutoConfiguration.class,
-		        HibernateJpaAutoConfiguration.class
-		})
+@SpringBootApplication
 public class MvctestApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(MvctestApplication.class, args);
 	}
