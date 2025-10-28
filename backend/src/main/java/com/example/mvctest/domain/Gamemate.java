@@ -11,6 +11,7 @@ import lombok.Setter;
 @Table(name = "gamemates")
 public class Gamemate {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "gamemates_id", nullable = false)
   private Long id;
 
