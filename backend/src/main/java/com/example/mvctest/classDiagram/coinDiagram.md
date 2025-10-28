@@ -28,6 +28,7 @@ classDiagram
         -String transactionType
         -Long orderId
         -String refundReason
+        -String eventType
     }
     
     class CoinRepository {
@@ -86,14 +87,14 @@ classDiagram
 
 ## Coin Entity 정보
 
-| 구분             | Name            | Type           | Description                                      |
-|:---------------|:----------------|:---------------|:-------------------------------------------------|
-| **Attributes** | id              | Long           | 코인 고유 ID (Primary Key)                          |
-|                | users           | User           | 코인을 소유한 사용자 (Foreign Key)                       |
-|                | coinAmount      | Integer        | 코인 금액 (충전: +, 사용: -, 환불: +)                     |
-|                | paymentAmount   | Integer        | 실제 결제 금액 (충전 시에만 사용)                            |
-|                | paymentMethod   | String         | 결제 수단 (카드, 계좌이체, 카카오페이 등)                        |
-|                | createdAt       | LocalDateTime  | 거래 발생 시각                                         |
-|                | transactionType | String         | 거래 타입 (CHARGE: 충전, USE: 사용, REFUND: 환불)         |
-|                | orderId         | Long           | 주문 번호 (코인 사용 시)                                  |
-|                | refundReason    | String         | 환불 사유 (환불 시)                                     |
+| 구분             | Name            | Type           | Description                             |
+|:---------------|:----------------|:---------------|:----------------------------------------|
+| **Attributes** | id              | Long           | 코인 고유 ID (Primary Key)                  |
+|                | users           | User           | 코인을 소유한 사용자 (Foreign Key)               |
+|                | coinAmount      | Integer        | 코인 금액 (충전: +, 사용: -, 환불: +)             |
+|                | paymentAmount   | Integer        | 실제 결제 금액 (충전 할때)                        |
+|                | paymentMethod   | String         | 결제 수단                                   |
+|                | createdAt       | LocalDateTime  | 거래 발생 시각                                |
+|                | transactionType | String         | 거래 타입 (CHARGE: 충전, USE: 사용, REFUND: 환불) |
+|                | orderId         | Long           | 주문 번호                                   |
+|                | refundReason    | String         | 환불 사유                                   |

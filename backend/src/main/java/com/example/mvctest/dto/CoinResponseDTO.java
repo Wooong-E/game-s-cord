@@ -26,6 +26,7 @@ public class CoinResponseDTO {
     private Integer chargedCoins;    // 충전된 코인
     private Integer usedCoins;       // 사용된 코인
     private Integer refundedCoins;   // 환불된 코인
+    private String refundReason;
 
     // 이벤트 코인 관련
     private String eventType;
