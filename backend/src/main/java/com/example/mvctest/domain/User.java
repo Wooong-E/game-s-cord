@@ -21,12 +21,12 @@ public class User {
   @Column(name = "users_id", nullable = false)
   private Long id;
 
-  @Size(max = 255)
+  @Size(max = 20)
   @NotNull
   @Column(name = "login_id", nullable = false)
   private String loginId;
 
-  @Size(max = 255)
+  @Size(max = 20)
   @NotNull
   @Column(name = "login_pwd", nullable = false)
   private String loginPwd;

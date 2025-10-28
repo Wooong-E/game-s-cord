@@ -24,10 +24,10 @@ public class UserSignupRequestDTO {
     private String loginPwd;
 
     @NotBlank(message = "사용자 이름은 필수입니다")
-    @Size(max = 50, message = "사용자 이름은 50자 이하여야 합니다")
+    @Size(max = 10, message = "사용자 이름은 10자 이하여야 합니다")
     private String usersName;
 
-    @Size(max = 500, message = "사용자 설명은 500자 이하여야 합니다")
+    @Size(max = 255, message = "사용자 설명은 255자 이하여야 합니다")
     private String usersDescription;
 
     @Past(message = "생년월일은 과거 날짜여야 합니다")
