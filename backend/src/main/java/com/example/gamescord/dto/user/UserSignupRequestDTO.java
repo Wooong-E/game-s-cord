@@ -34,8 +34,4 @@ public class UserSignupRequestDTO {
     @NotNull(message = "생년월일은 필수입니다")
     @Past(message = "생년월일은 과거 날짜여야 합니다")
     private LocalDate usersBirthday;
-
-    @NotBlank(message = "성별은 필수입니다")
-    @Size(max = 10, message = "성별은 10자 이하여야 합니다")
-    private String gender;
 }

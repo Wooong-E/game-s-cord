@@ -41,7 +41,6 @@ public class UserService {
         newUser.setLoginPwd(encodedPassword);
         newUser.setUsersName(requestDto.getUsersName());
         newUser.setUsersBirthday(requestDto.getUsersBirthday());
-        newUser.setGender(requestDto.getGender());
         newUser.setUsersDescription(requestDto.getUsersDescription());
         newUser.setPoint(0L);
         newUser.setLoginFailCount(0);
