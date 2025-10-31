@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +36,11 @@ public class MarkService {
             throw new IllegalArgumentException("즐겨찾기할 사용자를 찾을 수 없습니다.");
         }
 
+        // Check for duplicate mark
+        if (markRepository.findByUsersIdAndMarkedUsersId(markingUserId, markedUserId) != null) {
+            throw new IllegalArgumentException("이미 즐겨찾기한 사용자입니다.");
+        }
+
         Mark newMark = new Mark();
         newMark.setUsers(markingUser);
         newMark.setMarkedUsersId(markedUserId);
@@ -47,10 +54,20 @@ public class MarkService {
     public List<MarkedUserResponseDTO> getMarkedUsers(Long markingUserId) {
         List<Mark> marks = markRepository.findMarkByUsersId(markingUserId);
 
+        if (marks.isEmpty()) {
+            return List.of(); // Return empty list if no marks
+        }
+
+        List<Long> markedUserIds = marks.stream()
+                .map(Mark::getMarkedUsersId)
+                .collect(Collectors.toList());
+
+        Map<Long, User> markedUsersMap = userRepository.findAllById(markedUserIds).stream()
+                .collect(Collectors.toMap(User::getId, Function.identity()));
+
         return marks.stream()
                 .map(mark -> {
-                    User markedUser = userRepository.findById(mark.getMarkedUsersId())
-                            .orElse(null);
+                    User markedUser = markedUsersMap.get(mark.getMarkedUsersId());
                     if (markedUser != null) {
                         return MarkedUserResponseDTO.fromEntity(markedUser);
                     }

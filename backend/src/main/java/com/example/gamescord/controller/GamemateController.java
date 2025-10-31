@@ -2,7 +2,7 @@ package com.example.gamescord.controller;
 
 import com.example.gamescord.dto.gamemate.GamemateRegistrationRequestDTO;
 import com.example.gamescord.dto.gamemate.GamemateResponseDTO;
-import com.example.gamescord.dto.gamemate.SingleGamemateProfileResponseDTO;
+import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.gamemate.GamemateService;
 import jakarta.validation.Valid;
@@ -22,13 +22,13 @@ public class GamemateController {
     private final GamemateService gamemateService;
 
     @PostMapping
-    public ResponseEntity<GamemateResponseDTO> registerGamemate(
+    public ResponseEntity<List<GamemateResponseDTO>> registerGamemate(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody GamemateRegistrationRequestDTO requestDto) {
 
-        GamemateResponseDTO responseDto = gamemateService.registerGamemate(userDetails.getId(), requestDto);
+        List<GamemateResponseDTO> responseDtos = gamemateService.registerGamemate(userDetails.getId(), requestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDtos);
     }
 
     @GetMapping("/search")
@@ -38,10 +38,9 @@ public class GamemateController {
     }
 
     @GetMapping("/profile/{userId}")
-    public ResponseEntity<SingleGamemateProfileResponseDTO> getGamemateProfile(
-            @PathVariable Long userId,
-            @RequestParam Long gameId) {
-        SingleGamemateProfileResponseDTO profile = gamemateService.getSingleGamemateProfile(userId, gameId);
+    public ResponseEntity<GamemateProfileResponseDTO> getGamemateProfile(
+            @PathVariable Long userId) {
+        GamemateProfileResponseDTO profile = gamemateService.getGamemateProfile(userId);
         return ResponseEntity.ok(profile);
     }
 }

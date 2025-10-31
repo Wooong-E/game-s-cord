@@ -35,10 +35,16 @@ public class GameMateRepository {
                 .fetchOne();
     }
 
+    public List<Gamemate> findGamematesByUsersId(Long userId) {
+        return queryFactory.selectFrom(gamemate)
+                .where(gamemate.users.id.eq(userId))
+                .fetch();
+    }
+
     public List<Gamemate> findGamematesByUsersName(String name){
         return queryFactory.select(gamemate)
             .from(gamemate)
-            .where(gamemate.users.usersName.eq(name))
+            .where(gamemate.users.usersName.containsIgnoreCase(name))
             .orderBy(gamemate.users.usersName.asc())
             .fetch();
     }
