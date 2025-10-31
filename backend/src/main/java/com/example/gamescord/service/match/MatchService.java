@@ -21,7 +21,7 @@ public class MatchService {
     private final MatchRepository matchRepository;
     private final UserRepository userRepository;
     private final GameMateRepository gameMateRepository;
-    private final CoinService coinService; // CoinService 주입
+    private final CoinService coinService;
 
     @Transactional
     public MatchResponseDTO requestMatch(Long requesterId, MatchRequestDTO requestDto) {
@@ -135,4 +135,5 @@ public class MatchService {
 
         return responseDto;
     }
+
 }

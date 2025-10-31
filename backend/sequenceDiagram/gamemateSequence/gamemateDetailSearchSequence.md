@@ -15,7 +15,6 @@ sequenceDiagram
     UserRepo->>DB: SELECT * FROM users WHERE id=userId
     DB-->>UserRepo: User user
     UserRepo-->>Service: user
-
     alt If User not found
         Service->>Service: throw IllegalArgumentException
     end
@@ -28,7 +27,7 @@ sequenceDiagram
     alt If Gamemate not found
         Service->>Service: throw IllegalArgumentException
     end
-
+    
     Service->>Service: SingleGamemateProfileResponseDTO.from(user, gamemate)
     Service-->>Controller: profile
     Controller->>Client: 200 OK (profile)

@@ -43,6 +43,12 @@ public class GameMateRepository {
                 .fetch();
     }
 
+    public List<Gamemate> findGamematesByUsersId(Long userId) {
+        return queryFactory.selectFrom(gamemate)
+                .where(gamemate.users.id.eq(userId))
+                .fetch();
+    }
+
     public void updatePrice(Long usersId, Long gamesId, Long price){
         queryFactory.update(gamemate)
                 .set(gamemate.price, price)

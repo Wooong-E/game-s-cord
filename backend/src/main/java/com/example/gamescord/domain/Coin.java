@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -39,6 +40,7 @@ public class Coin {
   private String paymentMethod;
 
   @NotNull
+  @ColumnDefault("CURRENT_TIMESTAMP")
   @Column(name = "created_at", nullable = false)
   @CreationTimestamp
   private Instant createdAt;

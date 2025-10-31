@@ -22,4 +22,6 @@ public class GameRepository {
   public Game findGameById(Long id) {
     return gameRepository.findById(id).orElse(null);
   }
+
 }
+
