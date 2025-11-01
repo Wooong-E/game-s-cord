@@ -56,4 +56,21 @@ public class ReviewRepository {
                 .orderBy(review.id.desc())
                 .fetch();
     }
+
+    public Double findAverageScoreByGamemateId(Long gamemateId) {
+        return queryFactory
+                .select(review.score.avg())
+                .from(review)
+                .where(review.gamemates.id.eq(gamemateId))
+                .fetchOne();
+    }
+
+    public java.util.List<Integer> findAllScoresByUserId(Long userId) {
+        return queryFactory
+                .select(review.score)
+                .from(review)
+                .join(review.gamemates, com.example.gamescord.domain.QGamemate.gamemate)
+                .where(com.example.gamescord.domain.QGamemate.gamemate.users.id.eq(userId))
+                .fetch();
+    }
 }

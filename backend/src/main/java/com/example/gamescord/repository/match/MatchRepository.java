@@ -33,10 +33,13 @@ public class MatchRepository {
         return matchRepository.findById(id);
     }
 
-    public Match findMatch(Long usersId,Long order,Long ordered,Long game){
-        return queryFactory.select(match)
-                .from(match)
-                .where(match.users.id.eq(usersId), match.orderedUsersId.eq(ordered), match.orderUsersId.eq(order), match.ordersGameId.eq(game))
+    public Match findPendingMatch(Long usersId, Long order, Long ordered, Long game) {
+        return queryFactory.selectFrom(match)
+                .where(match.users.id.eq(usersId),
+                        match.orderedUsersId.eq(ordered),
+                        match.orderUsersId.eq(order),
+                        match.ordersGameId.eq(game),
+                        match.orderStatus.eq("PENDING"))
                 .fetchOne();
     }
 

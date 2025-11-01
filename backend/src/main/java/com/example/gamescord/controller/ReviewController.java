@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -18,19 +20,21 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-    @PostMapping("/gamemates/{gamemateId}/reviews")
+    @PostMapping("/gamemates/{userId}/{gameId}/reviews")
     public ResponseEntity<ReviewResponseDTO> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long gamemateId,
+            @PathVariable Long userId,
+            @PathVariable Long gameId,
             @Valid @RequestBody ReviewRequestDTO requestDto) {
 
-        ReviewResponseDTO responseDto = reviewService.createReview(userDetails.getId(), gamemateId, requestDto);
+        ReviewResponseDTO responseDto = reviewService.createReview(userDetails.getId(), userId, gameId, requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @GetMapping("/gamemates/{gamemateId}/reviews")
-    public ResponseEntity<java.util.List<com.example.gamescord.dto.review.ReviewResponseDTO>> getReviewsForGamemate(@PathVariable Long gamemateId) {
-        java.util.List<com.example.gamescord.dto.review.ReviewResponseDTO> reviews = reviewService.getReviewsForGamemate(gamemateId);
+    @GetMapping("/gamemates/{userId}/{gameId}/reviews")
+    public ResponseEntity<List<ReviewResponseDTO>> getReviewsForUserAndGame(
+            @PathVariable Long userId, @PathVariable Long gameId) {
+        List<ReviewResponseDTO> reviews = reviewService.getReviewsForUserAndGame(userId, gameId);
         return ResponseEntity.ok(reviews);
     }
 }

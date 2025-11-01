@@ -3,6 +3,7 @@ package com.example.gamescord.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,7 +27,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 로그인 시, session 유지
                 .formLogin(form -> form.disable()) // Spring 기본 로그인 폼 비활성화
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers(HttpMethod.GET, "/api/gamemates/*/reviews").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/gamemates/*/*/reviews").permitAll()
                         .requestMatchers(
                                 "/api/users/signup", "/api/users/login",
                                 "/api/gamemates/search", "/api/gamemates/profile/**",

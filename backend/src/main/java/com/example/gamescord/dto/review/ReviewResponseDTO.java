@@ -3,6 +3,8 @@ package com.example.gamescord.dto.review;
 import com.example.gamescord.domain.Review;
 import lombok.*;
 
+import java.time.Instant;
+
 @Getter
 @Setter
 @Builder
@@ -12,6 +14,7 @@ public class ReviewResponseDTO {
     private Long reviewId;
     private Integer score;
     private String review;
+    private Instant createdAt;
 
     //리뷰 작성자 정보
     private Long userId;           // 작성자 ID
@@ -24,6 +27,7 @@ public class ReviewResponseDTO {
                 .review(review.getReviewDescription())
                 .userId(review.getUsers().getId())
                 .userName(review.getUsers().getUsersName())
+                .createdAt(review.getCreatedAt())
                 .build();
     }
 }
