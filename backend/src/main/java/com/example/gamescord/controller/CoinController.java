@@ -1,6 +1,10 @@
 package com.example.gamescord.controller;
 
-import com.example.gamescord.dto.coin.*;
+
+import com.example.gamescord.dto.coin.CoinChargeRequestDTO;
+import com.example.gamescord.dto.coin.CoinHistoryResponseDTO;
+import com.example.gamescord.dto.coin.CoinRefundRequestDTO;
+import com.example.gamescord.dto.coin.CoinResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.coin.CoinService;
 import jakarta.validation.Valid;
@@ -33,15 +37,6 @@ public class CoinController {
 
         List<CoinHistoryResponseDTO> history = coinService.getCoinHistory(userDetails.getUsername());
         return ResponseEntity.ok(history);
-    }
-
-    @PostMapping("/use")
-    public ResponseEntity<CoinResponseDTO> useCoin(
-            @AuthenticationPrincipal CustomUserDetails userDetails,
-            @Valid @RequestBody CoinUseRequestDTO requestDto) {
-
-        CoinResponseDTO response = coinService.useCoin(userDetails.getUsername(), requestDto);
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refund")

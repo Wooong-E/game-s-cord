@@ -38,4 +38,22 @@ public class ReviewRepository {
     public void deleteReview(Review reviewEntity) {
         reviewRepository.delete(reviewEntity);
     }
+
+    public boolean existsByGamemateAndUser(Long gamemateId, Long authorId) {
+        Integer count = queryFactory.selectOne()
+                .from(review)
+                .where(
+                        review.gamemates.id.eq(gamemateId)
+                        .and(review.users.id.eq(authorId))
+                )
+                .fetchFirst();
+        return count != null;
+    }
+
+    public java.util.List<com.example.gamescord.domain.Review> findAllByGamemateId(Long gamemateId) {
+        return queryFactory.selectFrom(review)
+                .where(review.gamemates.id.eq(gamemateId))
+                .orderBy(review.id.desc())
+                .fetch();
+    }
 }

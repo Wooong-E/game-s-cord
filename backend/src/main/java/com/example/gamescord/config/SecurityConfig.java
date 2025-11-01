@@ -26,8 +26,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 로그인 시, session 유지
                 .formLogin(form -> form.disable()) // Spring 기본 로그인 폼 비활성화
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/api/users/signup", "/api/users/login").permitAll() // signup, login 은 인증없이 가능
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/gamemates/*/reviews").permitAll()
+                        .requestMatchers(
+                                "/api/users/signup", "/api/users/login",
+                                "/api/gamemates/search", "/api/gamemates/profile/**",
+                                "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**"
+                        ).permitAll()
                         .anyRequest().authenticated() // 위 경로 제외 모두 인증 필요
                 );
         return http.build();

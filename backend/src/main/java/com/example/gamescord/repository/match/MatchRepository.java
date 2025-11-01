@@ -44,4 +44,16 @@ public class MatchRepository {
         matchRepository.deleteById(match.getId());
     }
 
+    public boolean existsCompletedMatch(Long userA, Long userB, Long gameId) {
+        Integer count = queryFactory.selectOne()
+                .from(match)
+                .where(
+                        (match.orderUsersId.eq(userA).and(match.orderedUsersId.eq(userB)))
+                        .or(match.orderUsersId.eq(userB).and(match.orderedUsersId.eq(userA)))
+                        .and(match.ordersGameId.eq(gameId))
+                        .and(match.orderStatus.eq("ACCEPTED"))
+                )
+                .fetchFirst();
+        return count != null;
+    }
 }

@@ -35,6 +35,10 @@ public class MatchService {
         User gamematePlayer = gamemate.getUsers();
         Long price = gamemate.getPrice();
 
+        if (requester.getPoint() < price) {
+            throw new IllegalArgumentException("코인이 부족합니다. 현재 보유 코인: " + requester.getPoint());
+        }
+
         if (requester.getId().equals(gamematePlayer.getId())) {
             throw new IllegalArgumentException("자기 자신에게 매칭을 요청할 수 없습니다.");
         }

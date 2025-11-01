@@ -60,4 +60,8 @@ public class GameMateRepository {
         gameMateRepository.deleteById(gamemate.getId());
     }
 
+    public java.util.Optional<Gamemate> findById(Long id) {
+        return gameMateRepository.findById(id);
+    }
+
 }
