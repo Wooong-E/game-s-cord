@@ -5,7 +5,6 @@ import com.example.gamescord.domain.Gamemate;
 import com.example.gamescord.domain.User;
 import com.example.gamescord.dto.gamemate.GamemateRegistrationRequestDTO;
 import com.example.gamescord.dto.gamemate.GamemateResponseDTO;
-import com.example.gamescord.dto.gamemate.SingleGamemateProfileResponseDTO;
 import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO;
 import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO.GameWithPrice;
