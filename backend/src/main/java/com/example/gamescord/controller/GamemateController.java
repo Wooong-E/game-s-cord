@@ -43,4 +43,12 @@ public class GamemateController {
         GamemateProfileResponseDTO profile = gamemateService.getGamemateProfile(userId);
         return ResponseEntity.ok(profile);
     }
+
+    @DeleteMapping("/{gameId}")
+    public ResponseEntity<Void> deleteGamemate(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long gameId) {
+        gamemateService.deleteGamemate(userDetails.getId(), gameId);
+        return ResponseEntity.noContent().build();
+    }
 }

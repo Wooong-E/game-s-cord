@@ -8,6 +8,7 @@ classDiagram
         +registerGamemate(userDetails: CustomUserDetails, requestDto: GamemateRegistrationRequestDTO): ResponseEntity<List<GamemateResponseDTO>>
         +searchGamemates(userName: String): ResponseEntity<List<GamemateResponseDTO>>
         +getGamemateProfile(userId: Long): ResponseEntity<GamemateProfileResponseDTO>
+        +deleteGamemate(userDetails: CustomUserDetails, gameId: Long): ResponseEntity<Void>
     }
 
     class GamemateService {
@@ -18,6 +19,7 @@ classDiagram
         +registerGamemate(userId: Long, requestDto: GamemateRegistrationRequestDTO): List<GamemateResponseDTO>
         +searchGamematesByUserName(userName: String): List<GamemateResponseDTO>
         +getGamemateProfile(userId: Long): GamemateProfileResponseDTO
+        +deleteGamemate(userId: Long, gameId: Long): void
     }
 
     class User {
@@ -167,6 +169,7 @@ classDiagram
 | **Operations** | registerGamemate       | ResponseEntity<List<GamemateResponseDTO>>  | public     | 새로운 게임메이트를 등록하는 API 엔드포인트. 요청 DTO와 인증된 사용자 정보를 받아 GamemateService에 전달   |
 |                | searchGamemates        | ResponseEntity<List<GamemateResponseDTO>>  | public     | 사용자 이름으로 게임메이트를 검색하는 API 엔드포인트. 쿼리 파라미터로 받은 사용자 이름을 GamemateService에 전달 |
 |                | getGamemateProfile     | ResponseEntity<GamemateProfileResponseDTO> | public     | 특정 게임메이트의 상세 프로필을 조회하는 API 엔드포인트. 경로 변수로 받은 사용자 ID를 GamemateService에 전달 |
+|                | deleteGamemate         | ResponseEntity<Void>                       | public     | 특정 게임에 대한 게임메이트 등록을 삭제하는 API 엔드포인트.                                     |
 
 ## GamemateService 클래스 정보
 
@@ -179,6 +182,7 @@ classDiagram
 | **Operations** | registerGamemate          | List<GamemateResponseDTO>  | public     | 새로운 게임메이트를 등록하는 비즈니스 로직. 사용자 정보 업데이트, 게임메이트 중복 확인, Gamemate 엔티티 저장 등의 작업을 수행     |
 |                | searchGamematesByUserName | List<GamemateResponseDTO>  | public     | 사용자 이름으로 게임메이트 목록을 검색하는 비즈니스 로직. GameMateRepository를 통해 게임메이트를 조회하고 DTO로 변환하여 반환 |
 |                | getGamemateProfile        | GamemateProfileResponseDTO | public     | 특정 사용자의 게임메이트 프로필을 조회하는 비즈니스 로직. 사용자 정보와 해당 사용자가 등록한 게임메이트 정보를 통합하여 프로필 DTO를 생성  |
+|                | deleteGamemate            | void                       | public     | 특정 게임에 대한 사용자의 게임메이트 등록을 삭제하는 비즈니스 로직.                                           |
 
 ## GamemateRegistrationRequestDTO 클래스 정보
 

@@ -95,4 +95,13 @@ public class GamemateService {
                 .games(gamesWithPrices)
                 .build();
     }
+
+    @Transactional
+    public void deleteGamemate(Long userId, Long gameId) {
+        Gamemate gamemate = gameMateRepository.findGamemateByUsersId(userId, gameId);
+        if (gamemate == null) {
+            throw new IllegalArgumentException("해당 게임에 대한 게임메이트 등록 정보를 찾을 수 없습니다.");
+        }
+        gameMateRepository.deleteGamemate(gamemate);
+    }
 }
