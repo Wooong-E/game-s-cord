@@ -1,5 +1,4 @@
 ```mermaid
-```mermaid
 sequenceDiagram
     participant Client
     participant MatchCtrl as MatchController
