@@ -1,6 +1,5 @@
 package com.example.gamescord.dto.gamemate;
 
-import com.example.gamescord.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,15 +12,16 @@ public class GamemateProfileResponseDTO {
     private String userName;
     private String userDescription;
     private String profileImageUrl;
-    // private String availableTime; // 추후 추가
+    private Double overallAverageScore; // 전체 평균 평점
 
-    private List<GameWithPrice> games;
+    private List<GameProfile> games;
 
     @Getter
     @Builder
-    public static class GameWithPrice {
+    public static class GameProfile { // GameWithPrice -> GameProfile
         private Long gameId;
         private String gameName;
         private Long price;
+        private Double averageScore; // 게임별 평균 평점
     }
 }

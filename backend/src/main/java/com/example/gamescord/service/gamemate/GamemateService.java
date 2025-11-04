@@ -3,13 +3,13 @@ package com.example.gamescord.service.gamemate;
 import com.example.gamescord.domain.Game;
 import com.example.gamescord.domain.Gamemate;
 import com.example.gamescord.domain.User;
+import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO;
 import com.example.gamescord.dto.gamemate.GamemateRegistrationRequestDTO;
 import com.example.gamescord.dto.gamemate.GamemateResponseDTO;
 import com.example.gamescord.repository.user.UserRepository;
-import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO;
-import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO.GameWithPrice;
 import com.example.gamescord.repository.game.GameRepository;
 import com.example.gamescord.repository.gamemate.GameMateRepository;
+import com.example.gamescord.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +25,12 @@ public class GamemateService {
     private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final GameMateRepository gameMateRepository;
+    private final ReviewRepository reviewRepository;
 
     @Transactional
     public List<GamemateResponseDTO> registerGamemate(Long userId, GamemateRegistrationRequestDTO requestDto) {
         User user = userRepository.findById(userId);
 
-        // Update user introduction
         if (requestDto.getIntroduction() != null) {
             user.setUsersDescription(requestDto.getIntroduction());
             userRepository.saveUser(user);
@@ -77,14 +77,25 @@ public class GamemateService {
     public GamemateProfileResponseDTO getGamemateProfile(Long userId) {
         User user = userRepository.findById(userId);
 
-        List<Gamemate> gamemates = gameMateRepository.findGamematesByUsersId(userId);
+        // 전체 평점 계산
+        List<Integer> allScores = reviewRepository.findAllScoresByUserId(userId);
+        double overallAverageScore = allScores.stream()
+                .mapToInt(Integer::intValue)
+                .average()
+                .orElse(0.0);
 
-        List<GameWithPrice> gamesWithPrices = gamemates.stream()
-                .map(gamemateEntry -> GameWithPrice.builder()
-                        .gameId(gamemateEntry.getGames().getId())
-                        .gameName(gamemateEntry.getGames().getGamesName())
-                        .price(gamemateEntry.getPrice())
-                        .build())
+        // 게임별 평점 계산
+        List<Gamemate> gamemates = gameMateRepository.findGamematesByUsersId(userId);
+        List<GamemateProfileResponseDTO.GameProfile> gameProfiles = gamemates.stream()
+                .map(gamemate -> {
+                    Double averageScore = reviewRepository.findAverageScoreByGamemateId(gamemate.getId());
+                    return GamemateProfileResponseDTO.GameProfile.builder()
+                            .gameId(gamemate.getGames().getId())
+                            .gameName(gamemate.getGames().getGamesName())
+                            .price(gamemate.getPrice())
+                            .averageScore(formatScore(averageScore))
+                            .build();
+                })
                 .collect(Collectors.toList());
 
         return GamemateProfileResponseDTO.builder()
@@ -92,7 +103,8 @@ public class GamemateService {
                 .userName(user.getUsersName())
                 .userDescription(user.getUsersDescription())
                 .profileImageUrl(user.getProfileImageUrl())
-                .games(gamesWithPrices)
+                .overallAverageScore(formatScore(overallAverageScore))
+                .games(gameProfiles)
                 .build();
     }
 
@@ -103,5 +115,12 @@ public class GamemateService {
             throw new IllegalArgumentException("해당 게임에 대한 게임메이트 등록 정보를 찾을 수 없습니다.");
         }
         gameMateRepository.deleteGamemate(gamemate);
+    }
+
+    private double formatScore(Double score) {
+        if (score == null) {
+            return 0.0;
+        }
+        return Math.round(score * 100.0) / 100.0;
     }
 }

@@ -37,4 +37,8 @@ public class Review {
     @Size(max = 255)
     @Column(name = "reviews_description")
     private String reviewDescription;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private java.time.Instant createdAt;
 }

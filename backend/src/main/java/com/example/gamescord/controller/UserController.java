@@ -27,7 +27,7 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity<UserResponseDTO> signUp(@Valid @RequestBody UserSignupRequestDTO requestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.signup(requestDto).toResponseDTO());
+                .body(userService.signup(requestDto));
     }
 
     @PostMapping("/login")
@@ -51,7 +51,7 @@ public class UserController {
         String loginId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
         return ResponseEntity.ok(
-                userService.updateUserProfile(loginId, requestDto).toResponseDTO()
+                userService.updateUserProfile(loginId, requestDto)
         );
     }
 
@@ -60,7 +60,7 @@ public class UserController {
         String loginId = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
 
         return ResponseEntity.ok(
-                userService.getUserProfile(loginId).toResponseDTO()
+                userService.getUserProfile(loginId)
         );
     }
 }
