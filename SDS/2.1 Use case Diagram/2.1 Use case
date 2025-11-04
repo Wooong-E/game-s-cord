@@ -1,1 +1,29 @@
 
+2. Use case analysis 
+이번 장은 use case diagram과 use case description을 제공한다. Diagram에 관한 고려 사항은 다음과 같다.
+
+- Use case diagram은 description에 대한 부가적인 결과물에 불과하다. 따라서 본 문서를 읽는 독자는 Use case diagram보다 Use case description에서 Use cases에 대한 충분한 정보를 얻어야 한다.
+
+- Use case diagram에 나타난 Use case는 모두 user-level use case이다.
+
+- 회원은 회원가입이 진행되었고 로그인을 한 User이다. 비회원은 회원가입을 진행하지 않은 User이다.
+
+- 본 프로젝트의 Use case는 총 12가지로, 각각의 Use case는 SRS의 다음과 같은 
+기능들을 포괄한다.
+
+- 로그인
+- 로그아웃
+- 회원가입
+- 매칭수락
+- 매칭거절
+- 게임 메이트 검색
+- 프로필 관리
+- 게임 메이트 등록
+- 알림 시스템
+- 즐겨찾기
+- 코인 충전
+- 코인 환불
+- 코인 지급
+- 게임 메이트 상세정보 확인
+- 리뷰작성
+
