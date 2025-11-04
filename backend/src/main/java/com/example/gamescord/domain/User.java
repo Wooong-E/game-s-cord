@@ -65,17 +65,4 @@ public class User {
   @ColumnDefault("0")
   @Column(name = "login_fail_count", nullable = false)
   private Integer loginFailCount;
-
-  public UserResponseDTO toResponseDTO() {
-    return UserResponseDTO.builder()
-            .id(this.getId())
-            .loginId(this.getLoginId())
-            .point(this.getPoint())
-            .usersName(this.getUsersName())
-            .usersDescription(this.getUsersDescription())
-            .usersBirthday(this.getUsersBirthday())
-            .gender(this.getGender())
-            .profileImageUrl(this.getProfileImageUrl())
-            .build();
-  }
 }

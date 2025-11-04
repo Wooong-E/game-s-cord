@@ -2,7 +2,10 @@ package com.example.gamescord.service.coin;
 
 import com.example.gamescord.domain.Coin;
 import com.example.gamescord.domain.User;
-import com.example.gamescord.dto.coin.*;
+import com.example.gamescord.dto.coin.CoinChargeRequestDTO;
+import com.example.gamescord.dto.coin.CoinHistoryResponseDTO;
+import com.example.gamescord.dto.coin.CoinRefundRequestDTO;
+import com.example.gamescord.dto.coin.CoinResponseDTO;
 import com.example.gamescord.repository.coin.CoinRepository;
 import com.example.gamescord.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,28 +66,6 @@ public class CoinService {
     }
 
     @Transactional
-    public CoinResponseDTO useCoin(String loginId, CoinUseRequestDTO requestDto) {
-        User user = userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        if (user.getPoint() < requestDto.getUseAmount()) {
-            throw new IllegalStateException("코인이 부족합니다.");
-        }
-
-        user.setPoint(user.getPoint() - requestDto.getUseAmount());
-        userRepository.saveUser(user);
-
-        Coin useCoin = new Coin();
-        useCoin.setUsers(user);
-        useCoin.setCoinAmount(-requestDto.getUseAmount()); // 음수
-        useCoin.setPaymentAmount(0);
-        useCoin.setPaymentMethod("USE"); // 거래 성격을 paymentMethod에 기록
-        Coin savedCoin = coinRepository.save(useCoin);
-
-        return CoinResponseDTO.success("코인을 성공적으로 사용했습니다.", savedCoin, user.getPoint());
-    }
-
-    @Transactional
     public CoinResponseDTO refundCoin(String loginId, CoinRefundRequestDTO requestDto) {
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
@@ -113,10 +94,6 @@ public class CoinService {
 
     @Transactional
     public Coin useCoinForMatch(User user, Long amount) {
-        if (user.getPoint() < amount) {
-            throw new IllegalStateException("코인이 부족합니다.");
-        }
-
         user.setPoint(user.getPoint() - amount.intValue());
         userRepository.saveUser(user);
 

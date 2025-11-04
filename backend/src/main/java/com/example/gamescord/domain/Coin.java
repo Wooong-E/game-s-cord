@@ -39,7 +39,6 @@ public class Coin {
   @Column(name = "payment_method", nullable = false, length = 45)
   private String paymentMethod;
 
-  @NotNull
   @ColumnDefault("CURRENT_TIMESTAMP")
   @Column(name = "created_at", nullable = false)
   @CreationTimestamp

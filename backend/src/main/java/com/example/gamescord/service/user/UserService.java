@@ -29,7 +29,7 @@ public class UserService {
     private final SecurityContextRepository securityContextRepository;
 
     @Transactional
-    public User signup(UserSignupRequestDTO requestDto) {
+    public UserResponseDTO signup(UserSignupRequestDTO requestDto) {
         if (userRepository.findByLoginId(requestDto.getLoginId()).isPresent()) {
             throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
         }
@@ -46,15 +46,10 @@ public class UserService {
         newUser.setPoint(0L);
         newUser.setLoginFailCount(0);
 
-        return userRepository.saveUser(newUser);
+        User savedUser = userRepository.saveUser(newUser);
+        return toUserResponseDTO(savedUser);
     }
 
-    /**
-     * 로그인 처리
-     * @param requestDto 로그인 DTO
-     * @param request HttpServletRequest (세션 저장용)
-     * @return UserResponseDTO
-     */
     @Transactional
     public UserResponseDTO login(UserLoginRequestDTO requestDto, HttpServletRequest request) {
         User user = userRepository.findByLoginId(requestDto.getLoginId())
@@ -74,6 +69,32 @@ public class UserService {
         context.setAuthentication(authentication);
         securityContextRepository.saveContext(context, request, null);
 
+        return toUserResponseDTO(user);
+    }
+
+    @Transactional
+    public UserResponseDTO updateUserProfile(String userLoginId, UserProfileUpdateRequestDTO requestDto) {
+        User user = userRepository.findByLoginId(userLoginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        if (requestDto.getUsersName() != null) user.setUsersName(requestDto.getUsersName());
+        if (requestDto.getUsersDescription() != null) user.setUsersDescription(requestDto.getUsersDescription());
+        if (requestDto.getUsersBirthday() != null) user.setUsersBirthday(requestDto.getUsersBirthday());
+        if (requestDto.getGender() != null) user.setGender(requestDto.getGender());
+        if (requestDto.getProfileImageUrl() != null) user.setProfileImageUrl(requestDto.getProfileImageUrl());
+
+        User updatedUser = userRepository.updateUser(user);
+        return toUserResponseDTO(updatedUser);
+    }
+
+    @Transactional(readOnly = true)
+    public UserResponseDTO getUserProfile(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        return toUserResponseDTO(user);
+    }
+
+    private UserResponseDTO toUserResponseDTO(User user) {
         return UserResponseDTO.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())
@@ -85,25 +106,4 @@ public class UserService {
                 .profileImageUrl(user.getProfileImageUrl())
                 .build();
     }
-
-    @Transactional
-    public User updateUserProfile(String userLoginId, UserProfileUpdateRequestDTO requestDto) {
-        User user = userRepository.findByLoginId(userLoginId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-
-        if (requestDto.getUsersName() != null) user.setUsersName(requestDto.getUsersName());
-        if (requestDto.getUsersDescription() != null) user.setUsersDescription(requestDto.getUsersDescription());
-        if (requestDto.getUsersBirthday() != null) user.setUsersBirthday(requestDto.getUsersBirthday());
-        if (requestDto.getGender() != null) user.setGender(requestDto.getGender());
-        if (requestDto.getProfileImageUrl() != null) user.setProfileImageUrl(requestDto.getProfileImageUrl());
-
-        return userRepository.updateUser(user);
-    }
-
-    @Transactional(readOnly = true)
-    public User getUserProfile(String loginId) {
-        return userRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
-    }
-
 }

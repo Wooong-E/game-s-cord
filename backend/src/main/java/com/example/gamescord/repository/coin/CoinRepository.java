@@ -3,7 +3,6 @@ package com.example.gamescord.repository.coin;
 import com.example.gamescord.domain.Coin;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,13 +12,17 @@ import java.util.Optional;
 import static com.example.gamescord.domain.QCoin.coin;
 
 @Repository
-@RequiredArgsConstructor
 public class CoinRepository {
 
     @Autowired
-    private final SDJpaCoinRepository coinRepository;
-    private final EntityManager em;
-    private final JPAQueryFactory queryFactory;
+    private SDJpaCoinRepository coinRepository;
+    private EntityManager em;
+    private JPAQueryFactory queryFactory;
+
+    public CoinRepository(EntityManager em) {
+        this.em=em;
+        this.queryFactory = new JPAQueryFactory(em);
+    }
 
     public Coin save(Coin coinEntity) {
         return coinRepository.save(coinEntity);

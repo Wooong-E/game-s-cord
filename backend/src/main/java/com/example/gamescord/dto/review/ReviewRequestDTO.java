@@ -12,8 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReviewRequestDTO {
-    @NotNull(message = "게임메이트 ID는 필수입니다")
-    private Long gamematesId;
 
     @NotNull(message = "평점은 필수입니다")
     @Min(value = 1, message = "평점은 1~5점입니다")

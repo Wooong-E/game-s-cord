@@ -6,9 +6,9 @@ import com.example.gamescord.domain.User;
 import com.example.gamescord.dto.match.MatchRequestDTO;
 import com.example.gamescord.dto.match.MatchResponseDTO;
 import com.example.gamescord.dto.match.MatchStatusUpdateByKeyDTO;
-import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.repository.gamemate.GameMateRepository;
 import com.example.gamescord.repository.match.MatchRepository;
+import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.service.coin.CoinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,11 +35,20 @@ public class MatchService {
         User gamematePlayer = gamemate.getUsers();
         Long price = gamemate.getPrice();
 
+        // 중복 매칭 요청 확인
+        Match existingMatch = matchRepository.findPendingMatch(requester.getId(), requester.getId(), gamematePlayer.getId(), requestDto.getOrdersGameId());
+        if (existingMatch != null) {
+            throw new IllegalArgumentException("이미 해당 게임메이트에게 보낸 매칭 요청이 있습니다.");
+        }
+
+        if (requester.getPoint() < price) {
+            throw new IllegalArgumentException("코인이 부족합니다. 현재 보유 코인: " + requester.getPoint());
+        }
+
         if (requester.getId().equals(gamematePlayer.getId())) {
             throw new IllegalArgumentException("자기 자신에게 매칭을 요청할 수 없습니다.");
         }
 
-        // CoinService를 사용하여 코인 차감 및 내역 기록
         coinService.useCoinForMatch(requester, price);
 
         Match newMatch = new Match();
@@ -60,7 +69,7 @@ public class MatchService {
             throw new IllegalArgumentException("매칭 상태를 변경할 권한이 없습니다.");
         }
 
-        Match match = matchRepository.findMatch(
+        Match match = matchRepository.findPendingMatch(
                 requestDto.getOrderUsersId(),
                 requestDto.getOrderUsersId(),
                 requestDto.getOrderedUsersId(),
@@ -68,11 +77,7 @@ public class MatchService {
         );
 
         if (match == null) {
-            throw new IllegalArgumentException("해당 조건의 매칭 정보를 찾을 수 없습니다.");
-        }
-
-        if (!"PENDING".equals(match.getOrderStatus())) {
-            throw new IllegalStateException("대기 중인 매칭만 상태를 변경할 수 있습니다.");
+            throw new IllegalArgumentException("해당 조건의 대기 중인 매칭 정보를 찾을 수 없습니다.");
         }
 
         String newStatus = requestDto.getOrderStatus().toUpperCase();
@@ -85,16 +90,14 @@ public class MatchService {
         if ("ACCEPTED".equals(newStatus)) {
             match.setOrderStatus("ACCEPTED");
             User gamemateUser = gamemate.getUsers();
-            // CoinService를 사용하여 게임메이트에게 코인 지급
             coinService.payoutToGamemate(gamemateUser, price);
             matchRepository.saveMatch(match);
 
         } else if ("DECLINED".equals(newStatus)) {
             User requester = userRepository.findById(match.getOrderUsersId());
-            // CoinService를 사용하여 요청자에게 코인 환불
             coinService.cancelMatchRefund(requester, price);
-            // 매치 기록 삭제
             matchRepository.deleteMatch(match);
+            match.setOrderStatus("DECLINED"); // 응답 DTO를 위해 상태 설정
         } else {
             throw new IllegalArgumentException("잘못된 상태 값입니다: " + newStatus);
         }
@@ -123,17 +126,13 @@ public class MatchService {
         }
         Long price = gamemate.getPrice();
 
-        // DTO를 먼저 생성
         MatchResponseDTO responseDto = MatchResponseDTO.of(match);
         responseDto.setOrderStatus("CANCELLED");
 
-        // CoinService를 사용하여 요청자에게 코인 환불
         coinService.cancelMatchRefund(requester, price);
 
-        // 매치 기록 삭제
         matchRepository.deleteMatch(match);
 
         return responseDto;
     }
-
 }

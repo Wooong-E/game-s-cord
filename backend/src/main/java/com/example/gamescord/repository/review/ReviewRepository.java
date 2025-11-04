@@ -38,4 +38,39 @@ public class ReviewRepository {
     public void deleteReview(Review reviewEntity) {
         reviewRepository.delete(reviewEntity);
     }
+
+    public boolean existsByGamemateAndUser(Long gamemateId, Long authorId) {
+        Integer count = queryFactory.selectOne()
+                .from(review)
+                .where(
+                        review.gamemates.id.eq(gamemateId)
+                        .and(review.users.id.eq(authorId))
+                )
+                .fetchFirst();
+        return count != null;
+    }
+
+    public java.util.List<com.example.gamescord.domain.Review> findAllByGamemateId(Long gamemateId) {
+        return queryFactory.selectFrom(review)
+                .where(review.gamemates.id.eq(gamemateId))
+                .orderBy(review.id.desc())
+                .fetch();
+    }
+
+    public Double findAverageScoreByGamemateId(Long gamemateId) {
+        return queryFactory
+                .select(review.score.avg())
+                .from(review)
+                .where(review.gamemates.id.eq(gamemateId))
+                .fetchOne();
+    }
+
+    public java.util.List<Integer> findAllScoresByUserId(Long userId) {
+        return queryFactory
+                .select(review.score)
+                .from(review)
+                .join(review.gamemates, com.example.gamescord.domain.QGamemate.gamemate)
+                .where(com.example.gamescord.domain.QGamemate.gamemate.users.id.eq(userId))
+                .fetch();
+    }
 }
