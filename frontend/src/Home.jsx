@@ -2,8 +2,9 @@ import styles from "./Home.module.css";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import LeagueofLeagends from "./assets/LeaguofLeagends.jpg"
-import SuddenAttack from "./assets/SuddenAttack.jpg"
 import Battleground from "./assets/Battleground.jpg"
+import Teamfight from "./assets/Teamfight.jpg"
+import SuddenAttack from "./assets/SuddenAttack.jpg"
 import Overwatch from "./assets/Overwatch.jpg"
 import Maplestory from "./assets/Maplestory.jpg"
 import user1 from "./assets/user1.png"
@@ -45,13 +46,11 @@ function useScroll(ref, scrollAmount){
 }
 
 function Home() {
-  const gameList = ["LeagueofLeagends", "Suddenattack", "Battleground", "Overwatch", "Maplestory"];
+  const gameList = ["LeagueofLeagends", "Battleground", "Teamfight"];
   const games = {
     LeagueofLeagends: LeagueofLeagends,
-    Suddenattack: SuddenAttack,
     Battleground: Battleground,
-    Overwatch: Overwatch,
-    Maplestory: Maplestory,
+    Teamfight: Teamfight
   };
   const user = [user1, user2, user3, user4, user5, user6, user7];
   const gameBoxRef = useRef(null);
@@ -89,10 +88,6 @@ function Home() {
     <div className={styles.wrapper}>
       <div className={styles.section}>
         <h1>추천 서비스</h1>
-          <button onClick={() => {gameScroll.scrollPrev()}} className={!gameScroll.canScrollPrev ? styles.hidden : styles.prev}>
-            <FontAwesomeIcon icon={faCircleChevronLeft} /></button>
-          <button onClick={() => {gameScroll.scrollNext()}} className={!gameScroll.canScrollNext? styles.hidden : styles.next}>
-            <FontAwesomeIcon icon={faCircleChevronRight} /></button>
         <div className={styles.visible_gamebox} ref={gameBoxRef}>
           <div className={styles.gamebox}>
             {gameList.map((item, index)=>(
