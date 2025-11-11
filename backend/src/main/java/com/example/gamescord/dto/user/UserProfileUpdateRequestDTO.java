@@ -21,7 +21,7 @@ public class UserProfileUpdateRequestDTO {
     @Size(max = 255, message = "사용자 설명은 255자 이하여야 합니다")
     private String usersDescription;
 
-    @NotNull(message = "생년월일은 필수입니다") // Matching User.java
+    @NotNull(message = "생년월일은 필수입니다")
     @Past(message = "생년월일은 과거 날짜여야 합니다")
     private LocalDate usersBirthday;
 

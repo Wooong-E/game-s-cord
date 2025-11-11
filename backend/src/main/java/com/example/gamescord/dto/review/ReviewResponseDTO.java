@@ -17,7 +17,7 @@ public class ReviewResponseDTO {
     private Instant createdAt;
 
     //리뷰 작성자 정보
-    private Long userId;           // 작성자 ID
+    private Long userId;
     private String userName;
 
     public static ReviewResponseDTO fromEntity(Review review) {

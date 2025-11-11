@@ -20,10 +20,10 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
-    @ExceptionHandler(BadCredentialsException.class) // New handler
+    @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException ex) {
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED) // 401 Unauthorized is appropriate for bad credentials
+                .status(HttpStatus.UNAUTHORIZED) // 401
                 .body(ex.getMessage());
     }
 

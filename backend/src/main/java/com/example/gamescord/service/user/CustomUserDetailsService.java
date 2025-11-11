@@ -30,7 +30,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
         // loginId를 이용해 데이터베이스에서 사용자 정보를 조회합니다.
         User user = userRepository.findByLoginId(loginId)
-                // 사용자를 찾지 못하면 예외를 발생시킵니다.
                 .orElseThrow(() -> new UsernameNotFoundException("해당 아이디를 찾을 수 없습니다: " + loginId));
 
         // 조회된 사용자 정보를 기반으로 CustomUserDetails 객체를 생성하여 반환합니다.
