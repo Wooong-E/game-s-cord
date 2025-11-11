@@ -17,17 +17,6 @@ services:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
 
-  backend:
-    build: ./backend # Dockerfile 있는 경로
-    container_name: gamescord-backend
-    ports:
-      - '8080:8080'
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/softwareassignmentdb?useSSL=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: taekmin
-      SPRING_DATASOURCE_PASSWORD: Dlxorals9809!
-    depends_on:
-      - db
 
 volumes:
   db-data:
