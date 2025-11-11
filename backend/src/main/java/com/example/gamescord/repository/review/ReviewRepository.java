@@ -50,7 +50,7 @@ public class ReviewRepository {
         return count != null;
     }
 
-    public java.util.List<com.example.gamescord.domain.Review> findAllByGamemateId(Long gamemateId) {
+    public List<Review> findAllByGamemateId(Long gamemateId) {
         return queryFactory.selectFrom(review)
                 .where(review.gamemates.id.eq(gamemateId))
                 .orderBy(review.id.desc())
@@ -65,12 +65,22 @@ public class ReviewRepository {
                 .fetchOne();
     }
 
-    public java.util.List<Integer> findAllScoresByUserId(Long userId) {
+    public List<Integer> findAllScoresByUserId(Long userId) {
         return queryFactory
                 .select(review.score)
                 .from(review)
                 .join(review.gamemates, com.example.gamescord.domain.QGamemate.gamemate)
                 .where(com.example.gamescord.domain.QGamemate.gamemate.users.id.eq(userId))
                 .fetch();
+    }
+
+    public List<Long> findTop4ByReviewsCount(){
+        return queryFactory
+            .select(review.gamemates.id)
+            .from(review)
+            .groupBy(review.gamemates.id)
+            .orderBy(review.count().desc())
+            .limit(4)
+            .fetch();
     }
 }
