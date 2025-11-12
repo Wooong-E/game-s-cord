@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styles from "./Search.module.css"
 import coin from "../assets/coin.jpg"
 import user1 from "../assets/user1.png"
@@ -13,12 +13,44 @@ import user7 from "../assets/user7.png"
 function Search() {
   const location = useLocation();
   const [keyword, setKeyword] = useState("");
+  const [showGame, setShowGame] = useState(false);
+  const [showPrice, setShowPrice] = useState(false);
+  const [showGender, setShowGender] = useState(false);
+  const [showOrder, setShowOrder] = useState(false);
+  const [showRank, setShowRank] = useState(false);
+  const dropdownGameRef = useRef(null);
+  const dropdownPriceRef = useRef(null);
+  const dropdownGenderRef = useRef(null);
+  const dropdownOrderRef = useRef(null);
+  const dropdownRankRef = useRef(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const queryValue = params.get("q") || "";
     setKeyword(queryValue);
   }, [location.search]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownGameRef.current && !dropdownGameRef.current.contains(e.target)) {
+        setShowGame(false);
+      }
+      if (dropdownPriceRef.current && !dropdownPriceRef.current.contains(e.target)) {
+        setShowPrice(false);
+      }
+      if (dropdownGenderRef.current && !dropdownGenderRef.current.contains(e.target)) {
+        setShowGender(false);
+      }
+      if (dropdownOrderRef.current && !dropdownOrderRef.current.contains(e.target)) {
+        setShowOrder(false);
+      }
+      if (dropdownRankRef.current && !dropdownRankRef.current.contains(e.target)) {
+        setShowRank(false);
+      }
+  };
+    document.addEventListener("mouseup", handleClickOutside);
+    return () => document.removeEventListener("mouseup", handleClickOutside);
+  }, []);
 
 
   const user = [user1, user2, user3, user4, user5, user6, user7];
@@ -54,13 +86,43 @@ function Search() {
         </div>
         <div className={styles.filter}>
           <div style={{display: "flex", gap: "10px"}}>
-            <button type="button">게임 종류</button>
-            <button type="button">티어/랭크</button>
-            <button type="button">가격</button>
-            <button type="button">성별</button>
+            <div ref={dropdownGameRef} style={{position: "relative"}}>
+              <button type="button"  onClick={(e) =>{e.stopPropagation(); setShowGame((prev) => !prev);}}>게임 종류</button>
+              <ul className={showGame ? styles.show : ""} style={{width:"150px"}}>
+                <li>리그오브레전드</li>
+                <li>배틀 그라운드</li>
+                <li>전략적 팀 전투</li>
+              </ul>
+            </div>
+
+            <div ref={dropdownRankRef} style={{position: "relative"}}>
+              <button type="button" onClick={(e) =>{e.stopPropagation(); setShowRank((prev) => !prev);}}>티어/랭크</button>
+              <ul className={showRank ? styles.show : ""} style={{width:"80px"}}>
+                <li>티어</li>
+                <li>랭크</li>
+              </ul>
+            </div>
+            <div ref={dropdownPriceRef} style={{position: "relative"}}>
+              <button type="button" onClick={(e) =>{e.stopPropagation(); setShowPrice((prev) => !prev);}}>가격</button>
+              <ul className={showPrice ? styles.show : ""} style={{width:"100px"}}>
+                <li>최고 가격</li>
+                <li>최소 가격</li>
+              </ul>
+            </div>
+            <div ref={dropdownGenderRef} style={{position: "relative"}}>
+              <button type="button" onClick={(e) =>{e.stopPropagation(); setShowGender((prev) => !prev);}}>성별</button>
+              <ul className={showGender ? styles.show : ""}style={{width:"80px"}}>
+                <li>남성</li>
+                <li>여성</li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <button type="button" style={{marginLeft: "10px"}}>추천순</button>
+          <div ref={dropdownOrderRef} style={{position: "relative"}}>
+            <button type="button" style={{marginLeft: "10px"}} onClick={(e) =>{e.stopPropagation(); setShowOrder((prev) => !prev);}}>추천순</button>
+            <ul className={showOrder ? styles.show : ""} style={{width:"80px"}}>
+                <li>추천순</li>
+                <li>최신순</li>
+              </ul>
           </div>
         </div>
 
