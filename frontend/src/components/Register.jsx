@@ -182,14 +182,14 @@ const Register = () => {
               type="submit"
               onClick={onRegisterHandle}
             >
-              회원가입
+              register
             </button>
             <button
               className="cancel-btn"
               type="button"
               onClick={onCancelHandle}
             >
-              취소
+              cancel
             </button>
           </div>
         </form>
