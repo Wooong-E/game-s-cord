@@ -23,7 +23,7 @@ const Header = () => {
           icon={faMagnifyingGlass}
           style={{ fontSize: "1.1rem" }}
         />
-        <Link className={styles.link} to="/">
+        <Link className={styles.link} to="/coin">
           <img src={coin} alt="coin" className={styles.coin}></img>
           <span>충전</span>
         </Link>

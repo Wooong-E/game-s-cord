@@ -1,0 +1,149 @@
+/*전체 컨테이너*/
+.payment-container {
+  display: flex;
+  width: 593px;
+  height: 495px;
+  background-color: #f7f7f7;
+  margin: 0 auto;
+  box-sizing: border-box; /* 패딩과 보더를 너비/높이에 포함 */
+  margin-top: 50px;
+}
+
+/*결제 정보 영역*/
+.payment-info-area {
+  flex-basis: 60%;
+  padding: 30px 20px;
+  border-right: 1px solid #ddd;
+  justify-items: center;
+  background-color: #fbfdfd;
+}
+
+/*결제 수단 선택 영역*/
+.payment-method-area {
+  flex-basis: 40%;
+  padding: 30px 20px;
+  position: relative; /*버튼 배치를 위한 설정*/
+  justify-items: center;
+  margin-bottom: 250px;
+}
+
+/*결제 수단 항목*/
+.method-title {
+  font-size: 12px;
+  color: #acacad;
+  margin-bottom: 15px;
+  margin-top: 40px;
+  font-weight: bold;
+}
+
+/*개별 결제 수단 아이템*/
+.method-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  margin-bottom: 40px;
+  background-color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 300px;
+}
+
+.payment-method-area img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.method-item span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.coin-info {
+  color: #acacad;
+  font-weight: bold;
+  margin-bottom: -20px;
+}
+
+.price-info {
+  font-weight: bold;
+  font-size: 30px;
+}
+
+/* 결제하기 버튼 */
+.pay-button {
+  width: calc(100% - 40px);
+  padding: 10px 0;
+  background-color: #4372ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 30px;
+  margin-left: 27px;
+}
+
+/*팝업창 스타일*/
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.popup-details {
+  background-color: #f0f0f0;
+  padding: 15px;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.popup-details p {
+  margin: 5px 0;
+  font-size: 16px;
+}
+
+.popup-actions {
+  margin-top: 20px;
+}
+
+.popup-actions button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.cancel-btn {
+  background-color: #ccc;
+  color: #333;
+}
+
+.confirm-btn {
+  background-color: #4372ff;
+  color: white;
+}
+
+.method-item.selected {
+  border: 2px solid #4372ff;
+  background-color: #e6f0ff;
+  padding: 8px 13px;
+}
