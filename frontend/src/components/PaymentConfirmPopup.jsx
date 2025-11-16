@@ -26,7 +26,7 @@ const PaymentConfirmPopup = ({
         </div>
 
         <div className="popup-actions">
-          <button className="cancel-btn" onClick={onClose}>
+          <button className="cancel2-btn" onClick={onClose}>
             취소
           </button>
           <button className="confirm-btn" onClick={onConfirm}>

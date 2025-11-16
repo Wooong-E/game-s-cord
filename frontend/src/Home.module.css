@@ -1,0 +1,129 @@
+.wrapper{
+    margin: 50px 80px;
+    font-size: 14px;
+    color: #202124;
+}
+
+.section{
+    margin-bottom: 50px;    
+    position: relative;
+}
+
+.section h1{
+    margin: 30px 0;
+}
+
+.visible_gamebox, .visible_userbox{
+    width: calc(100% + 160px); /* wrapper 좌우 여백을 무시하게 확장 */
+    margin-left: -80px;        /* 왼쪽 여백만큼 당김 */
+    overflow-x: auto;   /* 가로 스크롤 허용 */
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;  /* 카드 단위로 스냅 */
+    -webkit-overflow-scrolling: touch; /* 모바일 부드럽게 */
+    scrollbar-width: none;          /* Firefox 스크롤바 숨기기 */
+}
+.visible_gamebox::-webkit-scrollbar, .visible_userbox::-webkit-scrollbar {
+    display: none; /* Chrome, Safari 스크롤바 숨기기 */
+}
+
+.prev, .next {
+    position: absolute;
+    top: 138px;
+    color: rgba(250, 250, 250, 0.8);
+    background-color: rgb(91, 91, 91, 0.7);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    z-index: 3;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.prev{
+    left: -60px;   /* 왼쪽 버튼 위치 */
+}
+
+.next {
+    right: -60px;  /* 오른쪽 버튼 위치 */
+}
+
+.gamebox{
+    display: flex;
+    padding-left: 0; /* 겹치게 할 거라 패딩 제거 */
+    gap: 20px;
+}
+
+.game{
+    width: 520px;
+    height: 220px;
+    flex-shrink: 0;
+    overflow: hidden;
+    scroll-snap-align: start; /* 스크롤 스냅 */
+    margin-left: -80px; /* 카드 겹치기 */
+}
+
+.game:first-child, .user:first-child {
+    margin-left: 0;
+}
+
+.gamebox::after, .userbox::after {
+    content: "";
+    flex: 0 0 60px; /* 마지막 카드 뒤에 80px 공간 */
+}
+
+.game img{
+    width: 440px;
+    height: 100%;
+    margin-left: 80px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.userbox{
+    display: flex;
+    padding-left: 0; /* 겹치게 할 거라 패딩 제거 */
+    gap: 20px;
+}
+
+.user{
+    width: 420px;
+    height: 180px;
+    flex-shrink: 0;
+    overflow: hidden;
+    scroll-snap-align: start; /* 스크롤 스냅 */
+    margin-left: -80px; /* 카드 겹치기 */
+}
+
+.imgbox{
+    height: 178px;
+    background-color: #ffffff;
+    border: 1px solid rgb(91, 91, 91, 0.3);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    margin-left: 80px;
+    gap: 30px;
+}
+
+.biobox{
+    font-size: 18px;
+}
+
+.user img{
+    height: 140px;
+    background-color: #ffffff;
+    margin-left: 20px;
+}
+
+.hidden{
+    position: absolute;
+    top: 150px;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    visibility: hidden;
+}
