@@ -9,6 +9,7 @@ import CoinRecharge from "./Coin/CoinRecharge";
 import CoinChargeHistory from "./Coin/CoinChargeHistory";
 import Payment from "./Coin/Payment.jsx";
 import Search from "./page/Search";
+import JoinGameMatch from "./Match/JoinGameMatch.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/coinHistory" element={<CoinChargeHistory />} />
           <Route path="/pay" element={<Payment />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/match" element={<JoinGameMatch />} /> {/*임시 라우트*/}
         </Routes>
       </Template>
     </BrowserRouter>
