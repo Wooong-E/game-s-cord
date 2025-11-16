@@ -1,8 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Home";
-import "./components/Register";
 import Template from "./template/Template";
-import Register from "./components/Register";
+import Register from "./Register/Register";
 
 function App() {
   return (
