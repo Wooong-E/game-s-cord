@@ -8,6 +8,7 @@ import Register from "./Register/Register.jsx";
 import CoinRecharge from "./Coin/CoinRecharge";
 import CoinChargeHistory from "./Coin/CoinChargeHistory";
 import Payment from "./Coin/Payment.jsx";
+import Search from "./page/Search";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/coin" element={<CoinRecharge />} />
           <Route path="/coinHistory" element={<CoinChargeHistory />} />
           <Route path="/pay" element={<Payment />} />
+          <Route path="/search" element={<Search />} />
         </Routes>
       </Template>
     </BrowserRouter>
