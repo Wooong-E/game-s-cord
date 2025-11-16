@@ -1,6 +1,6 @@
 import "../css/CoinRecharge.css";
 import coinImage from "../assets/coin.jpg";
-import HeaderTabs from "./HeaderTabs";
+import HeaderTabs from "../Coin/HeaderTabs";
 import { useNavigate } from "react-router-dom";
 
 //코인 가격 배열 points: 코인 갯수 price : 가격

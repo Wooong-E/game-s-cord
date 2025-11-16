@@ -30,7 +30,7 @@ const Header = () => {
         <Link className={`${styles.link} ${styles.login}`} to="/">
           Login
         </Link>
-        <Link className={`${styles.link} ${styles.join}`} to="/register">
+        <Link className={`${styles.link} ${styles.join}`} to="/signup">
           Join
         </Link>
       </div>
