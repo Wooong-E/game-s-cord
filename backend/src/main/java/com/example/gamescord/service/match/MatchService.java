@@ -10,6 +10,7 @@ import com.example.gamescord.repository.gamemate.GameMateRepository;
 import com.example.gamescord.repository.match.MatchRepository;
 import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.service.coin.CoinService;
+import com.example.gamescord.service.notification.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ public class MatchService {
     private final UserRepository userRepository;
     private final GameMateRepository gameMateRepository;
     private final CoinService coinService;
+    private final NotificationService notificationService;
 
     @Transactional
     public MatchResponseDTO requestMatch(Long requesterId, MatchRequestDTO requestDto) {
@@ -60,6 +62,15 @@ public class MatchService {
 
         matchRepository.saveMatch(newMatch);
 
+        // 게임메이트에게 매칭 요청 알람 생성
+        String message = String.format("%s님이 매칭을 요청했습니다.", requester.getUsersName());
+        notificationService.createNotification(
+                gamematePlayer.getId(),
+                "MATCH_REQUEST",
+                newMatch.getId(),
+                message
+        );
+
         return MatchResponseDTO.of(newMatch);
     }
 
@@ -93,9 +104,29 @@ public class MatchService {
             coinService.payoutToGamemate(gamemateUser, price);
             matchRepository.saveMatch(match);
 
+            // 요청자에게 매칭 수락 알람 생성
+            String acceptMessage = String.format("%s님이 매칭을 수락했습니다.", gamemateUser.getUsersName());
+            notificationService.createNotification(
+                    match.getOrderUsersId(),
+                    "MATCH_ACCEPTED",
+                    match.getId(),
+                    acceptMessage
+            );
+
         } else if ("DECLINED".equals(newStatus)) {
             User requester = userRepository.findById(match.getOrderUsersId());
+            User gamemateUser = gamemate.getUsers();
             coinService.cancelMatchRefund(requester, price);
+
+            // 요청자에게 매칭 거절 알람 생성
+            String declineMessage = String.format("%s님이 매칭을 거절했습니다.", gamemateUser.getUsersName());
+            notificationService.createNotification(
+                    match.getOrderUsersId(),
+                    "MATCH_DECLINED",
+                    match.getId(),
+                    declineMessage
+            );
+
             matchRepository.deleteMatch(match);
             match.setOrderStatus("DECLINED"); // 응답 DTO를 위해 상태 설정
         } else {
