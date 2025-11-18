@@ -14,6 +14,7 @@ public class GamemateResponseDTO {
     private Long gameId;
     private String gameName;
     private Long price;
+    private String tier;
 
     public static GamemateResponseDTO fromEntity(Gamemate gamemate) {
         return GamemateResponseDTO.builder()
@@ -23,6 +24,7 @@ public class GamemateResponseDTO {
                 .gameId(gamemate.getGames().getId())
                 .gameName(gamemate.getGames().getGamesName())
                 .price(gamemate.getPrice())
+                .tier(gamemate.getTier())
                 .build();
     }
 

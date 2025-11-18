@@ -57,6 +57,7 @@ public class GamemateService {
             newGamemate.setUsers(user);
             newGamemate.setGames(game);
             newGamemate.setPrice(gameInfo.getPrice());
+            newGamemate.setTier(gameInfo.getTier());
 
             gameMateRepository.saveGamemate(newGamemate);
             newGamemates.add(newGamemate);
@@ -95,6 +96,7 @@ public class GamemateService {
                             .gameId(gamemate.getGames().getId())
                             .gameName(gamemate.getGames().getGamesName())
                             .price(gamemate.getPrice())
+                            .tier(gamemate.getTier())
                             .averageScore(formatScore(averageScore))
                             .build();
                 })

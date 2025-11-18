@@ -25,5 +25,9 @@ public class GamemateRegistrationRequestDTO {
 
         @NotNull(message = "가격은 필수입니다.")
         private Long price;
+
+        @jakarta.validation.constraints.NotBlank(message = "티어는 필수입니다.")
+        @Size(max = 45)
+        private String tier;
     }
 }
