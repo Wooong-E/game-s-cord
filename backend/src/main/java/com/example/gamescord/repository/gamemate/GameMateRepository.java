@@ -61,6 +61,13 @@ public class GameMateRepository {
             .fetch();
     }
 
+    public List<Gamemate> findByGenderAndTier(String gender, String tier){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(gamemate.users.gender.eq(gender), gamemate.tier.eq(tier))
+            .fetch();
+    }
+
     public List<Gamemate> findGamematesByUsersId(Long userId) {
         return queryFactory.selectFrom(gamemate)
                 .where(gamemate.users.id.eq(userId))
