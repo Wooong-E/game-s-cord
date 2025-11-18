@@ -37,6 +37,15 @@ public class GamemateController {
         return ResponseEntity.ok(results);
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<GamemateResponseDTO>> filterGamemates(
+            @RequestParam Long gameId,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String tier) {
+        List<GamemateResponseDTO> results = gamemateService.searchGamematesByFilter(gameId, gender, tier);
+        return ResponseEntity.ok(results);
+    }
+
     @GetMapping("/profile/{userId}")
     public ResponseEntity<GamemateProfileResponseDTO> getGamemateProfile(
             @PathVariable Long userId) {

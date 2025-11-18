@@ -146,4 +146,14 @@ public class GamemateService {
         }
         return Math.round(score * 100.0) / 100.0;
     }
+
+    @Transactional(readOnly = true)
+    public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier) {
+        // 이 부분은 친구분께서 레포지토리에 구현해주실 메소드라고 가정합니다.
+        // 인자로 받은 gameId, gender, tier를 모두 사용하여 필터링된 결과를 반환해야 합니다.
+        List<Gamemate> gamemates = gameMateRepository.findWithFilters(gameId, gender, tier);
+        return gamemates.stream()
+                .map(GamemateResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
 }
