@@ -20,9 +20,8 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
-    /**
-     * 알람 생성
-     */
+
+    //알람 생성
     @Transactional
     public void createNotification(Long userId, String notificationType, Long matchId, String message) {
         User user = userRepository.findById(userId);
@@ -37,9 +36,8 @@ public class NotificationService {
         notificationRepository.saveNotification(notification);
     }
 
-    /**
-     * 사용자의 모든 알람 조회
-     */
+
+    //사용자의 모든 알람 조회
     @Transactional(readOnly = true)
     public List<NotificationResponseDTO> getNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findAllByUserId(userId);
@@ -48,9 +46,8 @@ public class NotificationService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 읽지 않은 알람 개수 조회
-     */
+
+    //읽지 않은 알람 개수 조회
     @Transactional(readOnly = true)
     public UnreadCountResponseDTO getUnreadCount(Long userId) {
         Long count = notificationRepository.countUnreadByUserId(userId);
@@ -59,9 +56,7 @@ public class NotificationService {
                 .build();
     }
 
-    /**
-     * 알람 읽음 처리
-     */
+    //알람 읽음
     @Transactional
     public NotificationResponseDTO markAsRead(Long notificationId, Long userId) {
         Notification notification = notificationRepository.findById(notificationId)
@@ -77,9 +72,8 @@ public class NotificationService {
         return NotificationResponseDTO.fromEntity(notification);
     }
 
-    /**
-     * 알람 삭제
-     */
+
+    //알람 삭제
     @Transactional
     public void deleteNotification(Long notificationId, Long userId) {
         Notification notification = notificationRepository.findById(notificationId)
