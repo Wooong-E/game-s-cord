@@ -30,6 +30,7 @@ public class Gamemate {
   @Column(name = "price", nullable = false)
   private Long price;
 
+
   @Size(max=45)
   @NotNull
   @Column(name="tier", nullable=false)
