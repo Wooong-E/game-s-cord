@@ -5,6 +5,7 @@ import { PiLockKeyBold } from "react-icons/pi";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //회원가입 컴포넌트
 const Register = () => {
@@ -73,16 +74,33 @@ const Register = () => {
 
     const errorMsg = await validateForm();
     if (errorMsg) {
-      alert(errorMsg); // 메시지 표시 후 사용자가 재입력 가능
+      alert(errorMsg);
       return;
     }
 
-    // TODO: 실제 회원가입 API 호출
-    console.log({ id, password, name, call, birth });
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/users/signup",
+        {
+          username: id,
+          password: password,
+          name: name,
+          phone: call,
+          birth: birth,
+        }
+      );
 
-    alert("회원가입 완료! 메인페이지로 이동합니다.");
-    navigate("/"); // 회원가입 성공 시 메인 페이지 이동
+      alert(response.data); // Spring Boot에서 반환하는 메시지
+      navigate("/"); // 회원가입 성공 시 메인 페이지 이동
+    } catch (error) {
+      console.error(error);
+      alert(
+        error.response?.data ||
+          "회원가입 중 오류가 발생했습니다. 다시 시도해주세요."
+      );
+    }
   };
+
   // 입력값 초기화 후 이전 페이지로 돌아가기
   const onCancelHandle = () => {
     setId("");
