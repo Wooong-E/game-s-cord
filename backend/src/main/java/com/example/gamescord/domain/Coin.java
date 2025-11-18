@@ -8,7 +8,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -42,6 +42,6 @@ public class Coin {
   @ColumnDefault("CURRENT_TIMESTAMP")
   @Column(name = "created_at", nullable = false)
   @CreationTimestamp
-  private Instant createdAt;
+  private LocalDateTime createdAt;
 
 }
