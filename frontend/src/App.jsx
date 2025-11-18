@@ -1,17 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Home"
-import Template from './template/Template';
+import React from "react";
+import MatchDetail from "./MatchDetail";  // 경로 확인!
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <Template>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Template>
-    </BrowserRouter>
-  )
-}
+    <div>
+      <MatchDetail />
+    </div>
+  );
+};
 
-export default App
+export default App;
