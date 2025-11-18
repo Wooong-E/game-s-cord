@@ -29,4 +29,8 @@ public class Gamemate {
   @Column(name = "price", nullable = false)
   private Long price;
 
+  @NotNull
+  @Column(name="tier", nullable=false)
+  private String tier;
+
 }

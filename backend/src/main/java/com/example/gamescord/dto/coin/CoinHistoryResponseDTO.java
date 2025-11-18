@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.time.ZoneId;
 
 @Getter
 @Builder
@@ -20,7 +21,8 @@ public class CoinHistoryResponseDTO {
                 .coinId(coin.getId())
                 .coinAmount(coin.getCoinAmount())
                 .transactionType(type)
-                .createdAt(coin.getCreatedAt())
+                .createdAt(coin.getCreatedAt().atZone(ZoneId.of("Asia/Seoul"))
+                        .toInstant())
                 .build();
     }
 }
