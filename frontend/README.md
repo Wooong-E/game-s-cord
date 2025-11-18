@@ -6,20 +6,34 @@
 <br/>
 
 ### 🚀 실행 방법
+
 ```bash
 # 개발 서버 실행
 npm run dev
 ```
 
 ### 📦 설치 라이브러리
+
 #### 라우팅
+
 ##### react-router-dom
+
 ```bash
 npm install react-router-dom
 ```
 
 #### 아이콘
+
 ##### @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
 ```bash
 npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 ```
+
+###### 회원가입 아이콘
+
+```bash
+npm install react-icons
+```
+
+[React Icons 공식 문서](https://react-icons.github.io/react-icons/)

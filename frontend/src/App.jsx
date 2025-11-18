@@ -1,19 +1,19 @@
-
-
-import React from "react";
-
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"; 
-import Login from "./login/Login.jsx";
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import Template from "./template/Template";
+import Register from "./Register/Register";
 
 function App() {
   return (
-
-    <Router> 
-      <Routes>
-        <Route path="/" element={<Login />} /> 
-      </Routes>
-    </Router>
+    <BrowserRouter>
+      <Template>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Register />} />
+        </Routes>
+      </Template>
+    </BrowserRouter>
   );
 }
+
 export default App;
