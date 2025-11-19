@@ -25,6 +25,10 @@
     margin: 20px 0 10px 0;
 }
 
+button{
+    border:none;
+}
+
 .modify{
     width: 240px;
     background-color: #dcdcdcaa;
@@ -36,6 +40,12 @@
     font-size: 20px;
     font-weight: 600;
     color: rgba(0,0,0,0.6);
+    cursor: pointer;
+}
+
+.click{
+    background-color: #0062ffe3;
+    color:white;
 }
 
 .title{
@@ -46,4 +56,84 @@
 
 .data{
     font-size: 20px;
+}
+
+.inputStyle {
+    font-size: 18px;
+    font-family: inherit;
+    color: #202124;
+    padding: 10px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    margin-bottom: 50px;
+    width: 300px;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+/* 포커스 시 자연스럽게만 보이게 */
+.inputStyle:focus {
+    border-color: #a0a0a0;
+    background-color: #fff;
+}
+
+.textareaStyle {
+    font-size: 18px;
+    font-family: inherit;
+    color: #202124;
+    padding: 10px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    width: 300px;
+    height: 120px;
+    outline: none;
+    resize: none;
+    transition: all 0.15s ease;
+}
+
+.textareaStyle:focus {
+    border-color: #a0a0a0;
+    background-color: #fff;
+}
+
+.genderContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 50px;
+}
+
+.genderBox {
+    width: 150px;
+    height: 50px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    color: #333;
+    gap: 8px;
+}
+
+.genderBox.selected {
+    border: 1px solid #4A8CFF;
+    background: #eaf2ff;
+    font-weight: 500;
+}
+
+.genderIcon {
+    font-size: 18px;
+    padding-left: -10px;
+}
+
+.errorText {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 6px;
+    margin-bottom: 20px;
 }
