@@ -2,6 +2,7 @@ package com.example.gamescord.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,5 +29,11 @@ public class Gamemate {
   @NotNull
   @Column(name = "price", nullable = false)
   private Long price;
+
+
+  @Size(max=45)
+  @NotNull
+  @Column(name="tier", nullable=false)
+  private String tier;
 
 }

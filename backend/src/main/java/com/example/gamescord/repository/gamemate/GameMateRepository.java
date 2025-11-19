@@ -43,6 +43,34 @@ public class GameMateRepository {
                 .fetch();
     }
 
+    public List<Gamemate> findByGameId(Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(gamemate.games.id.eq(gameId))
+            .fetch();
+    }
+
+    public List<Gamemate> findByGender(String gender, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(gamemate.users.gender.eq(gender),gamemate.games.id.eq(gameId))
+            .fetch();
+    }
+
+    public List<Gamemate> findByTier(String tier, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(gamemate.tier.eq(tier),gamemate.games.id.eq(gameId))
+            .fetch();
+    }
+
+    public List<Gamemate> findByGenderAndTier(String gender, String tier, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(gamemate.users.gender.eq(gender), gamemate.tier.eq(tier), gamemate.games.id.eq(gameId))
+            .fetch();
+    }
+
     public List<Gamemate> findGamematesByUsersId(Long userId) {
         return queryFactory.selectFrom(gamemate)
                 .where(gamemate.users.id.eq(userId))

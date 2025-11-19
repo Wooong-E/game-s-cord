@@ -39,8 +39,7 @@ public class Coin {
   @Column(name = "payment_method", nullable = false, length = 45)
   private String paymentMethod;
 
-  @ColumnDefault("CURRENT_TIMESTAMP")
-  @Column(name = "created_at", nullable = false)
+  @Column(name = "created_at", nullable = false, updatable = false)
   @CreationTimestamp
   private LocalDateTime createdAt;
 

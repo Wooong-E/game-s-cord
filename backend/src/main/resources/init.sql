@@ -20,17 +20,17 @@ INSERT INTO games (games_id, games_name) VALUES
 
 -- Gamemates dummy data (10 gamemates)
 -- users_id from 1 to 5 will be gamemates
-INSERT INTO gamemates (users_id, games_id, price) VALUES
-(1, 1, 2000), -- 김철수, 리그 오브 레전드
-(2, 2, 3000), -- 이영희, 배틀그라운드
-(3, 3, 2500), -- 박민준, 오버워치
-(4, 1, 1500), -- 최지우, 리그 오브 레전드
-(5, 2, 4000), -- 정승호, 배틀그라운드
-(1, 2, 2200), -- 김철수, 배틀그라운드
-(2, 3, 3300), -- 이영희, 오버워치
-(3, 1, 2800), -- 박민준, 리그 오브 레전드
-(6, 1, 5000), -- 윤서연, 리그 오브 레전드
-(7, 3, 4500); -- 한지훈, 오버워치
+INSERT INTO gamemates (users_id, games_id, price, tier) VALUES
+(1, 1, 2000, 'S'), -- 김철수, 리그 오브 레전드
+(2, 2, 3000, 'A'), -- 이영희, 배틀그라운드
+(3, 3, 2500, 'B'), -- 박민준, 오버워치
+(4, 1, 1500, 'C'), -- 최지우, 리그 오브 레전드
+(5, 2, 4000, 'S'), -- 정승호, 배틀그라운드
+(1, 2, 2200, 'A'), -- 김철수, 배틀그라운드
+(2, 3, 3300, 'B'), -- 이영희, 오버워치
+(3, 1, 2800, 'C'), -- 박민준, 리그 오브 레전드
+(6, 1, 5000, 'F'), -- 윤서연, 리그 오브 레전드
+(7, 3, 4500, 'S'); -- 한지훈, 오버워치
 
 -- Reviews dummy data
 -- gamemates_id will be 1 to 10 from the above inserts

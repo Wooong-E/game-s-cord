@@ -22,6 +22,7 @@ public class GamemateProfileResponseDTO {
         private Long gameId;
         private String gameName;
         private Long price;
+        private String tier;
         private Double averageScore; // 게임별 평균 평점
     }
 }

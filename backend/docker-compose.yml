@@ -8,6 +8,7 @@ services:
     ports:
       - "8080:8080"
     environment:
+      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/softwareassignmentdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=taekmin
       - SPRING_DATASOURCE_PASSWORD=Dlxorals9809!
