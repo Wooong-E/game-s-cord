@@ -67,23 +67,6 @@ public class NotificationService {
         }
     }
 
-    //알람 읽음
-    @Transactional
-    public NotificationResponseDTO markAsRead(Long notificationId, Long userId) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new IllegalArgumentException("알람을 찾을 수 없습니다."));
-
-        if (!notification.getUsers().getId().equals(userId)) {
-            throw new IllegalArgumentException("본인의 알람만 읽을 수 있습니다.");
-        }
-
-        notification.setIsRead(true);
-        notificationRepository.saveNotification(notification);
-
-        return NotificationResponseDTO.fromEntity(notification);
-    }
-
-
     //알람 삭제
     @Transactional
     public void deleteNotification(Long notificationId, Long userId) {
