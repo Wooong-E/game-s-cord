@@ -9,7 +9,7 @@ services:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/softwareassignmentdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3307/softwareassignmentdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=taekmin
       - SPRING_DATASOURCE_PASSWORD=Dlxorals9809!
   db:
@@ -22,7 +22,7 @@ services:
       MYSQL_PASSWORD: 'Dlxorals9809!'
       MYSQL_ROOT_PASSWORD: 'rootpassword'
     ports:
-      - '3306:3306'
+      - '3307:3306'
     volumes:
       - db-data:/var/lib/mysql
       - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
