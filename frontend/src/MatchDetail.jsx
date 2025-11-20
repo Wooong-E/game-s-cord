@@ -102,7 +102,7 @@ const MatchDetail = () => {
           </div>
         )}
 
-  
+
         <div className="review-panel">
           <div className="review-title">
             리뷰 <br></br>
