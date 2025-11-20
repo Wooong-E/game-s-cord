@@ -157,7 +157,7 @@ const Header = () => {
           <img src={coin} alt="coin" className={styles.coin}></img>
           <span>충전</span>
         </Link>
-        <Link className={`${styles.link} ${styles.login}`} to="/">
+        <Link className={`${styles.link} ${styles.login}`} to="/login">
           Login
         </Link>
         <Link className={`${styles.link} ${styles.join}`} to="/signup">
