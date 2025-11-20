@@ -3,10 +3,10 @@ import "./MatchDetail.css";
 import profileImage from "./assets/user1.png";
 
 const MatchDetail = () => {
-  // 클릭된 게임 상태 관리
+
   const [selectedGame, setSelectedGame] = useState(null);
 
-  // 더미 데이터
+
   const matchData = {
     profileImageUrl: profileImage,
     username: "USER1",
@@ -18,7 +18,7 @@ const MatchDetail = () => {
         price: 999,
         rating: 4.97,
         reviewCount: 100,
-        imageUrl: "https://via.placeholder.com/150/0000FF/808080?text=Battlegrounds", // 게임 이미지
+        imageUrl: "https://via.placeholder.com/150/0000FF/808080?text=Battlegrounds",
       },
       {
         name: "전략적 팀 전투",
@@ -45,14 +45,14 @@ const MatchDetail = () => {
     reviewCount: 100,
   };
 
-  // 게임 클릭 시 동작
+
   const handleGameClick = (game) => {
-    setSelectedGame(game); // 클릭한 게임 정보를 상태에 저장
+    setSelectedGame(game); 
   };
 
   return (
     <div className="match-detail-page">
-      {/* 좌측 프로필 섹션 */}
+
       <div className="left-panel">
         <img
           src={matchData.profileImageUrl}
@@ -63,7 +63,7 @@ const MatchDetail = () => {
         <div className="bio-text">{matchData.bio}</div>
       </div>
 
-      {/* 우측 게임 정보 및 리뷰 */}
+
       <div className="right-panel">
         <div className="game-list">
           {matchData.games.map((game) => (
@@ -71,7 +71,7 @@ const MatchDetail = () => {
               className="game-item"
               key={game.name}
               type="button"
-              onClick={() => handleGameClick(game)}  // 게임 클릭 시 동작
+              onClick={() => handleGameClick(game)} 
             >
               <img src={game.iconUrl} alt={game.name} className="game-icon" />
               <div className="game-detail">
@@ -82,7 +82,7 @@ const MatchDetail = () => {
           ))}
         </div>
 
-        {/* 선택된 게임 정보가 있는 경우 아래에 표시 */}
+
         {selectedGame && (
           <div className="selected-game-info">
             <img src={selectedGame.imageUrl} alt={selectedGame.name} className="selected-game-img" />
@@ -96,7 +96,7 @@ const MatchDetail = () => {
           </div>
         )}
 
-        {/* 리뷰 목록 섹션 (항상 표시) */}
+  
         <div className="review-panel">
           <div className="review-title">
             리뷰 <br></br>

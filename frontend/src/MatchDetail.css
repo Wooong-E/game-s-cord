@@ -1,4 +1,4 @@
-/* 전체 페이지 레이아웃 */
+
 .match-detail-page {
   display: flex;
   flex-wrap: wrap;
@@ -7,10 +7,6 @@
   gap: 30px;
   padding: 20px;
 }
-
-/* ------------------------- */
-/*       좌측 프로필 패널       */
-/* ------------------------- */
 
 .left-panel {
   width: 280px;
@@ -41,9 +37,7 @@
   margin-bottom: 20px;
 }
 
-/* ------------------------- */
-/*       우측 게임 정보 및 리뷰       */
-/* ------------------------- */
+
 
 .right-panel {
   flex: 1;
@@ -53,46 +47,46 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* 게임 목록 가로로 배치 */
+
 .game-list {
   display: flex;
-  justify-content: space-between;  /* 아이템 사이 간격 조정 */
-  gap: 15px;                      /* 아이템 간격 */
+  justify-content: space-between;
+  gap: 15px;                      
   margin-bottom: 20px;
 }
 
 .game-item {
   display: flex;
-  flex-direction: row;            /* 이미지 왼쪽, 게임명과 가격 오른쪽 */
-  align-items: center;            /* 세로로 중앙 정렬 */
+  flex-direction: row;            
+  align-items: center;          
   background: #f5f5f5;
   padding: 10px;
   border-radius: 10px;
-  width: 30%;                     /* 각 게임 아이템 크기 조정 */
+  width: 30%;                 
   text-align: center;
-  border: none;                   /* 버튼 테두리 제거 */
-  cursor: pointer;                /* 클릭 커서 변경 */
+  border: none;                 
+  cursor: pointer;            
 }
 
 .game-item:hover {
-  background: #e0e0e0;            /* hover 시 배경색 변화 */
+  background: #e0e0e0;           
 }
 .game-icon {
   width: 60px;
   height: 60px;
   border-radius: 8px;
-  margin-right: 10px;             /* 이미지와 게임명 사이 간격 */
+  margin-right: 10px;         
 }
 
 .game-detail {
   display: flex;
-  flex-direction: column;         /* 게임명과 가격을 세로로 배치 */
-  align-items: flex-start;        /* 왼쪽 정렬 */
+  flex-direction: column;        
+  align-items: flex-start;      
 }
 
 .game-name {
   font-weight: 600;
-  margin-bottom: 5px;             /* 게임명과 가격 사이 간격 */
+  margin-bottom: 5px;           
 }
 
 .game-price {
@@ -142,9 +136,6 @@
   cursor: pointer;
 }
 
-/* ------------------------- */
-/*       하단 리뷰 섹션       */
-/* ------------------------- */
 
 .review-panel {
   background: #fff;
