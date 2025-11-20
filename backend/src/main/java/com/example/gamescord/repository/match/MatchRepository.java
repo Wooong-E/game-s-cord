@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.List;
 
 import static com.example.gamescord.domain.QMatch.match;
 
@@ -58,5 +59,21 @@ public class MatchRepository {
                 )
                 .fetchFirst();
         return count != null;
+    }
+
+    // 내가 보낸 매칭 요청 목록 조회
+    public List<Match> findByOrderUsersId(Long orderUsersId) {
+        return queryFactory.selectFrom(match)
+                .where(match.orderUsersId.eq(orderUsersId))
+                .orderBy(match.id.desc())
+                .fetch();
+    }
+
+    // 내가 받은 매칭 요청 목록 조회
+    public List<Match> findByOrderedUsersId(Long orderedUsersId) {
+        return queryFactory.selectFrom(match)
+                .where(match.orderedUsersId.eq(orderedUsersId))
+                .orderBy(match.id.desc())
+                .fetch();
     }
 }

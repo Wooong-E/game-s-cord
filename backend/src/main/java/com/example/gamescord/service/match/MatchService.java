@@ -15,6 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class MatchService {
@@ -72,6 +75,106 @@ public class MatchService {
         );
 
         return MatchResponseDTO.of(newMatch);
+    }
+
+    // 내가 보낸 매칭 요청 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchResponseDTO> getSentMatches(Long userId) {
+        List<Match> matches = matchRepository.findByOrderUsersId(userId);
+        return matches.stream()
+                .map(MatchResponseDTO::of)
+                .collect(Collectors.toList());
+    }
+
+
+    // 매칭 요청 목록 조회
+    @Transactional(readOnly = true)
+    public List<MatchResponseDTO> getReceivedMatches(Long userId) {
+        List<Match> matches = matchRepository.findByOrderedUsersId(userId);
+        return matches.stream()
+                .map(MatchResponseDTO::of)
+                .collect(Collectors.toList());
+    }
+
+    // 매칭 수락
+    @Transactional
+    public MatchResponseDTO acceptMatch(Long matchId, Long userId) {
+        Match match = matchRepository.findById(matchId)
+                .orElseThrow(() -> new IllegalArgumentException("매칭 정보를 찾을 수 없습니다."));
+
+        // 권한 체크: 요청받은 사람만 수락 가능
+        if (!match.getOrderedUsersId().equals(userId)) {
+            throw new IllegalArgumentException("해당 매칭을 수락할 권한이 없습니다.");
+        }
+
+        if (!"PENDING".equals(match.getOrderStatus())) {
+            throw new IllegalStateException("대기 중인 매칭만 수락할 수 있습니다.");
+        }
+
+        // 게임메이트 정보 조회
+        Gamemate gamemate = gameMateRepository.findGamemateByUsersId(match.getOrderedUsersId(), match.getOrdersGameId());
+        if (gamemate == null) {
+            throw new IllegalStateException("게임메이트 정보를 찾을 수 없습니다.");
+        }
+
+        Long price = gamemate.getPrice();
+        User gamemateUser = gamemate.getUsers();
+
+        // 상태 변경 및 코인 지급
+        match.setOrderStatus("ACCEPTED");
+        coinService.payoutToGamemate(gamemateUser, price);
+        matchRepository.saveMatch(match);
+
+        // 요청자에게 수락 알람 생성
+        String acceptMessage = String.format("%s님이 매칭을 수락했습니다.", gamemateUser.getUsersName());
+        notificationService.createNotification(
+                match.getOrderUsersId(),
+                "MATCH_ACCEPTED",
+                match.getId(),
+                acceptMessage
+        );
+
+        return MatchResponseDTO.of(match);
+    }
+
+    // 매칭 거절
+    @Transactional
+    public MatchResponseDTO declineMatch(Long matchId, Long userId) {
+        Match match = matchRepository.findById(matchId)
+                .orElseThrow(() -> new IllegalArgumentException("매칭 정보를 찾을 수 없습니다."));
+
+        if (!match.getOrderedUsersId().equals(userId)) {
+            throw new IllegalArgumentException("해당 매칭을 거절할 권한이 없습니다.");
+        }
+
+        if (!"PENDING".equals(match.getOrderStatus())) {
+            throw new IllegalStateException("대기 중인 매칭만 거절할 수 있습니다.");
+        }
+
+        Gamemate gamemate = gameMateRepository.findGamemateByUsersId(match.getOrderedUsersId(), match.getOrdersGameId());
+        if (gamemate == null) {
+            throw new IllegalStateException("게임메이트 정보를 찾을 수 없습니다.");
+        }
+
+        Long price = gamemate.getPrice();
+        User requester = userRepository.findById(match.getOrderUsersId());
+        User gamemateUser = gamemate.getUsers();
+
+        coinService.cancelMatchRefund(requester, price);
+
+        String declineMessage = String.format("%s님이 매칭을 거절했습니다.", gamemateUser.getUsersName());
+        notificationService.createNotification(
+                match.getOrderUsersId(),
+                "MATCH_DECLINED",
+                match.getId(),
+                declineMessage
+        );
+
+        // 매칭 삭제
+        matchRepository.deleteMatch(match);
+        match.setOrderStatus("DECLINED");
+
+        return MatchResponseDTO.of(match);
     }
 
     @Transactional

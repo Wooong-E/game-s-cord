@@ -32,6 +32,7 @@ public class SecurityConfig {
                                 "/api/users/signup", "/api/users/login",
                                 "/api/gamemates/search", "/api/gamemates/profile/**", "/api/gamemates/popular","/api/gamemates/filter/**",
                                 "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**"
+                              //"/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
                         ).permitAll()
                         .anyRequest().authenticated() // 위 경로 제외 모두 인증 필요
                 );

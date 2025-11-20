@@ -18,10 +18,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    /**
-     * 내 알람 목록 조회
-     * 프론트에서 주기적으로 호출하거나 알람 버튼 클릭 시 호출
-     */
+    // 알람 목록 조회
     @GetMapping
     public ResponseEntity<List<NotificationResponseDTO>> getNotifications(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -29,10 +26,7 @@ public class NotificationController {
         return ResponseEntity.ok(notifications);
     }
 
-    /**
-     * 읽지 않은 알람 개수 조회
-     * 프론트에서 주기적으로 호출해서 알람 버튼에 배지 표시
-     */
+    // 읽지 않은 알람 개수 조회
     @GetMapping("/unread-count")
     public ResponseEntity<UnreadCountResponseDTO> getUnreadCount(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
@@ -40,21 +34,16 @@ public class NotificationController {
         return ResponseEntity.ok(count);
     }
 
-    /**
-     * 알람 읽음 처리
-     * 사용자가 알람을 클릭했을 때 호출
-     */
-    @PatchMapping("/{notificationId}/read")
-    public ResponseEntity<NotificationResponseDTO> markAsRead(
-            @PathVariable Long notificationId,
+    @PatchMapping("/read-all")
+    public ResponseEntity<Void> markAllAsRead(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        NotificationResponseDTO notification = notificationService.markAsRead(notificationId, userDetails.getId());
-        return ResponseEntity.ok(notification);
+        notificationService.markAllAsRead(userDetails.getId());
+        return ResponseEntity.noContent().build();
     }
 
-    /**
-     * 알람 삭제
-     */
+
+
+    // 알람 삭제
     @DeleteMapping("/{notificationId}")
     public ResponseEntity<Void> deleteNotification(
             @PathVariable Long notificationId,
