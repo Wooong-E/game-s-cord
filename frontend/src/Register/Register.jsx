@@ -77,7 +77,7 @@ const Register = () => {
         }
       );
 
-      alert(response.data);
+      alert("회원가입에 성공했습니다!!");
       navigate("/");
     } catch (error) {
       console.error(error);
