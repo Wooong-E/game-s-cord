@@ -1,22 +1,29 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CardPayment from "../assets/CardPayment.png";
 import AccountTransfer from "../assets/accountTransfer.png";
 import EasyPayment from "../assets/Easypayment.png";
 
 import PaymentConfirmPopup from "./PaymentConfirmPopup";
+import axios from "axios";
 
 import "../css/Payment.css";
+
+// API 호출 기본 URL 및 엔드포인트
+const BASE_URL = "http://localhost:8080/api/coins";
 
 const Payment = () => {
   const location = useLocation();
   const paymentData = location.state;
   const points = paymentData?.points || "Null";
   const price = paymentData?.price || "Null";
+  const packageId = paymentData?.packageId || "Null";
 
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const navigate = useNavigate();
 
   const handleMethodSelect = (method) => {
     setSelectedMethod(method);
@@ -34,15 +41,49 @@ const Payment = () => {
     setIsPopupOpen(false);
   };
 
-  // 최종 결제 승인 핸들러
-  const handlePaymentConfirm = () => {
-    // TODO: 여기에 실제 결제 API 호출 및 후처리(페이지 이동 등) 로직을 구현하세요.
-    console.log("최종 결제 승인됨:", points, price);
-    alert(`[${points} 코인, ₩${price}] 결제가 시작됩니다.`);
-    handleClosePopup();
-  };
+  // 최종 결제 승인 핸들러 (API 호출)
+  const handlePaymentConfirm = async () => {
+    setIsProcessing(true);
 
-  // TODO: 결제 수단 선택 상태 관리 로직도 추가되어야 합니다.
+    const numericPoints = parseInt(points);
+    const numericPrice = parseInt(price);
+
+    // 2. 백엔드 요청 페이로드 구성
+    const payload = {
+      paymentAmount: numericPrice,
+      coinAmount: numericPoints,
+      packageId: packageId,
+    };
+
+    try {
+      // 3. API 호출
+      const response = await axios.post(`${BASE_URL}/charge`, payload);
+
+      // 4. 성공 처리
+      // response.data.message 또는 기본 성공 메시지 사용
+      const successMessage =
+        response.data?.message ||
+        `${numericPoints} 코인 충전이 성공적으로 완료되었습니다.`;
+      alert(successMessage);
+      handleClosePopup();
+
+      // 5. 페이지 이동 (예: 코인 내역 페이지 또는 메인)
+      setTimeout(() => {
+        navigate("/coinHistory");
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      // 4. 에러 처리
+      console.error("Coin Charge Error:", error.response || error);
+      const errorText =
+        error.response?.data?.message ||
+        "결제 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+      alert(errorText);
+      handleClosePopup();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
     <div className="payment-container">

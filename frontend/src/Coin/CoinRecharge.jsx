@@ -3,18 +3,18 @@ import coinImage from "../assets/coin.jpg";
 import HeaderTabs from "../Coin/HeaderTabs";
 import { useNavigate } from "react-router-dom";
 
-//코인 가격 배열 points: 코인 갯수 price : 가격
+//코인 가격 배열 points: 코인 갯수 price : 가격, id: 인덱스
 const coinProducts = [
-  { points: "500", price: "4,680" },
-  { points: "1,000", price: "9,360" },
-  { points: "2,000", price: "18,720" },
-  { points: "5,000", price: "45,600" },
-  { points: "10,000", price: "91,200" },
-  { points: "30,000", price: "266,400" },
-  { points: "50,000", price: "444,000" },
-  { points: "100,000", price: "864,000" },
-  { points: "300,000", price: "2,592,000" },
-  { points: "500,000", price: "4,320,000" },
+  { id: 1, points: "500", price: "4,680" },
+  { id: 2, points: "1,000", price: "9,360" },
+  { id: 3, points: "2,000", price: "18,720" },
+  { id: 4, points: "5,000", price: "45,600" },
+  { id: 5, points: "10,000", price: "91,200" },
+  { id: 6, points: "30,000", price: "266,400" },
+  { id: 7, points: "50,000", price: "444,000" },
+  { id: 8, points: "100,000", price: "864,000" },
+  { id: 9, points: "300,000", price: "2,592,000" },
+  { id: 10, points: "500,000", price: "4,320,000" },
 ];
 
 //얼마를 충전할지 렌더링되는 코인 충전 목록 함수
