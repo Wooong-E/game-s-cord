@@ -8,7 +8,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/softwareassignmentdb?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=taekmin
       - SPRING_DATASOURCE_PASSWORD=Dlxorals9809!
@@ -25,9 +24,10 @@ services:
       - '3306:3306'
     volumes:
       - db-data:/var/lib/mysql
-      - ./src/main/resources/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --skip-character-set-client-handshake
 volumes:
   db-data:

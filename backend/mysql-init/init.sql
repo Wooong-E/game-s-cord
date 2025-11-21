@@ -1,3 +1,101 @@
+-- 데이터베이스 생성 및 선택
+CREATE DATABASE IF NOT EXISTS softwareassignmentdb;
+USE softwareassignmentdb;
+
+-- Users 테이블 생성
+CREATE TABLE IF NOT EXISTS users (
+    users_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    login_id VARCHAR(255) NOT NULL UNIQUE,
+    login_pwd VARCHAR(255) NOT NULL,
+    point BIGINT NOT NULL,
+    users_name VARCHAR(10) NOT NULL,
+    users_description VARCHAR(255),
+    users_birthday DATE NOT NULL,
+    gender VARCHAR(10) NOT NULL,
+    profile_image_url VARCHAR(500),
+    login_fail_count INT NOT NULL DEFAULT 0
+);
+
+-- Games 테이블 생성
+CREATE TABLE IF NOT EXISTS games (
+    games_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    games_name VARCHAR(255) NOT NULL
+);
+
+-- Gamemates 테이블 생성
+CREATE TABLE IF NOT EXISTS gamemates (
+    gamemates_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    users_id BIGINT NOT NULL,
+    games_id BIGINT NOT NULL,
+    price BIGINT NOT NULL,
+    tier VARCHAR(45) NOT NULL,
+    FOREIGN KEY (users_id) REFERENCES users (users_id),
+    FOREIGN KEY (games_id) REFERENCES games (games_id)
+);
+
+-- Reviews 테이블 생성
+CREATE TABLE IF NOT EXISTS reviews (
+    reviews_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    gamemates_id BIGINT NOT NULL,
+    users_id BIGINT NOT NULL,
+    score INT NOT NULL,
+    reviews_description VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (gamemates_id) REFERENCES gamemates (gamemates_id),
+    FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+-- Coin 테이블 생성
+CREATE TABLE IF NOT EXISTS coin (
+    coin_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    users_id BIGINT NOT NULL,
+    coin_amount INT NOT NULL,
+    payment_amount INT NOT NULL,
+    payment_method VARCHAR(45) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+-- files 테이블 생성
+CREATE TABLE IF NOT EXISTS files (
+    files_id BIGINT PRIMARY KEY,
+    files_url VARCHAR(255) NOT NULL,
+    users_id BIGINT NOT NULL,
+    FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+-- marks 테이블 생성
+CREATE TABLE IF NOT EXISTS marks (
+  marks_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  users_id BIGINT NOT NULL,
+  marked_users_id BIGINT NOT NULL,
+  FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+-- matches 테이블 생성
+CREATE TABLE IF NOT EXISTS matches (
+  orders_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  users_id BIGINT NOT NULL,
+  ordered_users_id BIGINT NOT NULL,
+  order_users_id BIGINT NOT NULL,
+  orders_game_id BIGINT NOT NULL,
+  order_status VARCHAR(255),
+  FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+-- notifications 테이블 생성
+CREATE TABLE IF NOT EXISTS notifications (
+  notification_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  users_id BIGINT NOT NULL,
+  notification_type VARCHAR(50) NOT NULL,
+  match_id BIGINT,
+  message VARCHAR(500),
+  is_read BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (users_id) REFERENCES users (users_id)
+);
+
+
 -- Users dummy data (10 users)
 -- Passwords are just plain text for dummy data. In a real application, they should be hashed.
 INSERT INTO users (login_id, login_pwd, point, users_name, users_description, users_birthday, gender, profile_image_url, login_fail_count) VALUES
