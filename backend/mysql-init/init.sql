@@ -99,16 +99,16 @@ CREATE TABLE IF NOT EXISTS notifications (
 -- Users dummy data (10 users)
 -- Passwords are just plain text for dummy data. In a real application, they should be hashed.
 INSERT INTO users (login_id, login_pwd, point, users_name, users_description, users_birthday, gender, profile_image_url, login_fail_count) VALUES
-('user1', 'password', 10000, '김철수', '안녕하세요! 게임을 좋아하는 김철수입니다.', '1995-01-10', '남', 'http://example.com/profile1.jpg', 0),
-('user2', 'password', 15000, '이영희', '함께 즐겁게 게임해요!', '1998-03-22', '여', 'http://example.com/profile2.jpg', 0),
-('user3', 'password', 20000, '박민준', '주로 FPS 게임을 즐깁니다.', '1992-07-15', '남', 'http://example.com/profile3.jpg', 0),
-('user4', 'password', 5000, '최지우', '초보지만 열심히 할게요!', '2000-11-30', '여', 'http://example.com/profile4.jpg', 0),
-('user5', 'password', 30000, '정승호', '다양한 게임을 경험해보고 싶습니다.', '1996-05-25', '남', 'http://example.com/profile5.jpg', 0),
-('user6', 'password', 12000, '윤서연', 'RPG 게임 전문가입니다.', '1994-09-08', '여', 'http://example.com/profile6.jpg', 0),
-('user7', 'password', 8000, '한지훈', '전략 게임을 좋아합니다.', '1999-02-18', '남', 'http://example.com/profile7.jpg', 0),
-('user8', 'password', 25000, '송예진', '즐겜 유저입니다. :)', '1997-12-01', '여', 'http://example.com/profile8.jpg', 0),
-('user9', 'password', 18000, '강현우', '새로운 친구를 사귀고 싶어요.', '1993-06-12', '남', 'http://example.com/profile9.jpg', 0),
-('user10', 'password', 40000, '임나영', '게임은 즐거워야죠!', '2001-08-05', '여', 'http://example.com/profile10.jpg', 0);
+('user1', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 10000, '김철수', '안녕하세요! 게임을 좋아하는 김철수입니다.', '1995-01-10', '남', 'http://example.com/profile1.jpg', 0),
+('user2', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 15000, '이영희', '함께 즐겁게 게임해요!', '1998-03-22', '여', 'http://example.com/profile2.jpg', 0),
+('user3', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 20000, '박민준', '주로 FPS 게임을 즐깁니다.', '1992-07-15', '남', 'http://example.com/profile3.jpg', 0),
+('user4', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 5000, '최지우', '초보지만 열심히 할게요!', '2000-11-30', '여', 'http://example.com/profile4.jpg', 0),
+('user5', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 30000, '정승호', '다양한 게임을 경험해보고 싶습니다.', '1996-05-25', '남', 'http://example.com/profile5.jpg', 0),
+('user6', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 12000, '윤서연', 'RPG 게임 전문가입니다.', '1994-09-08', '여', 'http://example.com/profile6.jpg', 0),
+('user7', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 8000, '한지훈', '전략 게임을 좋아합니다.', '1999-02-18', '남', 'http://example.com/profile7.jpg', 0),
+('user8', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 25000, '송예진', '즐겜 유저입니다. :)', '1997-12-01', '여', 'http://example.com/profile8.jpg', 0),
+('user9', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 18000, '강현우', '새로운 친구를 사귀고 싶어요.', '1993-06-12', '남', 'http://example.com/profile9.jpg', 0),
+('user10', '$2a$10$GX9auCX4yJHxgxbHlkQUBO68rJ05BHKTsZdFzGifGoNqrHYpGn3.O', 40000, '임나영', '게임은 즐거워야죠!', '2001-08-05', '여', 'http://example.com/profile10.jpg', 0);
 
 -- Games dummy data (3 games)
 INSERT INTO games (games_id, games_name) VALUES
@@ -141,3 +141,16 @@ INSERT INTO reviews (gamemates_id, users_id, score, reviews_description, created
 (3, 10, 3, '조금 아쉬웠지만 그래도 괜찮았어요.', NOW()),
 (4, 1, 2, '약속 시간에 나타나지 않았어요.', NOW()),
 (5, 2, 5, '매너도 좋으시고 실력도 출중합니다!', NOW());
+
+-- Notifications dummy data (요청/수락/거절)
+INSERT INTO notifications (users_id, notification_type, match_id, message, is_read, created_at) VALUES
+(1, 'REQUEST', 1, 'user2님이 매칭을 요청했습니다.', FALSE, NOW()),
+(1, 'ACCEPTED', 1, '매칭이 수락되었습니다!', FALSE, NOW()),
+(2, 'REQUEST', 2, 'user5님이 매칭을 요청했습니다.', FALSE, NOW()),
+(2, 'DECLINED', 2, '매칭 요청이 거절되었습니다.', FALSE, NOW()),
+(3, 'ACCEPTED', 3, '매칭이 수락되었습니다!', TRUE, NOW()),
+(3, 'DECLINED', 3, '매칭 요청이 거절되었습니다.', TRUE, NOW()),
+(4, 'REQUEST', 4, 'user7님이 매칭을 요청했습니다.', FALSE, NOW()),
+(4, 'ACCEPTED', 4, '매칭이 수락되었습니다!', FALSE, NOW()),
+(5, 'REQUEST', 5, 'user3님이 매칭을 요청했습니다.', FALSE, NOW()),
+(5, 'DECLINED', 5, '매칭 요청이 거절되었습니다.', TRUE, NOW());
