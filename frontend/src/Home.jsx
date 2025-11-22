@@ -14,6 +14,7 @@ import user4 from "./assets/user4.png"
 import user5 from "./assets/user5.png"
 import user6 from "./assets/user6.png"
 import user7 from "./assets/user7.png"
+import coin from "./assets/coin.jpg";
 
 function useScroll(ref, scrollAmount){
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -93,16 +94,19 @@ function Home() {
     );
   };
 
-  const UserComponent=({index})=>{
+  const UserComponent=({index, name, tier, game, price})=>{
     return(
       <div className={styles.user}>
         <div className={styles.imgbox}>
           <img src={user[index]} />
           <div className={styles.biobox}>
-            <div style={{fontSize: "22px", fontWeight: "bold"}}>User {index+1}</div>
-            <div>Bio</div>
-            <div>Game</div>
-            <div>money/hours</div>
+            <div style={{fontSize: "22px", fontWeight: "bold", marginBottom:"5px", marginTop:"-5px"}}>{name}</div>
+            <div style={{marginBottom:"2px"}} >{game}</div>
+            <div style={{marginBottom:"5px", fontSize:"15px"}}>Level : {tier}</div>
+            <div style={{display:"flex", alignItems:"center", gap:"5px"}}>
+            <img src={coin} style={{width:"20px", height:"20px", marginLeft:"0", marginTop:"3px"}}/>
+            <div style={{color:"#f1a100ff"}}>{price}/판</div>
+            </div>
           </div>
         </div>  
       </div>
@@ -131,8 +135,17 @@ function Home() {
           <FontAwesomeIcon icon={faCircleChevronRight} /></button>
         <div className={styles.visible_userbox} ref={userBoxRef}>
           <div className={styles.userbox}>
+<<<<<<< Updated upstream
             {user.map((item, index)=>(
+<<<<<<< Updated upstream
               <UserComponent key={index} index={index} ></UserComponent>
+=======
+              <UserComponent index={index} ></UserComponent>
+=======
+            {users.map((item, index)=>(
+              <UserComponent key={index} index={index} name={item.userName} tier={item.tier} game={item.gameName} price={item.price}></UserComponent>
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
             ))}
           </div>
         </div>

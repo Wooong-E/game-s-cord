@@ -163,11 +163,19 @@ function Search() {
     setFilterHistory((prev) => prev.filter((item) => item.key !== key));
   };
 
+<<<<<<< Updated upstream
   const Usercard=({img, name, star, num, price})=>{
     return(
       <div className={styles.Userbox}>
         <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
           <img src={img} style={{height:"170px"}}></img>
+=======
+  const Usercard=({index, img, name, star, num, price})=>{
+    return(
+      <div className={styles.Userbox}>
+        <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
+          <img src={user[index]} style={{height:"170px"}}></img>
+>>>>>>> Stashed changes
         </div>
         <div className={styles.Userbio}>
           <div style={{fontSize:"18px", fontWeight:"bold", marginBottom:"5px"}}>{name}</div>
@@ -237,6 +245,10 @@ function Search() {
           {searchResults.length > 0 ? (
             searchResults.map((user, index) => (
               <Usercard
+<<<<<<< Updated upstream
+=======
+                index={index}
+>>>>>>> Stashed changes
                 key={index}
                 img={user.profileImageUrl || user1}  // 기본 이미지
                 name={user.userName}
