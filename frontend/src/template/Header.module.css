@@ -7,7 +7,7 @@
     width: 100%;
     height: 64px;
     z-index: 1100;
-    box-shadow: 0 1px 3px 0 hsla(0, 0%, 0%, 0.11), 0 1px 2px -1px hsla(0, 0%, 0%, 0.11);
+    box-shadow: 0 1px 3px 0 hsla(0, 0%, 0%, 0.11), 0 1px 2px -1px hsla(0, 0%, 0, 0.11);
     border-bottom: 1px solid rgb(229, 229, 229);
     background-color: rgba(255, 255, 255, 0.95);
     padding: 0 36px;
@@ -34,6 +34,7 @@
     border-radius: 8px;
     box-sizing: border-box;
 }
+
 .coin{
     height: 20px;
     width: 20px;
@@ -48,14 +49,9 @@
     background-color: #4372FF;
     color: white;
     padding-bottom: 1px;
-<<<<<<< Updated upstream
-=======
-<<<<<<< Updated upstream
-}
-=======
->>>>>>> Stashed changes
 }
 
+/* 검색창 */
 .search {
   position: relative;
   display: flex;
@@ -69,18 +65,13 @@
     padding: 7px 12px;
     border-radius: 30px;
     font-size: 14px;
-<<<<<<< Updated upstream
-    width: 200px;
-=======
     width: 250px;
->>>>>>> Stashed changes
     height: 20px;
-
 }
 
 .search input:focus {
-  border: 2px solid #3b82f6; /* 클릭 시 파란색으로 */
-  outline: none; /* 기본 파란 outline 제거 */
+  border: 2px solid #3b82f6;
+  outline: none;
 }
 
 .search button[type="submit"]{
@@ -97,6 +88,7 @@
     height: 0;
 }
 
+/* 서비스 */
 .serviceWrapper {
   position: relative;
 }
@@ -108,7 +100,6 @@
     justify-content: center;
     height: 30px;
     border-radius: 8px;
-    box-sizing: border-box;
     padding-left: 50px;
     cursor: pointer;
 }
@@ -154,40 +145,20 @@
     border-radius: 10px;
 }
 
+/* 검색 추천 박스 */
 .suggestionBox {
   position: absolute;
   top: 55px;
   left: 0;
-<<<<<<< Updated upstream
-  width: 250px;
-=======
   width: 280px;
->>>>>>> Stashed changes
   background: white;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.15);
   list-style: none;
-<<<<<<< Updated upstream
-  padding: 10px 0;
-=======
->>>>>>> Stashed changes
   z-index: 20;
 }
 
 .suggestionItem {
-<<<<<<< Updated upstream
-  padding: 10px 14px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  cursor: pointer;
-}
-
-.suggestionItem:hover {
-  background: #f5f5f5;
-}
-
-=======
   padding: 12px 14px;
   display: flex;
   align-items: center;
@@ -200,7 +171,7 @@
   background-color: #f1f3f4;
 }
 
-/* 왼쪽 이미지 */
+/* 왼쪽 아바타 */
 .suggestionAvatar {
   width: 35px;
   height: 35px;
@@ -208,7 +179,7 @@
   object-fit: cover;
 }
 
-/* 가운데 텍스트 묶음 */
+/* 가운데 텍스트 */
 .suggestionCenter {
   display: flex;
   flex-direction: column;
@@ -216,14 +187,12 @@
   min-width: 0;
 }
 
-/* 이름 */
 .suggestionName {
   font-weight: 700;
   font-size: 13px;
   margin-bottom: 4px;
 }
 
-/* Skill: */
 .suggestionSkill {
   font-size: 12px;
   color: #666;
@@ -232,7 +201,6 @@
   text-overflow: ellipsis;
 }
 
-/* 오른쪽 ID */
 .suggestionRight {
   font-size: 12px;
   color: #888;
@@ -246,8 +214,6 @@
   font-size: 14px;
 }
 
-
->>>>>>> Stashed changes
 .clearButton {
   position: absolute;
   right: 15px;
@@ -259,34 +225,40 @@
   color: #888;
   cursor: pointer;
   padding: 0;
-  z-index: 10;
 }
 
 .clearButton:hover {
   color: #555;
-<<<<<<< Updated upstream
-}
-=======
 }
 
+/* 알림 */
 .notiWrapper {
   position: relative;
 }
 
-.bellIcon {
-  cursor: pointer;
+.bellWrapper {
   position: relative;
+  cursor: pointer;
+}
+
+.bellIcon {
+  font-size: 1.4rem;
 }
 
 .badge {
   position: absolute;
-  top: -5px;
+  top: -4px;
   right: -6px;
-  background: red;
+  background: #ff3b30;
   color: white;
-  font-size: 11px;
-  padding: 2px 5px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .notiDropdown {
@@ -310,13 +282,6 @@
   justify-content: space-between;
 }
 
-.notiHeader button {
-  background: none;
-  border: none;
-  color: #4372ff;
-  cursor: pointer;
-}
-
 .notiList {
   max-height: 400px;
   overflow-y: auto;
@@ -335,15 +300,15 @@
 }
 
 .accept {
-  background: #fff7bf; /* 노랑 */
+  background: #fff7bf;
 }
 
 .decline {
-  background: #e8e8e8; /* 회색 */
+  background: #e8e8e8;
 }
 
 .request {
-  background: #e7ffe8; /* 연초록 */
+  background: #e7ffe8;
 }
 
 .notiTime {
@@ -351,30 +316,3 @@
   color: #666;
   margin-top: 5px;
 }
-
-.bellWrapper {
-  position: relative;
-  cursor: pointer;
-}
-
-.bellIcon {
-  font-size: 1.4rem;
-}
-
-.badge {
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  background: #ff3b30; /* 빨간색 */
-  color: white;
-  font-size: 0.7rem;
-  font-weight: bold;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
->>>>>>> Stashed changes
->>>>>>> Stashed changes

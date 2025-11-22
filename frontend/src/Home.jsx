@@ -4,26 +4,26 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
-import LeagueofLeagends from "./assets/LeaguofLeagends.jpg"
-import Battleground from "./assets/Battleground.jpg"
-import overwatch from "./assets/overwatch.jpg"
-import user1 from "./assets/user1.png"
-import user2 from "./assets/user2.png"
-import user3 from "./assets/user3.png"
-import user4 from "./assets/user4.png"
-import user5 from "./assets/user5.png"
-import user6 from "./assets/user6.png"
-import user7 from "./assets/user7.png"
+import LeagueofLeagends from "./assets/LeaguofLeagends.jpg";
+import Battleground from "./assets/Battleground.jpg";
+import overwatch from "./assets/overwatch.jpg";
+import user1 from "./assets/user1.png";
+import user2 from "./assets/user2.png";
+import user3 from "./assets/user3.png";
+import user4 from "./assets/user4.png";
+import user5 from "./assets/user5.png";
+import user6 from "./assets/user6.png";
+import user7 from "./assets/user7.png";
 import coin from "./assets/coin.jpg";
 
-function useScroll(ref, scrollAmount){
+function useScroll(ref, scrollAmount) {
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(true);
 
   const handleScroll = () => {
     const box = ref.current;
     setCanScrollPrev(box.scrollLeft > 0);
-    setCanScrollNext(box.scrollLeft < box.scrollWidth - box.clientWidth - 1); // 1px 여유
+    setCanScrollNext(box.scrollLeft < box.scrollWidth - box.clientWidth - 1);
   };
 
   const scrollNext = () => {
@@ -37,7 +37,7 @@ function useScroll(ref, scrollAmount){
   useEffect(() => {
     const box = ref.current;
     box.addEventListener("scroll", handleScroll);
-    handleScroll(); // 초기 상태 설정
+    handleScroll();
     return () => box.removeEventListener("scroll", handleScroll);
   }, [ref]);
 
@@ -49,22 +49,23 @@ function Home() {
   const games = {
     LeagueofLeagends: LeagueofLeagends,
     Battleground: Battleground,
-    Overwatch: overwatch
+    Overwatch: overwatch,
   };
-  const user = [user1, user2, user3, user4, user5, user6, user7];
+
+  const userImages = [user1, user2, user3, user4, user5, user6, user7];
+
   const [users, setUsers] = useState([]);
   const gameBoxRef = useRef(null);
   const userBoxRef = useRef(null);
- 
+
   const gameScroll = useScroll(gameBoxRef, 340);
   const userScroll = useScroll(userBoxRef, 440);
-
   const navigate = useNavigate();
 
   const gameIdMap = {
     LeagueofLeagends: 1,
     Battleground: 2,
-    Overwatch: 3
+    Overwatch: 3,
   };
 
   useEffect(() => {
@@ -79,13 +80,12 @@ function Home() {
     };
 
     fetchPopularGamemates();
-  }, []); 
+  }, []);
 
-  
   const GameComponent = ({ game }) => {
     return (
-      <div 
-        className={styles.game} 
+      <div
+        className={styles.game}
         onClick={() => navigate("/search", { state: { gameId: gameIdMap[game] } })}
         style={{ cursor: "pointer" }}
       >
@@ -94,24 +94,24 @@ function Home() {
     );
   };
 
-  const UserComponent=({index, name, tier, game, price})=>{
-    return(
+  const UserComponent = ({ index, name, tier, game, price }) => {
+    return (
       <div className={styles.user}>
         <div className={styles.imgbox}>
-          <img src={user[index]} />
+          <img src={userImages[index]} />
           <div className={styles.biobox}>
-            <div style={{fontSize: "22px", fontWeight: "bold", marginBottom:"5px", marginTop:"-5px"}}>{name}</div>
-            <div style={{marginBottom:"2px"}} >{game}</div>
-            <div style={{marginBottom:"5px", fontSize:"15px"}}>Level : {tier}</div>
-            <div style={{display:"flex", alignItems:"center", gap:"5px"}}>
-            <img src={coin} style={{width:"20px", height:"20px", marginLeft:"0", marginTop:"3px"}}/>
-            <div style={{color:"#f1a100ff"}}>{price}/판</div>
+            <div style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "5px", marginTop: "-5px" }}>{name}</div>
+            <div style={{ marginBottom: "2px" }}>{game}</div>
+            <div style={{ marginBottom: "5px", fontSize: "15px" }}>Level : {tier}</div>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <img src={coin} style={{ width: "20px", height: "20px", marginLeft: "0", marginTop: "3px" }} />
+              <div style={{ color: "#f1a100ff" }}>{price}/판</div>
             </div>
           </div>
-        </div>  
+        </div>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -119,40 +119,47 @@ function Home() {
         <h1>추천 서비스</h1>
         <div className={styles.visible_gamebox} ref={gameBoxRef}>
           <div className={styles.gamebox}>
-            {gameList.map((item, index)=>(
-              <GameComponent key={index} game={item}></GameComponent>
+            {gameList.map((item, index) => (
+              <GameComponent key={index} game={item} />
             ))}
           </div>
         </div>
       </div>
 
-
       <div className={styles.section}>
         <h1>추천 유저</h1>
-        <button onClick={() => {userScroll.scrollPrev()}} className={!userScroll.canScrollPrev ? styles.hidden : styles.prev}>
-            <FontAwesomeIcon icon={faCircleChevronLeft} /></button>
-        <button onClick={() => {userScroll.scrollNext()}} className={!userScroll.canScrollNext? styles.hidden : styles.next}>
-          <FontAwesomeIcon icon={faCircleChevronRight} /></button>
+
+        <button
+          onClick={() => userScroll.scrollPrev()}
+          className={!userScroll.canScrollPrev ? styles.hidden : styles.prev}
+        >
+          <FontAwesomeIcon icon={faCircleChevronLeft} />
+        </button>
+
+        <button
+          onClick={() => userScroll.scrollNext()}
+          className={!userScroll.canScrollNext ? styles.hidden : styles.next}
+        >
+          <FontAwesomeIcon icon={faCircleChevronRight} />
+        </button>
+
         <div className={styles.visible_userbox} ref={userBoxRef}>
           <div className={styles.userbox}>
-<<<<<<< Updated upstream
-            {user.map((item, index)=>(
-<<<<<<< Updated upstream
-              <UserComponent key={index} index={index} ></UserComponent>
-=======
-              <UserComponent index={index} ></UserComponent>
-=======
-            {users.map((item, index)=>(
-              <UserComponent key={index} index={index} name={item.userName} tier={item.tier} game={item.gameName} price={item.price}></UserComponent>
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+            {users.map((item, index) => (
+              <UserComponent
+                key={index}
+                index={index}
+                name={item.userName}
+                tier={item.tier}
+                game={item.gameName}
+                price={item.price}
+              />
             ))}
           </div>
         </div>
       </div>
     </div>
-    
-  )
+  );
 }
 
-export default Home
+export default Home;
