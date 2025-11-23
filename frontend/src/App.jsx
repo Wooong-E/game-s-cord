@@ -19,7 +19,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search/>} />
           <Route path="/Mypage" element={<MyPage />} />
-          <Route path="/MatchDetail" element={<MatchDetail />} />
+          <Route path="/matchdetail" element={<MatchDetail />} />
         </Routes>
       </Template>
     </BrowserRouter>

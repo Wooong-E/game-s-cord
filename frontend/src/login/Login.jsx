@@ -62,7 +62,7 @@ const Login = () => {
           console.warn("응답 데이터에 토큰이 없습니다.");
         }
 
-        navigate("/dashboard");
+        navigate("/");
 
         console.error(`로그인 실패 응답 (${response.status}):`, responseData);
         

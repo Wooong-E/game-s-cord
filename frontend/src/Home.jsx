@@ -94,9 +94,13 @@ function Home() {
     );
   };
 
-  const UserComponent = ({ index, name, tier, game, price }) => {
+  const UserComponent = ({ index,userId,name, tier, game, price }) => {
     return (
-      <div className={styles.user}>
+      <div
+        className={styles.user}
+        onClick={() => navigate("/matchdetail", { state: { userId } })}
+        style={{ cursor: "pointer" }}
+      >
         <div className={styles.imgbox}>
           <img src={userImages[index]} />
           <div className={styles.biobox}>
@@ -149,6 +153,7 @@ function Home() {
               <UserComponent
                 key={index}
                 index={index}
+                userId={item.userId}
                 name={item.userName}
                 tier={item.tier}
                 game={item.gameName}
