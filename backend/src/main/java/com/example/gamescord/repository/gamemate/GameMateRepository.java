@@ -52,10 +52,53 @@ public class GameMateRepository {
             .fetch();
     }
 
-    public List<Gamemate> findByGender(String gender, Long gameId){
+    public List<Gamemate> findByGenderAndReviewsCount(String gender, Long gameId){
         return queryFactory.select(gamemate)
             .from(gamemate)
-            .where(gamemate.users.gender.eq(gender),gamemate.games.id.eq(gameId))
+            .leftJoin(review).on(review.gamemates.eq(gamemate))
+            .where(
+                gamemate.users.gender.eq(gender),
+                gamemate.games.id.eq(gameId)
+            )
+            .groupBy(gamemate)
+            .orderBy(review.count().desc())
+            .fetch();
+    }
+
+    public List<Gamemate> findByGenderAndReviewsScore(String gender, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .leftJoin(review).on(review.gamemates.eq(gamemate))
+            .where(
+                gamemate.users.gender.eq(gender),
+                gamemate.games.id.eq(gameId)
+            )
+            .groupBy(gamemate)
+            .orderBy(review.score.sum().coalesce(0).desc())
+            .fetch();
+    }
+
+    public List<Gamemate> findByGenderAndHighCost(String gender, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(
+                gamemate.users.gender.eq(gender),
+                gamemate.games.id.eq(gameId)
+            )
+            .groupBy(gamemate)
+            .orderBy(gamemate.price.desc())
+            .fetch();
+    }
+
+    public List<Gamemate> findByGenderAndLowCost(String gender, Long gameId){
+        return queryFactory.select(gamemate)
+            .from(gamemate)
+            .where(
+                gamemate.users.gender.eq(gender),
+                gamemate.games.id.eq(gameId)
+            )
+            .groupBy(gamemate)
+            .orderBy(gamemate.price.asc())
             .fetch();
     }
 
@@ -115,7 +158,6 @@ public class GameMateRepository {
     }
 
     public List<Gamemate> findByGenderAndTierAndReviewsScore(String gender, String tier, Long gameId) {
-
         return queryFactory.select(gamemate)
             .from(gamemate)
             .leftJoin(review).on(review.gamemates.eq(gamemate))
@@ -130,7 +172,6 @@ public class GameMateRepository {
     }
 
     public List<Gamemate> findByGenderAndTierAndHighPrice(String gender, String tier, Long gameId) {
-
         return queryFactory.select(gamemate)
             .from(gamemate)
             .where(
@@ -144,7 +185,6 @@ public class GameMateRepository {
     }
 
     public List<Gamemate> findByGenderAndTierAndLowPrice(String gender, String tier, Long gameId) {
-
         return queryFactory.select(gamemate)
             .from(gamemate)
             .where(
