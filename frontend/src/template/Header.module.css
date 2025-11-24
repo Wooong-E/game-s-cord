@@ -7,7 +7,7 @@
     width: 100%;
     height: 64px;
     z-index: 1100;
-    box-shadow: 0 1px 3px 0 hsla(0, 0%, 0%, 0.11), 0 1px 2px -1px hsla(0, 0%, 0%, 0.11);
+    box-shadow: 0 1px 3px 0 hsla(0, 0%, 0%, 0.11), 0 1px 2px -1px hsla(0, 0%, 0, 0.11);
     border-bottom: 1px solid rgb(229, 229, 229);
     background-color: rgba(255, 255, 255, 0.95);
     padding: 0 36px;
@@ -34,6 +34,7 @@
     border-radius: 8px;
     box-sizing: border-box;
 }
+
 .coin{
     height: 20px;
     width: 20px;
@@ -48,4 +49,270 @@
     background-color: #4372FF;
     color: white;
     padding-bottom: 1px;
+}
+
+/* 검색창 */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search input{
+    outline: none;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    width: 250px;
+    height: 20px;
+}
+
+.search input:focus {
+  border: 2px solid #3b82f6;
+  outline: none;
+}
+
+.search button[type="submit"]{
+    display: none;
+}
+
+.searchicon:hover{
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* 서비스 */
+.serviceWrapper {
+  position: relative;
+}
+
+.serviceBtn {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    border-radius: 8px;
+    padding-left: 50px;
+    cursor: pointer;
+}
+
+.dropdownMenu {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdownMenu li {
+  padding: 10px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  width: 250px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+.dropdownMenu li:hover {
+  background: #f1f1f1;
+}
+
+.dropdownMenu li div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.dropdownMenu img{
+    width: 120px;
+    border-radius: 10px;
+}
+
+/* 검색 추천 박스 */
+.suggestionBox {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  list-style: none;
+  z-index: 20;
+}
+
+.suggestionItem {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestionItem:hover {
+  background-color: #f1f3f4;
+}
+
+/* 왼쪽 아바타 */
+.suggestionAvatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* 가운데 텍스트 */
+.suggestionCenter {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestionName {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.suggestionSkill {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestionRight {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.noResult {
+  padding: 12px 14px;
+  color: #888;
+  text-align: center;
+  font-size: 14px;
+}
+
+.clearButton {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clearButton:hover {
+  color: #555;
+}
+
+/* 알림 */
+.notiWrapper {
+  position: relative;
+}
+
+.bellWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.bellIcon {
+  font-size: 1.4rem;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  background: #ff3b30;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.notiDropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 340px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.notiHeader {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notiList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.emptyNoti {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+}
+
+.notiItem {
+  padding: 12px 15px;
+  margin: 6px;
+  border-radius: 8px;
+}
+
+.accept {
+  background: #fff7bf;
+}
+
+.decline {
+  background: #e8e8e8;
+}
+
+.request {
+  background: #e7ffe8;
+}
+
+.notiTime {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
 }

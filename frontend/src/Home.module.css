@@ -61,6 +61,8 @@
     height: 220px;
     flex-shrink: 0;
     overflow: hidden;
+    border-radius: 15px;
+    position: relative;
     scroll-snap-align: start; /* 스크롤 스냅 */
     margin-left: -80px; /* 카드 겹치기 */
 }
@@ -75,17 +77,25 @@
 }
 
 .game img{
+    position: absolute;
+    left: 80px;
     width: 440px;
     height: 100%;
-    margin-left: 80px;
     object-fit: cover;
     border-radius: 15px;
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+.game img:hover{
+    transform: scale(0.95);
 }
 
 .userbox{
     display: flex;
     padding-left: 0; /* 겹치게 할 거라 패딩 제거 */
     gap: 20px;
+    font-weight: 500;
 }
 
 .user{
@@ -100,16 +110,25 @@
 .imgbox{
     height: 178px;
     background-color: #ffffff;
-    border: 1px solid rgb(91, 91, 91, 0.3);
+    border: 1px solid rgb(91, 91, 91, 0.2);
     border-radius: 15px;
     display: flex;
     align-items: center;
     margin-left: 80px;
     gap: 30px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+.imgbox:hover{
+    box-shadow: 0 1px 5px 0 hsla(0, 0%, 0%, 0.08), 0 1px 5px -1px hsla(0, 0%, 0%, 0.08);
+    border: 1px solid rgb(91, 91, 91, 0.1);
+    transform: scale(0.95);
 }
 
 .biobox{
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .user img{
