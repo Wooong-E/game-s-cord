@@ -56,9 +56,9 @@ public class GamemateController {
         return ResponseEntity.ok(profile);
     }
 
-    @GetMapping("/popular")
-    public ResponseEntity<List<GamemateResponseDTO>> getPopularGamemates() {
-        List<GamemateResponseDTO> results = gamemateService.getPopularGamemates();
+    @GetMapping("/popular/{gameId}")
+    public ResponseEntity<List<GamemateResponseDTO>> getPopularGamemates(@PathVariable Long gameId) {
+        List<GamemateResponseDTO> results = gamemateService.getPopularGamemates(gameId);
         return ResponseEntity.ok(results);
     }
 

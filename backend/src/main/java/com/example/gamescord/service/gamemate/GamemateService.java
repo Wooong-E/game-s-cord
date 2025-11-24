@@ -122,8 +122,13 @@ public class GamemateService {
     }
 
     @Transactional(readOnly = true)
-    public List<GamemateResponseDTO> getPopularGamemates() {
-        List<Long> popularGamemateIds = reviewRepository.findTop4ByReviewsCount();
+    public List<GamemateResponseDTO> getPopularGamemates(Long gameId) {
+        // gameId 유효성 검사
+        if (gameId < 1 || gameId > 3) {
+            throw new IllegalArgumentException("등록되지 않은 게임입니다.");
+        }
+
+        List<Long> popularGamemateIds = reviewRepository.findTop4ByGameIdAndReviewsCount(gameId);
         if (popularGamemateIds.isEmpty()) {
             return java.util.Collections.emptyList();
         }
