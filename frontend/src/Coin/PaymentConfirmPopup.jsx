@@ -2,6 +2,7 @@ import React from "react";
 
 //팝업창 컴포넌트
 const PaymentConfirmPopup = ({
+  id,
   points,
   price,
   selectedMethod,

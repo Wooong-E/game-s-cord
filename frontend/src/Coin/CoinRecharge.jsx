@@ -18,7 +18,7 @@ const coinProducts = [
 ];
 
 //얼마를 충전할지 렌더링되는 코인 충전 목록 함수
-const CoinItem = ({ points, price }) => {
+const CoinItem = ({ id, points, price }) => {
   const navigate = useNavigate();
   const handleRecharge = () => {
     const message = `${points} 코인을 ₩${price} 에 충전하시겠습니까?`;
@@ -31,6 +31,7 @@ const CoinItem = ({ points, price }) => {
       // 만약 충전 상품 정보를 `/pay` 페이지로 함께 넘기고 싶다면 아래처럼 state를 사용합니다.
       navigate("/pay", {
         state: {
+          id: id,
           points: points,
           price: price,
         },
@@ -58,7 +59,12 @@ const CoinRecharge = () => {
       <HeaderTabs />
       <div className="coin-list-container">
         {coinProducts.map((product, index) => (
-          <CoinItem key={index} points={product.points} price={product.price} />
+          <CoinItem
+            key={index}
+            id={product.id}
+            points={product.points}
+            price={product.price}
+          />
         ))}
       </div>
     </div>

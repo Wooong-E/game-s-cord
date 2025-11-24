@@ -17,7 +17,7 @@ const Payment = () => {
   const paymentData = location.state;
   const points = paymentData?.points || "Null";
   const price = paymentData?.price || "Null";
-  const packageId = paymentData?.packageId || "Null";
+  const packageId = paymentData?.id || "Null";
 
   // 팝업창 상태 관리
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -32,7 +32,6 @@ const Payment = () => {
 
   // 팝업 열기 핸들러 (결제하기 버튼 클릭 시)
   const handlePayClick = () => {
-    // 실제 구현 시, 결제 수단 선택 여부 검증 로직이 추가되어야 합니다.
     setIsPopupOpen(true);
   };
 
@@ -45,39 +44,67 @@ const Payment = () => {
   const handlePaymentConfirm = async () => {
     setIsProcessing(true);
 
-    const numericPoints = parseInt(points);
-    const numericPrice = parseInt(price);
+    // 인증 토큰 가져오기
+    const token = localStorage.getItem("accessToken");
 
-    // 2. 백엔드 요청 페이로드 구성
+    console.log(token);
+    if (!token) {
+      alert("로그인 정보(인증 토큰)가 없습니다. 다시 로그인해 주세요.");
+      setIsProcessing(false);
+      navigate("/login"); // 로그인 페이지로 이동
+      return;
+    }
+
+    // 쉼표 제거
+    const stringWithoutComma = price.replace(/,/g, "");
+    // 정수로 변환
+    const numericPrice = parseInt(stringWithoutComma, 10);
+
+    const numericPoints = parseInt(points);
+
+    console.log(numericPoints, numericPrice, packageId);
+    // 백엔드 요청 페이로드 구성
     const payload = {
       paymentAmount: numericPrice,
       coinAmount: numericPoints,
       packageId: packageId,
     };
 
-    try {
-      // 3. API 호출
-      const response = await axios.post(`${BASE_URL}/charge`, payload);
+    // Axios 요청 Configuration (헤더에 토큰 포함)
+    // Bearer Scheme을 사용하여 토큰을 포함합니다.
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    };
 
-      // 4. 성공 처리
-      // response.data.message 또는 기본 성공 메시지 사용
+    try {
+      const response = await axios.post(`${BASE_URL}/charge`, payload, config);
+
+      // 성공 처리
       const successMessage =
         response.data?.message ||
         `${numericPoints} 코인 충전이 성공적으로 완료되었습니다.`;
       alert(successMessage);
       handleClosePopup();
 
-      // 5. 페이지 이동 (예: 코인 내역 페이지 또는 메인)
       setTimeout(() => {
         navigate("/coinHistory");
-        navigate("/");
       }, 2000);
     } catch (error) {
-      // 4. 에러 처리
       console.error("Coin Charge Error:", error.response || error);
-      const errorText =
-        error.response?.data?.message ||
+
+      // 403 에러 발생 시 인증 관련 메시지를 표시할 수 있습니다.
+      let errorText =
         "결제 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.";
+      if (error.response?.status === 403) {
+        errorText =
+          "권한이 없거나, 인증 정보가 만료되었습니다. 다시 로그인해 주세요.";
+      } else if (error.response?.data?.message) {
+        errorText = error.response.data.message;
+      }
+
       alert(errorText);
       handleClosePopup();
     } finally {
