@@ -22,16 +22,13 @@
 /*코인 충전 목록 컨테이너*/
 .coin-list-container {
   display: grid;
-  grid-template-columns: repeat(
-    5,
-    1fr
-  ); /*grid-template-columns: 1fr 1fr 1fr 1fr 1fr;*/
+  grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   row-gap: 60px;
   column-gap: 50px;
   max-width: 1000px;
-  height: 250px;
-  margin-left: 40px;
+  margin: 0 auto; /* 좌우 자동 마진으로 중앙 정렬 */
+  margin-bottom: 303px;
 }
 
 /*코인 박스 스타일 */

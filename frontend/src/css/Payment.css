@@ -7,6 +7,7 @@
   margin: 0 auto;
   box-sizing: border-box; /* 패딩과 보더를 너비/높이에 포함 */
   margin-top: 50px;
+  margin-bottom: 202px;
 }
 
 /*결제 정보 영역*/

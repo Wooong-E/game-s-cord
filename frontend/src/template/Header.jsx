@@ -342,7 +342,7 @@ const Header = () => {
           )}
         </div>
 
-        <Link className={styles.link} to="/">
+        <Link className={styles.link} to="/coin">
           <img src={coin} className={styles.coin} />
           <span>충전</span>
         </Link>
