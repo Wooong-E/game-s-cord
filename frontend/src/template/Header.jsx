@@ -9,6 +9,8 @@ import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Header.module.css";
+import useAuth from "../login/useAuth.js";
+import useLogout from "../login/Logout.js";
 
 import coin from "../assets/coin.jpg";
 import logo from "../assets/logo.png";
@@ -20,6 +22,8 @@ import user from "../assets/user2.png";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [search, setsearch] = useState(false);
+  const isLoggedIn = useAuth();
+  const logout = useLogout();
 
   // User 검색
   const [suggestions, setSuggestions] = useState([]);
@@ -347,12 +351,23 @@ const Header = () => {
           <span>충전</span>
         </Link>
 
-        <Link className={`${styles.link} ${styles.login}`} to="/login">
-          Login
-        </Link>
-        <Link className={`${styles.link} ${styles.join}`} to="/signup">
-          Join
-        </Link>
+        {isLoggedIn ? (
+          <button
+            className={`${styles.link} ${styles.logout}`}
+            onClick={logout}
+          >
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link className={`${styles.link} ${styles.login}`} to="/login">
+              Login
+            </Link>
+            <Link className={`${styles.link} ${styles.join}`} to="/signup">
+              Join
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

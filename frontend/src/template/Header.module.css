@@ -41,9 +41,10 @@
     margin-right: 5px;
 }
 
-.login{
+.login, .logout{
     padding-bottom: 1px;
 }
+
 
 .join{
     background-color: #4372FF;
