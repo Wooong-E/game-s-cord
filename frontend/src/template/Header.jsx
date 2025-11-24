@@ -1,13 +1,19 @@
-import { faMagnifyingGlass, faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import {
+  faMagnifyingGlass,
+  faAngleUp,
+  faAngleDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./Header.module.css";
+import useAuth from "../login/useAuth.js";
+import useLogout from "../login/Logout.js";
 
 import coin from "../assets/coin.jpg";
-import logo from '../assets/logo.png';
+import logo from "../assets/logo.png";
 import LeagueofLeagends from "../assets/LeaguofLeagends.jpg";
 import Battleground from "../assets/Battleground.jpg";
 import overwatch from "../assets/overwatch.jpg";
@@ -16,6 +22,8 @@ import user from "../assets/user2.png";
 const Header = () => {
   const [query, setQuery] = useState("");
   const [search, setsearch] = useState(false);
+  const isLoggedIn = useAuth();
+  const logout = useLogout();
 
   // User 검색
   const [suggestions, setSuggestions] = useState([]);
@@ -41,7 +49,6 @@ const Header = () => {
   // 클릭 outside → 닫기
   useEffect(() => {
     const handleClickOutside = (e) => {
-
       // 서비스
       if (serviceRef.current && !serviceRef.current.contains(e.target)) {
         setShowServiceDropdown(false);
@@ -53,7 +60,10 @@ const Header = () => {
       }
 
       // no 결과 박스
-      if (nosuggestionRef.current && !nosuggestionRef.current.contains(e.target)) {
+      if (
+        nosuggestionRef.current &&
+        !nosuggestionRef.current.contains(e.target)
+      ) {
         setShowSuggestions(false);
       }
 
@@ -75,7 +85,7 @@ const Header = () => {
   // userId별 그룹
   const groupByUserId = (list) => {
     const map = {};
-    list.forEach(item => {
+    list.forEach((item) => {
       if (!map[item.userId]) {
         map[item.userId] = { ...item, games: [] };
       }
@@ -83,7 +93,7 @@ const Header = () => {
         gameId: item.gameId,
         gameName: item.gameName,
         tier: item.tier,
-        price: item.price
+        price: item.price,
       });
     });
     return Object.values(map);
@@ -96,14 +106,13 @@ const Header = () => {
 
     try {
       const res = await axios.get("/api/gamemates/search", {
-        params: { userName: query }
+        params: { userName: query },
       });
 
       const grouped = groupByUserId(res.data);
       setSuggestions(grouped);
       setShowSuggestions(true);
       setShownoSuggestions(grouped.length === 0);
-
     } catch (error) {
       console.error("검색 실패", error);
     }
@@ -115,11 +124,10 @@ const Header = () => {
       const token = localStorage.getItem("accessToken");
 
       const res = await axios.get("/api/notifications", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setNotifications(res.data);
-
     } catch (e) {
       console.error("알림 불러오기 실패:", e);
     }
@@ -131,7 +139,7 @@ const Header = () => {
       try {
         const token = localStorage.getItem("accessToken");
         const res = await axios.get("/api/notifications/unread-count", {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         setUnreadCount(res.data);
       } catch (e) {
@@ -151,13 +159,16 @@ const Header = () => {
       try {
         const token = localStorage.getItem("accessToken");
 
-        await axios.patch("/api/notifications/read-all", {}, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+        await axios.patch(
+          "/api/notifications/read-all",
+          {},
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         fetchNotifications();
         setUnreadCount(0);
-
       } catch (e) {
         console.error("알림 읽음 처리 실패:", e);
       }
@@ -173,24 +184,49 @@ const Header = () => {
 
         {/* 서비스 메뉴 */}
         <div className={styles.serviceWrapper} ref={serviceRef}>
-          <div className={styles.serviceBtn}
-            onClick={() => setShowServiceDropdown(prev => !prev)}>
+          <div
+            className={styles.serviceBtn}
+            onClick={() => setShowServiceDropdown((prev) => !prev)}
+          >
             서비스
-            {showServiceDropdown
-              ? <FontAwesomeIcon icon={faAngleDown} style={{ marginLeft: "5px" }} />
-              : <FontAwesomeIcon icon={faAngleUp} style={{ marginLeft: "5px" }} />}
+            {showServiceDropdown ? (
+              <FontAwesomeIcon
+                icon={faAngleDown}
+                style={{ marginLeft: "5px" }}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faAngleUp} style={{ marginLeft: "5px" }} />
+            )}
           </div>
 
           {showServiceDropdown && (
             <ul className={styles.dropdownMenu}>
-              <li onClick={() => { setShowServiceDropdown(false); navigate("/search", { state: { gameId: 1 } }) }}>
-                <img src={LeagueofLeagends} /><div>리그 오브 레전드</div>
+              <li
+                onClick={() => {
+                  setShowServiceDropdown(false);
+                  navigate("/search", { state: { gameId: 1 } });
+                }}
+              >
+                <img src={LeagueofLeagends} />
+                <div>리그 오브 레전드</div>
               </li>
-              <li onClick={() => { setShowServiceDropdown(false); navigate("/search", { state: { gameId: 2 } }) }}>
-                <img src={Battleground} /><div>배틀그라운드</div>
+              <li
+                onClick={() => {
+                  setShowServiceDropdown(false);
+                  navigate("/search", { state: { gameId: 2 } });
+                }}
+              >
+                <img src={Battleground} />
+                <div>배틀그라운드</div>
               </li>
-              <li onClick={() => { setShowServiceDropdown(false); navigate("/search", { state: { gameId: 3 } }) }}>
-                <img src={overwatch} /><div>오버워치</div>
+              <li
+                onClick={() => {
+                  setShowServiceDropdown(false);
+                  navigate("/search", { state: { gameId: 3 } });
+                }}
+              >
+                <img src={overwatch} />
+                <div>오버워치</div>
               </li>
             </ul>
           )}
@@ -199,47 +235,71 @@ const Header = () => {
 
       {/* 검색 */}
       <div className={styles.section}>
-        <form onSubmit={handleUserNameSubmit}
-              className={search ? styles.search : `${styles.search} ${styles.hidden}`}>
-          <input type="text" placeholder="유저 이름"
+        <form
+          onSubmit={handleUserNameSubmit}
+          className={
+            search ? styles.search : `${styles.search} ${styles.hidden}`
+          }
+        >
+          <input
+            type="text"
+            placeholder="유저 이름"
             value={query}
-            onChange={(e) => setQuery(e.target.value)} />
+            onChange={(e) => setQuery(e.target.value)}
+          />
 
           {query && (
-            <button type="button" className={styles.clearButton}
-              onClick={() => { setQuery(""); setSuggestions([]); setShowSuggestions(false); }}>
+            <button
+              type="button"
+              className={styles.clearButton}
+              onClick={() => {
+                setQuery("");
+                setSuggestions([]);
+                setShowSuggestions(false);
+              }}
+            >
               ✕
             </button>
           )}
           <button type="submit"></button>
 
           {showSuggestions && (
-            <ul ref={suggestions.length > 0 ? suggestionRef : nosuggestionRef}
-                className={styles.suggestionBox}>
-
+            <ul
+              ref={suggestions.length > 0 ? suggestionRef : nosuggestionRef}
+              className={styles.suggestionBox}
+            >
               {suggestions.length === 0 ? (
-                <li className={styles.noResult}>해당 유저가 존재하지 않습니다</li>
+                <li className={styles.noResult}>
+                  해당 유저가 존재하지 않습니다
+                </li>
               ) : (
                 suggestions.map((item, idx) => (
-                  <li key={idx}
-                      className={styles.suggestionItem}
-                      onClick={() => {
-                        navigate("/", { state: { keyword: item.userName } });
-                        setShowSuggestions(false);
-                        setQuery("");
-                      }}>
-
-                    <img src={item.profileImageUrl || user}
-                      className={styles.suggestionAvatar} />
+                  <li
+                    key={idx}
+                    className={styles.suggestionItem}
+                    onClick={() => {
+                      navigate("/", { state: { keyword: item.userName } });
+                      setShowSuggestions(false);
+                      setQuery("");
+                    }}
+                  >
+                    <img
+                      src={item.profileImageUrl || user}
+                      className={styles.suggestionAvatar}
+                    />
 
                     <div className={styles.suggestionCenter}>
-                      <div className={styles.suggestionName}>{item.userName}</div>
+                      <div className={styles.suggestionName}>
+                        {item.userName}
+                      </div>
                       <div className={styles.suggestionSkill}>
-                        Skill: {item.games.map(g => g.gameName).join(", ")}
+                        Skill: {item.games.map((g) => g.gameName).join(", ")}
                       </div>
                     </div>
 
-                    <div className={styles.suggestionRight}>ID: {item.userId}</div>
+                    <div className={styles.suggestionRight}>
+                      ID: {item.userId}
+                    </div>
                   </li>
                 ))
               )}
@@ -247,15 +307,21 @@ const Header = () => {
           )}
         </form>
 
-        <FontAwesomeIcon className={search ? `${styles.hidden} ${styles.searchicon}` : styles.searchicon}
+        <FontAwesomeIcon
+          className={
+            search ? `${styles.hidden} ${styles.searchicon}` : styles.searchicon
+          }
           onClick={() => setsearch(!search)}
-          icon={faMagnifyingGlass} />
+          icon={faMagnifyingGlass}
+        />
 
         {/* 알림 */}
         <div ref={notiRef} className={styles.notiWrapper}>
           <div className={styles.bellWrapper} onClick={handleBellClick}>
             <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
-            {unreadCount > 0 && <div className={styles.badge}>{unreadCount}</div>}
+            {unreadCount > 0 && (
+              <div className={styles.badge}>{unreadCount}</div>
+            )}
           </div>
 
           {showNoti && (
@@ -263,27 +329,46 @@ const Header = () => {
               <div className={styles.notiHeader}>알림</div>
 
               <div className={styles.notiList}>
-                {notifications.length === 0
-                  ? <div className={styles.emptyNoti}>알림이 없습니다.</div>
-                  : notifications.map((n) => (
+                {notifications.length === 0 ? (
+                  <div className={styles.emptyNoti}>알림이 없습니다.</div>
+                ) : (
+                  notifications.map((n) => (
                     <div key={n.notificationId} className={styles.notiItem}>
                       <b>{n.message}</b>
                       <div className={styles.notiTime}>
                         {new Date(n.createdAt).toLocaleString()}
                       </div>
                     </div>
-                  ))}
+                  ))
+                )}
               </div>
             </div>
           )}
         </div>
 
         <Link className={styles.link} to="/">
-          <img src={coin} className={styles.coin} /><span>충전</span>
+          <img src={coin} className={styles.coin} />
+          <span>충전</span>
         </Link>
 
-        <Link className={`${styles.link} ${styles.login}`} to="/login">Login</Link>
-        <Link className={`${styles.link} ${styles.join}`} to="/signup">Join</Link>
+        {isLoggedIn ? (
+          <button
+            className={`${styles.link} ${styles.login}`}
+            onClick={logout}
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+          >
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link className={`${styles.link} ${styles.login}`} to="/login">
+              Login
+            </Link>
+            <Link className={`${styles.link} ${styles.join}`} to="/signup">
+              Join
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );

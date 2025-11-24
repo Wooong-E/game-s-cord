@@ -55,6 +55,9 @@ const Login = () => {
         }
 
         navigate("/");
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
       } else {
         console.error(`로그인 실패 응답 (${response.status}):`, responseData);
         if (isJson && responseData.message) {
