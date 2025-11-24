@@ -4,6 +4,7 @@ import com.example.gamescord.dto.notification.NotificationResponseDTO;
 import com.example.gamescord.dto.notification.UnreadCountResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.notification.NotificationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/notifications")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class NotificationController {
 
     private final NotificationService notificationService;

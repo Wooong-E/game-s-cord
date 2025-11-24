@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -65,4 +66,7 @@ public class User {
   @ColumnDefault("0")
   @Column(name = "login_fail_count", nullable = false)
   private Integer loginFailCount;
+
+  @Column(name = "lockout_until")
+  private LocalDateTime lockoutUntil;
 }

@@ -7,6 +7,7 @@ import com.example.gamescord.dto.coin.CoinRefundRequestDTO;
 import com.example.gamescord.dto.coin.CoinResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.coin.CoinService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/coins")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class CoinController {
 
     private final CoinService coinService;

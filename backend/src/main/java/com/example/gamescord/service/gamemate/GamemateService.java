@@ -147,6 +147,16 @@ public class GamemateService {
         return Math.round(score * 100.0) / 100.0;
     }
 
+    // 통합 필터링 및 정렬을 위한 서비스 메소드
+    @Transactional(readOnly = true)
+    public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier, String sortBy) {
+        List<Gamemate> gamemates = gameMateRepository.findWithFiltersAndSort(gameId, gender, tier, sortBy);
+        return gamemates.stream()
+                .map(GamemateResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /*
     @Transactional(readOnly = true)
     public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier) {
         boolean hasGender = gender != null && !gender.isEmpty() && !"모두".equals(gender);
@@ -168,4 +178,5 @@ public class GamemateService {
                 .map(GamemateResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
+    */
 }

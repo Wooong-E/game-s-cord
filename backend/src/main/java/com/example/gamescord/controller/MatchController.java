@@ -5,6 +5,7 @@ import com.example.gamescord.dto.match.MatchResponseDTO;
 import com.example.gamescord.dto.match.MatchStatusUpdateByKeyDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.match.MatchService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/matches")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class MatchController {
 
     private final MatchService matchService;
