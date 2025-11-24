@@ -274,15 +274,15 @@
   right: 0;
   width: 340px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 15px;
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
   z-index: 50;
   overflow: hidden;
 }
 
 .notiHeader {
-  padding: 10px 15px;
-  font-size: 16px;
+  padding: 15px 20px;
+  font-size: 18px;
   font-weight: bold;
   border-bottom: 1px solid #eee;
   display: flex;
@@ -291,32 +291,55 @@
 
 .notiList {
   max-height: 400px;
+  min-width: 340px;
   overflow-y: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .emptyNoti {
   padding: 20px;
   text-align: center;
   color: #777;
+  margin-top: -10px;
+  margin-bottom: 5px;
 }
 
 .notiItem {
   padding: 12px 15px;
-  margin: 6px;
+  margin: 0 20px;
+  margin-bottom : 12px;
   border-radius: 8px;
+  cursor: pointer;
 }
 
-.accept {
-  background: #fff7bf;
-}
-
-.decline {
-  background: #e8e8e8;
-}
-
+/* REQUEST */
 .request {
-  background: #e7ffe8;
+  background-color: #E1FDD2;
+  transition: background-color 0.15s ease;
 }
+.request:hover {
+  background-color: #D2EEBF;
+}
+
+/* ACCEPTED */
+.accept {
+  background-color: #FDFFBA;
+  transition: background-color 0.15s ease;
+}
+.accept:hover {
+  background-color: #F0F29F;
+}
+
+/* DECLINED */
+.decline {
+  background-color: #EBEBEB;
+  transition: background-color 0.15s ease;
+}
+.decline:hover {
+  background-color: #DADADA;
+}
+
 
 .notiTime {
   font-size: 12px;

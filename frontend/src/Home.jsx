@@ -81,6 +81,9 @@ function Home() {
         setLolUsers(lol.data);
         setBgUsers(bg.data);
         setOwUsers(ow.data);
+        console.log(lol.data);
+        console.log(bg.data);
+        console.log(ow.data);
       } catch (e) {
         console.error("추천 유저 조회 실패:", e);
       }
