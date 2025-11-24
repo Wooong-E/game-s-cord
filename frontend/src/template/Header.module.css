@@ -45,6 +45,11 @@
     padding-bottom: 1px;
 }
 
+.logout{
+  all: unset;
+  cursor: pointer; 
+}
+
 
 .join{
     background-color: #4372FF;
@@ -243,23 +248,24 @@
 }
 
 .bellIcon {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
 }
 
 .badge {
   position: absolute;
   top: -4px;
-  right: -6px;
+  right: -5px;
   background: #ff3b30;
   color: white;
   font-size: 0.7rem;
   font-weight: bold;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-bottom: 1.5px;
 }
 
 .notiDropdown {

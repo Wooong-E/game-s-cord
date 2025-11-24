@@ -41,7 +41,7 @@ public class SecurityConfig {
                                 // Gamemate Public
                                 "/api/gamemates/search",
                                 "/api/gamemates/profile/**",
-                                "/api/gamemates/popular",
+                                "/api/gamemates/popular/**",
                                 "/api/gamemates/filter",
 
                                 // Swagger

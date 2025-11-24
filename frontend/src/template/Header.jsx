@@ -141,7 +141,8 @@ const Header = () => {
         const res = await axios.get("/api/notifications/unread-count", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUnreadCount(res.data);
+        setUnreadCount(res.data.unreadCount);
+        console.log(res.data);
       } catch (e) {
         console.error("안 읽은 알림 개수 조회 실패:", e);
       }
@@ -352,12 +353,16 @@ const Header = () => {
         </Link>
 
         {isLoggedIn ? (
+          <>
+          <Link className={`${styles.link} ${styles.login}`} to="/Mypage">MyPage</Link>
           <button
             className={`${styles.link} ${styles.logout}`}
             onClick={logout}
+            style={{}}
           >
             Logout
           </button>
+          </>
         ) : (
           <>
             <Link className={`${styles.link} ${styles.login}`} to="/login">

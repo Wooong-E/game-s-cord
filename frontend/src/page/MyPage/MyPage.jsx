@@ -21,7 +21,7 @@ function MyPage(){
             return;
         }
         try {
-            const res = await axios.get('/api/users/profile', {
+            const res = await axios.get('/api/users/me', {
               headers: { Authorization: `Bearer ${token}` },
             });
             setUser(res.data);
@@ -61,12 +61,17 @@ function MyPage(){
             formData.append("usersName", updatedUser.usersName);
             formData.append("gender", updatedUser.gender);
             formData.append("usersBirthday", updatedUser.usersBirthday);
-            formData.append("usersDescription", updatedUser.bio);
+            formData.append("usersDescription", updatedUser.usersDescription);
 
-            const res = await axios.patch('/api/users/profile', formData,{
-                headers: { Authorization: `Bearer ${token}`},
-                "Content-Type": "multipart/form-data",
-            });
+            const res = await axios.patch('/api/users/me',
+                formData,
+                {
+                    headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data"
+                    }
+                }
+            );
             setUser(res.data);
             setProfilePreview(res.data.profileImageUrl);
             setModify(false);
@@ -123,7 +128,7 @@ function MyPage(){
                         </div>
 
                         {modify ? <button type="submit" className={`${styles.modify} ${styles.click}`} onClick={PatchResults}>저장하기</button> :
-                            <div className={styles.modify} onClick={()=>setModify(true)}>프로필 수정하기</div>}
+                            <div className={styles.modify} onClick={()=>{setModify(true)}}>프로필 수정하기</div>}
                     </div>
 
                     <div style={{display: "flex", flexDirection: "column", marginLeft: "100px"}}>
@@ -135,12 +140,12 @@ function MyPage(){
                         <div className={styles.title}>성별</div>
                         {modify ? 
                             <div style={{ display: "flex", gap: "20px", marginBottom: "50px" }}>
-                                <div className={`${styles.genderBox} ${styles.female} ${updatedUser.gender === "여성" ? styles.selected : ""}`}
-                                    onClick={() => setUpdatedUser({ ...updatedUser, gender: "여성" })}
+                                <div className={`${styles.genderBox} ${styles.female} ${updatedUser.gender === "여" ? styles.selected : ""}`}
+                                    onClick={() => setUpdatedUser({ ...updatedUser, gender: "여" })}
                                     >
                                 <span className={styles.genderIcon}>♀</span> 여성 </div>
-                                <div className={`${styles.genderBox} ${updatedUser.gender === "남성" ? styles.selected : ""}`}
-                                onClick={() => setUpdatedUser({ ...updatedUser, gender: "남성" })} >
+                                <div className={`${styles.genderBox} ${updatedUser.gender === "남" ? styles.selected : ""}`}
+                                onClick={() => setUpdatedUser({ ...updatedUser, gender: "남" })} >
                                 <span className={styles.genderIcon}>♂</span> 남성 </div>
                             </div> :
                             <div className={styles.data} style={{marginBottom:"50px"}}>{user.gender}</div>}
@@ -152,9 +157,9 @@ function MyPage(){
                             <div className={styles.data} style={{marginBottom:"50px"}}>{user.usersBirthday}</div>}
 
                         <div className={styles.title}>자기소개</div>
-                        {modify ? <textarea  value={updatedUser.bio || ""} className={styles.textareaStyle} 
-                            onChange={(e) => setUpdatedUser({ ...updatedUser, bio: e.target.value })}/>:
-                            <div className={styles.data}>{user.bio}</div>}
+                        {modify ? <textarea  value={updatedUser.usersDescription || ""} className={styles.textareaStyle} 
+                            onChange={(e) => setUpdatedUser({ ...updatedUser, usersDescription: e.target.value })}/>:
+                            <div className={styles.data}>{user.usersDescription}</div>}
                     </div>
                 </form>
             </div>
