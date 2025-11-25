@@ -44,7 +44,7 @@ const Login = () => {
 
       if (response.ok) {
         console.log("로그인 성공:", responseData);
-        const accessToken = responseData.accessToken; 
+        const accessToken = responseData.accessToken;
         const refreshToken = responseData.refreshToken;
         if (accessToken && refreshToken) {
           localStorage.setItem("accessToken", accessToken);
@@ -56,10 +56,10 @@ const Login = () => {
 
         navigate("/");
 
-        setTimeout(() => {                        //navigate용 delay 
-            window.location.reload();
+        setTimeout(() => {
+          //navigate용 delay
+          window.location.reload();
         }, 100);
-
       } else {
         console.error(`로그인 실패 응답 (${response.status}):`, responseData);
         if (isJson && responseData.message) {
