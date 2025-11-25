@@ -60,7 +60,10 @@ const Payment = () => {
     // 정수로 변환
     const numericPrice = parseInt(stringWithoutComma, 10);
 
-    const numericPoints = parseInt(points);
+    // 쉼표 제거
+    const WithoutComma = points.replace(/,/g, "");
+    // 정수로 변환
+    const numericPoints = parseInt(WithoutComma, 10);
 
     console.log(numericPoints, numericPrice, packageId);
     // 백엔드 요청 페이로드 구성
