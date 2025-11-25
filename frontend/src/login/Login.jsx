@@ -110,7 +110,6 @@ const Login = () => {
         </div>
         <button type="submit">Log in</button>
       </form>
-
     </div>
   );
 };
