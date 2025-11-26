@@ -51,6 +51,9 @@ function Home() {
     Battleground: Battleground,
     Overwatch: overwatch,
   };
+  const [lolUsers, setLolUsers] = useState([]);
+  const [bgUsers, setBgUsers] = useState([]);
+  const [owUsers, setOwUsers] = useState([]);
 
   const userImages = [user1, user2, user3, user4, user5, user6, user7];
 
@@ -69,17 +72,24 @@ function Home() {
   };
 
   useEffect(() => {
-    const fetchPopularGamemates = async () => {
+    const fetchUsers = async () => {
       try {
-        const res = await axios.get("/api/gamemates/popular");
-        setUsers(res.data);
-        console.log(res.data);
+        const lol = await axios.get("/api/gamemates/popular/1");
+        const bg = await axios.get("/api/gamemates/popular/2");
+        const ow = await axios.get("/api/gamemates/popular/3");
+
+        setLolUsers(lol.data);
+        setBgUsers(bg.data);
+        setOwUsers(ow.data);
+        console.log(lol.data);
+        console.log(bg.data);
+        console.log(ow.data);
       } catch (e) {
-        console.error("인기 게임메이트 조회 실패:", e);
+        console.error("추천 유저 조회 실패:", e);
       }
     };
 
-    fetchPopularGamemates();
+    fetchUsers();
   }, []);
 
   const GameComponent = ({ game }) => {
@@ -131,7 +141,7 @@ function Home() {
       </div>
 
       <div className={styles.section}>
-        <h1>추천 유저</h1>
+        <h1>리그 오브 레전드</h1>
 
         <button
           onClick={() => userScroll.scrollPrev()}
@@ -149,7 +159,75 @@ function Home() {
 
         <div className={styles.visible_userbox} ref={userBoxRef}>
           <div className={styles.userbox}>
-            {users.map((item, index) => (
+            {lolUsers.map((item, index) => (
+              <UserComponent
+                key={index}
+                index={index}
+                userId={item.userId}
+                name={item.userName}
+                tier={item.tier}
+                game={item.gameName}
+                price={item.price}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.section}>
+        <h1>배틀 그라운드</h1>
+
+        <button
+          onClick={() => userScroll.scrollPrev()}
+          className={!userScroll.canScrollPrev ? styles.hidden : styles.prev}
+        >
+          <FontAwesomeIcon icon={faCircleChevronLeft} />
+        </button>
+
+        <button
+          onClick={() => userScroll.scrollNext()}
+          className={!userScroll.canScrollNext ? styles.hidden : styles.next}
+        >
+          <FontAwesomeIcon icon={faCircleChevronRight} />
+        </button>
+
+        <div className={styles.visible_userbox} ref={userBoxRef}>
+          <div className={styles.userbox}>
+            {bgUsers.map((item, index) => (
+              <UserComponent
+                key={index}
+                index={index}
+                userId={item.userId}
+                name={item.userName}
+                tier={item.tier}
+                game={item.gameName}
+                price={item.price}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.section}>
+        <h1>오버워치</h1>
+
+        <button
+          onClick={() => userScroll.scrollPrev()}
+          className={!userScroll.canScrollPrev ? styles.hidden : styles.prev}
+        >
+          <FontAwesomeIcon icon={faCircleChevronLeft} />
+        </button>
+
+        <button
+          onClick={() => userScroll.scrollNext()}
+          className={!userScroll.canScrollNext ? styles.hidden : styles.next}
+        >
+          <FontAwesomeIcon icon={faCircleChevronRight} />
+        </button>
+
+        <div className={styles.visible_userbox} ref={userBoxRef}>
+          <div className={styles.userbox}>
+            {owUsers.map((item, index) => (
               <UserComponent
                 key={index}
                 index={index}

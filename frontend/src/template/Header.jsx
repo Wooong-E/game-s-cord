@@ -1,8 +1,4 @@
-import {
-  faMagnifyingGlass,
-  faAngleUp,
-  faAngleDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faMagnifyingGlass, faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState, useRef } from "react";
@@ -126,8 +122,8 @@ const Header = () => {
       const res = await axios.get("/api/notifications", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setNotifications(res.data);
+      console.log(res.data);
     } catch (e) {
       console.error("알림 불러오기 실패:", e);
     }
@@ -141,7 +137,8 @@ const Header = () => {
         const res = await axios.get("/api/notifications/unread-count", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setUnreadCount(res.data);
+        setUnreadCount(res.data.unreadCount);
+        console.log(res.data);
       } catch (e) {
         console.error("안 읽은 알림 개수 조회 실패:", e);
       }
@@ -154,11 +151,9 @@ const Header = () => {
   const handleBellClick = async () => {
     const newState = !showNoti;
     setShowNoti(newState);
-
     if (newState) {
       try {
         const token = localStorage.getItem("accessToken");
-
         await axios.patch(
           "/api/notifications/read-all",
           {},
@@ -166,12 +161,27 @@ const Header = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         fetchNotifications();
         setUnreadCount(0);
       } catch (e) {
         console.error("알림 읽음 처리 실패:", e);
       }
+    }
+  };
+
+  const handleNotificationClick = async (notificationId) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      await axios.delete(`/api/notifications/${notificationId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });      
+
+      navigate("/search");
+      setShowNoti(false);
+      fetchNotifications();
+    } catch (e) {
+      console.error("알림 삭제 실패:", e);
     }
   };
 
@@ -333,8 +343,20 @@ const Header = () => {
                   <div className={styles.emptyNoti}>알림이 없습니다.</div>
                 ) : (
                   notifications.map((n) => (
-                    <div key={n.notificationId} className={styles.notiItem}>
-                      <b>{n.message}</b>
+                    <div
+                      key={n.notificationId}
+                      className={`${styles.notiItem} ${
+                        n.notificationType === "REQUEST"
+                          ? styles.request
+                          : n.notificationType === "ACCEPTED"
+                          ? styles.accept
+                          : n.notificationType === "DECLINED"
+                          ? styles.decline
+                          : ""
+                      }`}
+                       onClick={() => handleNotificationClick(n.id)}
+                    >
+                      <b style={{fontSize:"14px"}}>{n.message}</b>
                       <div className={styles.notiTime}>
                         {new Date(n.createdAt).toLocaleString()}
                       </div>
@@ -346,18 +368,22 @@ const Header = () => {
           )}
         </div>
 
-        <Link className={styles.link} to="/">
+        <Link className={styles.link} to="/coin">
           <img src={coin} className={styles.coin} />
           <span>충전</span>
         </Link>
 
         {isLoggedIn ? (
+          <>
+          <Link className={`${styles.link} ${styles.login}`} to="/Mypage">MyPage</Link>
           <button
             className={`${styles.link} ${styles.logout}`}
             onClick={logout}
+            style={{}}
           >
             Logout
           </button>
+          </>
         ) : (
           <>
             <Link className={`${styles.link} ${styles.login}`} to="/login">

@@ -3,7 +3,6 @@
   display: flex;
   align-items: center; /* 세로 중앙 */
   flex-direction: column; /* 세로로 쌓기 */
-  height: 90vh; /* 화면 전체 높이 */
 }
 
 /* 회원가입 문구 */

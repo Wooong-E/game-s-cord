@@ -13,8 +13,6 @@ import user7 from "../assets/user7.png"
 
 function Search() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [keyword, setKeyword] = useState("");
   const [showGame, setShowGame] = useState(false);
   const [showGender, setShowGender] = useState(false);
   const [showRank, setShowRank] = useState(false);
@@ -76,7 +74,7 @@ function Search() {
   //API 요청
   useEffect(() => {
     fetchResults();
-  }, [keyword, filters]);
+  }, [filters]);
 
   //필터 외부 클릭 감지
   useEffect(() => {
@@ -94,14 +92,6 @@ function Search() {
     document.addEventListener("mouseup", handleClickOutside);
     return () => document.removeEventListener("mouseup", handleClickOutside);
   }, []);
-
-  useEffect(() => {
-    if (keyword) {
-      addFilterHistory("keyword", `유저 검색 : "${keyword}"`);
-    } else {
-      setFilterHistory((prev) => prev.filter((f) => f.key !== "keyword"));
-    }
-  }, [keyword]);
 
   //filterHistory 관리
   const addFilterHistory = (key, label) => {
@@ -127,10 +117,18 @@ function Search() {
 
   //필터 적용
   const handleGameFilter = (value) => {
+    const gameMap = {
+      "리그 오브 레전드": 1,
+      "배틀그라운드": 2,
+      "오버워치": 3,
+    };
+
     setFilters((prev) => ({
       ...prev,
-      game: value
+      game: value,
+      gameId: gameMap[value]  // gameId도 반드시 같이 바꿔줘야 함!!
     }));
+
     addFilterHistory("game", value);
     setShowGame(false);
   };
@@ -154,11 +152,6 @@ function Search() {
   //필터 삭제
   const removeFilter = (key) => {
     if (key == "game") return;
-
-    if (key === "keyword") {
-     setKeyword("");
-     return;
-    }
     setFilters((prev) => ({ ...prev, [key]: "" }));
     setFilterHistory((prev) => prev.filter((item) => item.key !== key));
   };
