@@ -1,6 +1,6 @@
 import styles from "./Home.module.css";
 import { useState, useRef, useEffect } from "react";
-import api from "../api/axios";
+import api from "./api/axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";

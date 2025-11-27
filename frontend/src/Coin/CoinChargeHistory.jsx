@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import api from "../api/axios";
+import api from "../api/axios"
 import HeaderTabs from "./HeaderTabs";
 import PaymentItem from "./PaymentItem";
 import "../css/CoinChargeHistory.css";
