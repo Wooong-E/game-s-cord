@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -34,6 +35,11 @@ public class User {
   @NotNull
   @Column(name = "login_pwd", nullable = false)
   private String loginPwd;
+
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
 
   @NotNull
   @Column(name = "point", nullable = false)
@@ -65,4 +71,17 @@ public class User {
   @ColumnDefault("0")
   @Column(name = "login_fail_count", nullable = false)
   private Integer loginFailCount;
+
+  @Column(name = "lockout_until")
+  private LocalDateTime lockoutUntil;
+
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled = false;
+
+  @Size(max = 255)
+  @Column(name = "reset_token")
+  private String resetToken;
+
+  @Column(name = "reset_token_expiry")
+  private LocalDateTime resetTokenExpiry;
 }

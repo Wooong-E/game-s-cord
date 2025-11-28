@@ -57,6 +57,7 @@ public class GamemateService {
             newGamemate.setUsers(user);
             newGamemate.setGames(game);
             newGamemate.setPrice(gameInfo.getPrice());
+            newGamemate.setTier(gameInfo.getTier());
 
             gameMateRepository.saveGamemate(newGamemate);
             newGamemates.add(newGamemate);
@@ -95,6 +96,7 @@ public class GamemateService {
                             .gameId(gamemate.getGames().getId())
                             .gameName(gamemate.getGames().getGamesName())
                             .price(gamemate.getPrice())
+                            .tier(gamemate.getTier())
                             .averageScore(formatScore(averageScore))
                             .build();
                 })
@@ -120,8 +122,13 @@ public class GamemateService {
     }
 
     @Transactional(readOnly = true)
-    public List<GamemateResponseDTO> getPopularGamemates() {
-        List<Long> popularGamemateIds = reviewRepository.findTop4ByReviewsCount();
+    public List<GamemateResponseDTO> getPopularGamemates(Long gameId) {
+        // gameId 유효성 검사
+        if (gameId < 1 || gameId > 3) {
+            throw new IllegalArgumentException("등록되지 않은 게임입니다.");
+        }
+
+        List<Long> popularGamemateIds = reviewRepository.findTop4ByGameIdAndReviewsCount(gameId);
         if (popularGamemateIds.isEmpty()) {
             return java.util.Collections.emptyList();
         }
@@ -144,4 +151,37 @@ public class GamemateService {
         }
         return Math.round(score * 100.0) / 100.0;
     }
+
+    // 통합 필터링 및 정렬을 위한 서비스 메소드
+    @Transactional(readOnly = true)
+    public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier, String sortBy) {
+        List<Gamemate> gamemates = gameMateRepository.findWithFiltersAndSort(gameId, gender, tier, sortBy);
+        return gamemates.stream()
+                .map(GamemateResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    /*
+    @Transactional(readOnly = true)
+    public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier) {
+        boolean hasGender = gender != null && !gender.isEmpty() && !"모두".equals(gender);
+        boolean hasTier = tier != null && !tier.isEmpty();
+
+        List<Gamemate> gamemates;
+
+        if (hasGender && hasTier) {
+            gamemates = gameMateRepository.findByGenderAndTier(gender, tier, gameId);
+        } else if (hasGender) {
+            gamemates = gameMateRepository.findByGender(gender, gameId);
+        } else if (hasTier) {
+            gamemates = gameMateRepository.findByTier(tier, gameId);
+        } else {
+            gamemates = gameMateRepository.findByGameId(gameId);
+        }
+
+        return gamemates.stream()
+                .map(GamemateResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+    */
 }

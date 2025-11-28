@@ -63,10 +63,11 @@ public class ReviewRepository {
                 .fetch();
     }
 
-    public List<Long> findTop4ByReviewsCount(){
+    public List<Long> findTop4ByGameIdAndReviewsCount(Long gameId){
         return queryFactory
             .select(review.gamemates.id)
             .from(review)
+            .where(review.gamemates.games.id.eq(gameId))
             .groupBy(review.gamemates.id)
             .orderBy(review.count().desc())
             .limit(4)

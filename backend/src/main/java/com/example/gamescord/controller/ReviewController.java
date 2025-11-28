@@ -4,6 +4,7 @@ import com.example.gamescord.dto.review.ReviewRequestDTO;
 import com.example.gamescord.dto.review.ReviewResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.review.ReviewService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping("/gamemates/{userId}/{gameId}/reviews")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<ReviewResponseDTO> createReview(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long userId,

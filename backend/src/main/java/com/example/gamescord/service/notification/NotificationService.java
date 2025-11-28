@@ -21,7 +21,7 @@ public class NotificationService {
     private final UserRepository userRepository;
 
 
-    //알람 생성
+    // 알람 생성
     @Transactional
     public void createNotification(Long userId, String notificationType, Long matchId, String message) {
         User user = userRepository.findById(userId);
@@ -37,7 +37,7 @@ public class NotificationService {
     }
 
 
-    //사용자의 모든 알람 조회
+    // 모든 알람 조회
     @Transactional(readOnly = true)
     public List<NotificationResponseDTO> getNotifications(Long userId) {
         List<Notification> notifications = notificationRepository.findAllByUserId(userId);
@@ -47,7 +47,7 @@ public class NotificationService {
     }
 
 
-    //읽지 않은 알람 개수 조회
+    // 읽지 않은 알람 개수 조회
     @Transactional(readOnly = true)
     public UnreadCountResponseDTO getUnreadCount(Long userId) {
         Long count = notificationRepository.countUnreadByUserId(userId);
@@ -55,23 +55,17 @@ public class NotificationService {
                 .unreadCount(count != null ? count : 0L)
                 .build();
     }
-
-    //알람 읽음
+    // 모든 알람 읽음 처리
     @Transactional
-    public NotificationResponseDTO markAsRead(Long notificationId, Long userId) {
-        Notification notification = notificationRepository.findById(notificationId)
-                .orElseThrow(() -> new IllegalArgumentException("알람을 찾을 수 없습니다."));
-
-        if (!notification.getUsers().getId().equals(userId)) {
-            throw new IllegalArgumentException("본인의 알람만 읽을 수 있습니다.");
+    public void markAllAsRead(Long userId) {
+        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
+        for (Notification notification : notifications) {
+            if (!notification.getIsRead()) {
+                notification.setIsRead(true);
+                notificationRepository.saveNotification(notification);
+            }
         }
-
-        notification.setIsRead(true);
-        notificationRepository.saveNotification(notification);
-
-        return NotificationResponseDTO.fromEntity(notification);
     }
-
 
     //알람 삭제
     @Transactional

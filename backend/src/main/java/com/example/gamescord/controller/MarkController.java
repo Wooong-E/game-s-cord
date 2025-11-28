@@ -4,6 +4,7 @@ import com.example.gamescord.dto.mark.MarkedUserResponseDTO;
 import com.example.gamescord.dto.mark.MarkResponseDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.mark.MarkService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/marks")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class MarkController {
 
     private final MarkService markService;
