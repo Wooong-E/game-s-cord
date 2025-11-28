@@ -5,6 +5,7 @@ import com.example.gamescord.domain.User;
 import com.example.gamescord.dto.user.*;
 import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.security.JwtUtil;
+import com.example.gamescord.service.email.VerificationCodeService;
 import com.example.gamescord.service.refreshtoken.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,27 +28,42 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final RefreshTokenService refreshTokenService;
+    private final VerificationCodeService verificationCodeService;
 
     // 회원가입 처리
     @Transactional
     public UserResponseDTO signup(UserSignupRequestDTO requestDto) {
+        // 1. 인증 코드 검증
+        boolean isVerified = verificationCodeService.verifyCode(requestDto.getEmail(), requestDto.getVerificationCode());
+        if (!isVerified) {
+            throw new IllegalArgumentException("유효하지 않거나 만료된 인증 코드입니다.");
+        }
+
+        // 2. 사용자 중복 확인
         if (userRepository.findByLoginId(requestDto.getLoginId()).isPresent()) {
             throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
         }
+        if (userRepository.findByEmail(requestDto.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("이미 사용중인 이메일입니다.");
+        }
 
+        // 3. 사용자 생성 및 저장
         String encodedPassword = passwordEncoder.encode(requestDto.getLoginPwd());
 
         User newUser = new User();
         newUser.setLoginId(requestDto.getLoginId());
         newUser.setLoginPwd(encodedPassword);
+        newUser.setEmail(requestDto.getEmail());
         newUser.setUsersName(requestDto.getUsersName());
         newUser.setUsersBirthday(requestDto.getUsersBirthday());
         newUser.setUsersDescription(requestDto.getUsersDescription());
         newUser.setGender("None");
         newUser.setPoint(0L);
         newUser.setLoginFailCount(0);
+        newUser.setEnabled(true); // 이메일 인증이 완료되었으므로 바로 활성화
 
         User savedUser = userRepository.saveUser(newUser);
+
         return toUserResponseDTO(savedUser);
     }
 
@@ -56,6 +72,11 @@ public class UserService {
     public UserLoginResponseDTO login(UserLoginRequestDTO requestDto) {
         User user = userRepository.findByLoginId(requestDto.getLoginId())
                 .orElseThrow(() -> new IllegalArgumentException("등록된 사용자가 없습니다."));
+
+        // 계정 활성화 상태 확인
+        if (!user.isEnabled()) {
+            throw new IllegalStateException("계정이 활성화되지 않았습니다. 이메일을 확인하여 계정을 활성화해주세요.");
+        }
 
         // 계정 잠금 상태 확인
         if (user.getLockoutUntil() != null && user.getLockoutUntil().isAfter(LocalDateTime.now())) {
