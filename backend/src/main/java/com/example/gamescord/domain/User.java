@@ -77,4 +77,11 @@ public class User {
 
   @Column(name = "enabled", nullable = false)
   private boolean enabled = false;
+
+  @Size(max = 255)
+  @Column(name = "reset_token")
+  private String resetToken;
+
+  @Column(name = "reset_token_expiry")
+  private LocalDateTime resetTokenExpiry;
 }

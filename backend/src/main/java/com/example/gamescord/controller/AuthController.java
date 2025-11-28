@@ -5,6 +5,8 @@ import com.example.gamescord.dto.message.MessageResponseDTO;
 import com.example.gamescord.dto.auth.TokenRefreshRequestDTO;
 import com.example.gamescord.dto.auth.TokenRefreshResponseDTO;
 import com.example.gamescord.dto.auth.EmailVerificationRequestDTO;
+import com.example.gamescord.dto.auth.PasswordResetRequestDTO;
+import com.example.gamescord.dto.auth.PasswordResetDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.security.JwtUtil;
 import com.example.gamescord.service.email.EmailService;
@@ -45,6 +47,20 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(new MessageResponseDTO("인증 코드가 이메일로 발송되었습니다."));
+    }
+
+    // 비밀번호 재설정 요청
+    @PostMapping("/request-password-reset")
+    public ResponseEntity<?> requestPasswordReset(@Valid @RequestBody PasswordResetRequestDTO request) {
+        userService.requestPasswordReset(request.getEmail());
+        return ResponseEntity.ok(new MessageResponseDTO("비밀번호 재설정 링크가 이메일로 발송되었습니다."));
+    }
+
+    // 비밀번호 재설정 처리
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetDTO request) {
+        userService.resetPassword(request.getToken(), request.getNewPassword());
+        return ResponseEntity.ok(new MessageResponseDTO("비밀번호가 성공적으로 재설정되었습니다."));
     }
 
     // 리프레시 토큰을 사용하여 새로운 액세스 토큰을 발급
