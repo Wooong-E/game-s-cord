@@ -24,6 +24,14 @@ public class UserSignupRequestDTO {
     @Size(min = 6, max = 255, message = "비밀번호는 6~255자 사이여야 합니다")
     private String loginPwd;
 
+    @NotBlank(message = "이메일은 필수입니다.")
+    @jakarta.validation.constraints.Email(message = "유효한 이메일 주소여야 합니다.")
+    @Size(max = 255, message = "이메일은 255자 이하여야 합니다.")
+    private String email; // 이메일 필드 추가
+
+    @NotBlank(message = "인증 코드는 필수입니다.")
+    private String verificationCode; // 인증 코드 필드 추가
+
     @NotBlank(message = "사용자 이름은 필수입니다")
     @Size(max = 10, message = "사용자 이름은 10자 이하여야 합니다")
     private String usersName;
