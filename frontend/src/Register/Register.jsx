@@ -6,7 +6,9 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { IoIosBarcode } from "react-icons/io";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
+// ⭐ axios → api(axiosClient) 변경
+import api from "../api/axiosClient";
 
 //회원가입 컴포넌트
 const Register = () => {
@@ -25,9 +27,7 @@ const Register = () => {
   //  ID 중복 체크 함수 (실제 API 호출)
   const checkIdDuplicate = async (loginId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/users/check-id?loginId=${loginId}`
-      );
+      const response = await api.get(`/users/check-id?loginId=${loginId}`);
 
       if (response.data && response.data.isDuplicate === true) {
         console.log("서버 응답: 중복된 아이디입니다.");
@@ -41,12 +41,11 @@ const Register = () => {
         return true;
       }
 
-      // 403 Forbidden 에러 처리 (Security 설정 확인 필요)
-      // 403 에러가 났으므로 ID 중복 확인을 진행할 수 없었기 때문에 중복이라고 처리하는 것이 안전합니다.
+      // 403 Forbidden 에러 처리
       if (error.response && error.response.status === 403) {
         console.error("ID 중복 확인 중 403 Forbidden 오류:", error);
         alert("ID 중복 확인에 필요한 권한이 없습니다. (403 Forbidden)");
-        return true; // 에러 발생 시 가입 방지를 위해 true 반환
+        return true;
       }
 
       console.error("ID 중복 확인 중 예상치 못한 오류:", error);
@@ -66,7 +65,6 @@ const Register = () => {
       return;
     }
 
-    // 아이디 유효성 검사 (6~20자, 영문/숫자 등 필요 시 추가)
     if (id.trim().length < 6 || id.trim().length > 20) {
       alert("아이디는 6자 이상 20자 이하로 입력해주세요.");
       setIsIdChecked(false);
@@ -80,7 +78,7 @@ const Register = () => {
       setIsIdChecked(false);
     } else {
       alert("사용 가능한 아이디입니다.");
-      setIsIdChecked(true); // 중복 확인 완료 상태로 설정
+      setIsIdChecked(true);
     }
   };
 
@@ -89,6 +87,7 @@ const Register = () => {
       alert("이메일 주소를 입력해주세요!");
       return;
     }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("유효한 이메일 주소를 입력해주세요!");
@@ -96,12 +95,9 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/request-verification",
-        {
-          email: email,
-        }
-      );
+      const response = await api.post(`/auth/request-verification`, {
+        email: email,
+      });
       alert("인증코드가 발급되었습니다.");
       setIsEmailVerified(true);
     } catch (error) {
@@ -125,11 +121,11 @@ const Register = () => {
     }
 
     if (!id.trim()) return "아이디를 입력해주세요!";
-    // ⭐️ 추가: 아이디 중복 확인 여부 체크
     if (!isIdChecked) return "아이디 중복 확인이 필요합니다!";
     if (!password.trim()) return "비밀번호를 입력해주세요!";
     if (!passwordConfirm.trim()) return "비밀번호 재입력을 입력해주세요!";
     if (!email.trim()) return "이메일을 입력해주세요!";
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return "유효한 이메일 주소를 입력해주세요!";
     if (!isEmailVerified)
@@ -162,18 +158,15 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/users/signup",
-        {
-          loginId: id,
-          loginPwd: password,
-          email: email,
-          verificationCode: verificationCode,
-          usersName: name,
-          usersBirthday: birth, // "YYYY-MM-DD" 형식
-          usersDescription: "", // 선택값
-        }
-      );
+      const response = await api.post(`/users/signup`, {
+        loginId: id,
+        loginPwd: password,
+        email: email,
+        verificationCode: verificationCode,
+        usersName: name,
+        usersBirthday: birth,
+        usersDescription: "",
+      });
 
       alert("회원가입에 성공하였습니다!!");
       navigate("/");
@@ -193,10 +186,10 @@ const Register = () => {
     setPasswordConfirm("");
     setEmail("");
     setIsEmailVerified(false);
-    setVerificationCode(""); // 인증코드 상태 초기화 추가
+    setVerificationCode("");
     setName("");
     setBirth("");
-    setIsIdChecked(false); // ⭐️ ID 중복확인 상태 초기화 추가
+    setIsIdChecked(false);
     navigate(-1);
   };
 
@@ -215,15 +208,12 @@ const Register = () => {
               type="text"
               placeholder="아이디 입력 (6~20자)"
               value={id}
-              // ⭐️ 아이디 변경 시 중복 확인 상태 초기화
               onChange={(e) => {
                 setId(e.target.value);
                 setIsIdChecked(false);
               }}
-              // ⭐️ 중복 확인이 완료되면 수정 불가
               disabled={isIdChecked}
             />
-            {/* ⭐️ "중복 확인" 버튼에 핸들러 연결 */}
             <button
               className="dup-check"
               type="button"
