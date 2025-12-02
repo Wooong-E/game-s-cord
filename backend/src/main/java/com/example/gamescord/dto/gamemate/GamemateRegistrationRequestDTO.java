@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.Size;
 
+import java.sql.Time;
 import java.util.List;
 
 @Getter
@@ -31,5 +32,11 @@ public class GamemateRegistrationRequestDTO {
         @jakarta.validation.constraints.NotBlank(message = "티어는 필수입니다.")
         @Size(max = 45)
         private String tier;
+
+        @NotNull(message = "시작 시간은 필수입니다.")
+        private Time start;
+
+        @NotNull(message = "마감 시간은 필수입니다.")
+        private Time end;
     }
 }
