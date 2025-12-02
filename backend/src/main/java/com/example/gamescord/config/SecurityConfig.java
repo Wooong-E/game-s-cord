@@ -44,6 +44,7 @@ public class SecurityConfig {
                                 "/api/gamemates/profile/**",
                                 "/api/gamemates/popular",
                                 "/api/gamemates/filter",
+                                "/api/users/check-id",
 
                                 // Swagger
                                 "/swagger-ui/**",
