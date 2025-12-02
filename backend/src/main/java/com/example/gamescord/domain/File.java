@@ -12,6 +12,7 @@ import lombok.Setter;
 @Table(name = "files")
 public class File {
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "files_id", nullable = false)
   private Long id;
 

@@ -161,15 +161,17 @@ public class UserService {
 
             // User 엔티티의 List<File> files에 newFile을 추가
             user.getFiles().add(newFile);
-
+            // User 엔티티의 profileImageUrl도 업데이트
+            user.setProfileImageUrl(newS3Url);
             // *주의: UserResponseDTO에 URL을 반환하기 위해 File 엔티티의 URL을 사용합니다.*
-
         } else if (requestDto.getProfileImageUrl() != null && requestDto.getProfileImageUrl().equals("DELETE")) {
             // [선택 사항] 이미지 삭제 요청이 들어온 경우
             if (existingProfileFile != null) {
                 s3Service.deleteFile(existingProfileFile.getFilesUrl());
                 fileRepository.delete(existingProfileFile);
                 user.getFiles().remove(0);
+                // User 엔티티의 profileImageUrl도 null로 설정
+                user.setProfileImageUrl(null);
             }
         }
 
