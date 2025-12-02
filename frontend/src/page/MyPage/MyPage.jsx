@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar"
 import defaultImg from "../../assets/user2.png"
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useAuth from "../../login/useAuth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -21,7 +20,6 @@ function MyPage(){
         profileImageFile: ""
     });
     const [profilePreview, setProfilePreview] = useState(null);
-    const isLoggedIn = useAuth();
     const navigate = useNavigate();
 
     const validate = () => {
@@ -64,11 +62,6 @@ function MyPage(){
     };
 
     useEffect(() => {
-        if (!isLoggedIn) {
-            alert("로그인을 먼저 해주세요!");
-            //navigate("/login");
-            return;
-        }
         fetchResults();
     }, [isLoggedIn]);
 
