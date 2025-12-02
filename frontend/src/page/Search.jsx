@@ -35,7 +35,7 @@ function Search() {
   const dropdownGenderRef = useRef(null);
   const dropdownRankRef = useRef(null);
   const dropdownSortRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (!location.state?.gameId) return;
 
@@ -176,7 +176,7 @@ function Search() {
     setShowSort(false);
   };
 
-  //필터 삭제
+
   const removeFilter = (key) => {
     if (key == "game") return;
     setFilters((prev) => ({ ...prev, [key]: "" }));
@@ -185,7 +185,10 @@ function Search() {
 
   const Usercard=({index, img, name, star, price})=>{
     return(
-      <div className={styles.Userbox}>
+      <div className={styles.Userbox}
+      onClick={() => navigate("/matchdetail", { state: { userId } })}
+      style={{ cursor: "pointer" }}
+      >
         <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
           <img src={user[index]} style={{height:"170px"}}></img>
         </div>
