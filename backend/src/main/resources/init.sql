@@ -48,24 +48,21 @@ INSERT INTO users (users_id, login_id, login_pwd, email, point, users_name, user
                                                                                                                                                                                         (11, 'normaluser1', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'normal1@test.com', 10000, 'TestUser1', 'Looking for gaming friends to play!', '1998-06-14', 'Male', NULL, 0, NULL, 1),
                                                                                                                                                                                         (12, 'normaluser2', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', 'normal2@test.com', 5000, 'TestUser2', 'Game beginner here. Please help me!', '2002-10-30', 'Female', NULL, 0, NULL, 1);
 
--- ============================================
--- 3. GAMEMATES (with start/end time)
--- ============================================
 INSERT INTO gamemates (gamemates_id, users_id, games_id, price, tier, `start`, `end`) VALUES
-                                                                                          (1, 1, 1, 5000, 'Diamond', '18:00:00', '24:00:00'),
+                                                                                          (1, 1, 1, 5000, 'Diamond', '18:00:00', '23:59:59'),
                                                                                           (2, 2, 1, 8000, 'Master', '20:00:00', '02:00:00'),
                                                                                           (3, 2, 2, 10000, 'Radiant', '19:00:00', '01:00:00'),
                                                                                           (4, 4, 2, 6000, 'Immortal', '21:00:00', '03:00:00'),
                                                                                           (5, 3, 3, 4000, 'Grandmaster', '17:00:00', '23:00:00'),
-                                                                                          (6, 1, 3, 3000, 'Master', '18:00:00', '24:00:00'),
+                                                                                          (6, 1, 3, 3000, 'Master', '18:00:00', '23:59:59'),
                                                                                           (7, 4, 4, 7000, 'Top 1%', '20:00:00', '02:00:00'),
                                                                                           (8, 5, 5, 3000, 'Lv.280', '14:00:00', '22:00:00'),
                                                                                           (9, 6, 6, 8000, '1620', '19:00:00', '01:00:00'),
                                                                                           (10, 5, 6, 6000, '1600', '15:00:00', '23:00:00'),
-                                                                                          (11, 7, 7, 5000, 'Champions', '18:00:00', '24:00:00'),
+                                                                                          (11, 7, 7, 5000, 'Champions', '18:00:00', '23:59:59'),
                                                                                           (12, 8, 8, 4000, 'Grandmaster', '20:00:00', '02:00:00'),
                                                                                           (13, 9, 9, 6000, 'Torment 16', '21:00:00', '03:00:00'),
-                                                                                          (14, 10, 10, 4000, 'AR60', '16:00:00', '24:00:00'),
+                                                                                          (14, 10, 10, 4000, 'AR60', '16:00:00', '23:59:59'),
                                                                                           (15, 3, 10, 3500, 'AR58', '17:00:00', '23:00:00');
 -- ============================================
 -- 4. PROFILES
