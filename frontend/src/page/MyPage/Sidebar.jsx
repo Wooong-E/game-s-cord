@@ -15,7 +15,7 @@ function Sidebar() {
         <div>마이페이지</div>
       </Link>
       <Link
-        to="/requestReceived"
+        to="/requestdetail"
         className={`${styles.link} ${
           location.pathname === "/" ? styles.active : ""
         }`}

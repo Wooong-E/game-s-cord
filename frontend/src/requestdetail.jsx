@@ -68,7 +68,7 @@ export default function RequestHistoryPage() {
         <Sidebar />
 
         <section className="request-content">
-          <h1 className="request-title">신청내역</h1>
+          <h1 className="request-title">신청 내역</h1>
 
           <div className="request-tabs">
             <button
@@ -77,7 +77,7 @@ export default function RequestHistoryPage() {
               }
               onClick={() => setActiveTab("sent")}
             >
-              매칭요청
+              받은 요청
             </button>
             <button
               className={
