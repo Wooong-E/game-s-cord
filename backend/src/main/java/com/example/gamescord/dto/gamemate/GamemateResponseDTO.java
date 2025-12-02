@@ -16,6 +16,8 @@ public class GamemateResponseDTO {
     private Long price;
     private String tier;
     private String gender;
+    private String start;
+    private String end;
 
     public static GamemateResponseDTO fromEntity(Gamemate gamemate) {
         return GamemateResponseDTO.builder()
@@ -27,6 +29,8 @@ public class GamemateResponseDTO {
                 .price(gamemate.getPrice())
                 .tier(gamemate.getTier())
                 .gender(gamemate.getUsers().getGender())
+                .start(gamemate.getStart().toString())
+                .end(gamemate.getEnd().toString())
                 .build();
     }
 
