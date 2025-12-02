@@ -81,6 +81,8 @@ public class GamemateService {
             newGamemate.setGames(game);
             newGamemate.setPrice(gameInfo.getPrice());
             newGamemate.setTier(gameInfo.getTier());
+            newGamemate.setStart(gameInfo.getStart());
+            newGamemate.setEnd(gameInfo.getEnd());
             if (imageUrl != null) {
                 Profile newProfile = new Profile();
                 newProfile.setImagesUrl(imageUrl);
