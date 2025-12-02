@@ -3,7 +3,6 @@ import Sidebar from "./Sidebar";
 import defaultImg from "../../assets/user2.png";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useAuth from "../../login/useAuth";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/axios";
@@ -20,7 +19,6 @@ function MyPage() {
     profileImageFile: "",
   });
   const [profilePreview, setProfilePreview] = useState(null);
-  const isLoggedIn = useAuth();
   const navigate = useNavigate();
 
   const validate = () => {
@@ -63,16 +61,16 @@ function MyPage() {
   };
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      alert("로그인을 먼저 해주세요!");
-      //navigate("/login");
-      return;
-    }
     fetchResults();
   }, []);
 
   const fetchResults = async () => {
     const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("로그인 정보가 없습니다. 다시 로그인해 주세요.");
+      navigate("/login");
+      return;
+    }
     try {
       const res = await api.get("/users/me", {
         headers: { Authorization: `Bearer ${token}` },
