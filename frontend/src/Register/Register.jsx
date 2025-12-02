@@ -6,9 +6,7 @@ import { MdOutlineMailOutline } from "react-icons/md";
 import { IoIosBarcode } from "react-icons/io";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// ⭐ axios → api(axiosClient) 변경
-import api from "../api/axiosClient";
+import api from "../api/axios";
 
 //회원가입 컴포넌트
 const Register = () => {
