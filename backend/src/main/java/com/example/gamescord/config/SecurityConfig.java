@@ -38,6 +38,8 @@ public class SecurityConfig {
                                 "/api/users/login",
                                 "/api/auth/refresh",
                                 "/api/auth/request-verification",
+                                "/api/users/check-id",
+
 
                                 // Gamemate Public
                                 "/api/gamemates/search",
