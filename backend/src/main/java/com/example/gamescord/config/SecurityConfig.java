@@ -36,7 +36,6 @@ public class SecurityConfig {
                                 // User & Auth
                                 "/api/users/signup",
                                 "/api/users/login",
-                                "/users/login", // "/api" 프리픽스 없이 들어오는 로그인 요청 처리
                                 "/api/auth/refresh",
                                 "/api/auth/request-verification",
 
