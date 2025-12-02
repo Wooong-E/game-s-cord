@@ -1,6 +1,6 @@
 -- 데이터베이스 생성 및 선택
-CREATE DATABASE IF NOT EXISTS gamescord;
-USE gamescord;
+CREATE DATABASE IF NOT EXISTS softwareassignmentdb;
+USE softwareassignmentdb;
 
 -- Users 테이블 생성
 CREATE TABLE IF NOT EXISTS users (
