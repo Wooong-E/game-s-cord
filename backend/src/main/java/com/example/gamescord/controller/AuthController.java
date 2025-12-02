@@ -1,12 +1,8 @@
 package com.example.gamescord.controller;
 
 import com.example.gamescord.domain.RefreshToken;
+import com.example.gamescord.dto.auth.*;
 import com.example.gamescord.dto.message.MessageResponseDTO;
-import com.example.gamescord.dto.auth.TokenRefreshRequestDTO;
-import com.example.gamescord.dto.auth.TokenRefreshResponseDTO;
-import com.example.gamescord.dto.auth.EmailVerificationRequestDTO;
-import com.example.gamescord.dto.auth.PasswordResetRequestDTO;
-import com.example.gamescord.dto.auth.PasswordResetDTO;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.security.JwtUtil;
 import com.example.gamescord.service.email.EmailService;
@@ -22,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.thymeleaf.context.Context;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -40,11 +37,12 @@ public class AuthController {
         String email = request.getEmail();
         String code = verificationCodeService.generateAndStoreCode(email);
 
-        emailService.sendEmail(
-                email,
-                "게임스코드 회원가입 인증 코드",
-                "인증 코드는 " + code + " 입니다. 5분 내에 입력해주세요."
-        );
+        String subject = "Game's cord 에 가입하신 것을 환영합니다!";
+
+        Context context = new Context();
+        context.setVariable("code", code);
+
+        emailService.sendEmail(email, subject, "email/verification", context);
 
         return ResponseEntity.ok(new MessageResponseDTO("인증 코드가 이메일로 발송되었습니다."));
     }
@@ -53,13 +51,13 @@ public class AuthController {
     @PostMapping("/request-password-reset")
     public ResponseEntity<?> requestPasswordReset(@Valid @RequestBody PasswordResetRequestDTO request) {
         userService.requestPasswordReset(request.getEmail());
-        return ResponseEntity.ok(new MessageResponseDTO("비밀번호 재설정 링크가 이메일로 발송되었습니다."));
+        return ResponseEntity.ok(new MessageResponseDTO("비밀번호 재설정 인증코드가 이메일로 발송되었습니다."));
     }
 
     // 비밀번호 재설정 처리
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetDTO request) {
-        userService.resetPassword(request.getToken(), request.getNewPassword());
+        userService.resetPassword(request);
         return ResponseEntity.ok(new MessageResponseDTO("비밀번호가 성공적으로 재설정되었습니다."));
     }
 

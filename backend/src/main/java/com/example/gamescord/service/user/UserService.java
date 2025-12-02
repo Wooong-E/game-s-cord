@@ -3,6 +3,7 @@ package com.example.gamescord.service.user;
 import com.example.gamescord.domain.File;
 import com.example.gamescord.domain.RefreshToken;
 import com.example.gamescord.domain.User;
+import com.example.gamescord.dto.auth.PasswordResetDTO;
 import com.example.gamescord.dto.user.*;
 import com.example.gamescord.repository.file.FileRepository;
 import com.example.gamescord.repository.user.UserRepository;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.services.s3.S3Client;
+import org.thymeleaf.context.Context;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -202,43 +204,32 @@ public class UserService {
     // 비밀번호 재설정 요청
     @Transactional
     public void requestPasswordReset(String email) {
-        User user = userRepository.findByEmail(email)
+        // 이메일 존재 여부만 확인, 실제 사용자 정보는 다음 단계에서.
+        userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("등록되지 않은 이메일입니다."));
 
-        String resetToken = UUID.randomUUID().toString();
-        LocalDateTime expiryDate = LocalDateTime.now().plusHours(1); // 1시간 유효
+        String code = verificationCodeService.generateAndStoreCode(email);
+        String subject = "Game's cord 비밀번호 재설정 인증 코드";
 
-        user.setResetToken(resetToken);
-        user.setResetTokenExpiry(expiryDate);
-        userRepository.updateUser(user);
+        Context context = new Context();
+        context.setVariable("code", code);
 
-        // TODO: 프론트엔드 URL로 변경 필요 (예: "https://your-frontend.com/reset-password?token=" + resetToken)
-        String resetLink = baseUrl + "/api/auth/reset-password-confirm?token=" + resetToken;
-        emailService.sendEmail(
-            email,
-            "게임스코드 비밀번호 재설정",
-            "비밀번호를 재설정하려면 다음 링크를 클릭하세요: " + resetLink + "\n이 링크는 1시간 동안 유효합니다."
-        );
+        emailService.sendEmail(email, subject, "email/password-reset", context);
     }
 
     // 비밀번호 재설정 처리
     @Transactional
-    public void resetPassword(String token, String newPassword) {
-        User user = userRepository.findByResetToken(token)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않거나 만료된 비밀번호 재설정 토큰입니다."));
-
-        if (user.getResetTokenExpiry() == null || LocalDateTime.now().isAfter(user.getResetTokenExpiry())) {
-            // 토큰이 만료되었거나 유효하지 않으면 토큰 초기화
-            user.setResetToken(null);
-            user.setResetTokenExpiry(null);
-            userRepository.updateUser(user);
-            throw new IllegalArgumentException("비밀번호 재설정 토큰이 만료되었거나 유효하지 않습니다.");
+    public void resetPassword(PasswordResetDTO requestDto) {
+        boolean isVerified = verificationCodeService.verifyCode(requestDto.getEmail(), requestDto.getCode());
+        if (!isVerified) {
+            throw new IllegalArgumentException("유효하지 않거나 만료된 인증 코드입니다.");
         }
 
-        user.setLoginPwd(passwordEncoder.encode(newPassword));
-        user.setResetToken(null); // 사용된 토큰은 제거
-        user.setResetTokenExpiry(null); // 만료 시간 제거
-        userRepository.updateUser(user);
+        User user = userRepository.findByEmail(requestDto.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        user.setLoginPwd(passwordEncoder.encode(requestDto.getNewPassword()));
+        userRepository.saveUser(user);
     }
 
     // SecurityContext에서 현재 사용자 정보 가져오기

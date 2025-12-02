@@ -18,6 +18,6 @@ public class ReviewRequestDTO {
     @Max(value = 5, message = "평점은 1~5점입니다")
     private Integer score;
 
-    @Size(max = 255, message = "리뷰는 255자 이하여야 합니다")
+    @Size(min = 10, max = 255, message = "리뷰는 10~255자 사이여야 합니다")
     private String review;
 }

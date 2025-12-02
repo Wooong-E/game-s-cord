@@ -2,10 +2,7 @@ package com.example.gamescord.service.coin;
 
 import com.example.gamescord.domain.Coin;
 import com.example.gamescord.domain.User;
-import com.example.gamescord.dto.coin.CoinChargeRequestDTO;
-import com.example.gamescord.dto.coin.CoinHistoryResponseDTO;
-import com.example.gamescord.dto.coin.CoinRefundRequestDTO;
-import com.example.gamescord.dto.coin.CoinResponseDTO;
+import com.example.gamescord.dto.coin.*;
 import com.example.gamescord.repository.coin.CoinRepository;
 import com.example.gamescord.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +25,29 @@ public class CoinService {
             2, new CoinPackageInfo(1000, 9360),
             3, new CoinPackageInfo(2000, 18720),
             4, new CoinPackageInfo(5000, 45600),
-            5, new CoinPackageInfo(10000, 91200)
+            5, new CoinPackageInfo(10000, 91200),
+            6, new CoinPackageInfo(30000, 266400),
+            7, new CoinPackageInfo(50000, 444000),
+            8, new CoinPackageInfo(100000, 864000),
+            9, new CoinPackageInfo(300000, 2592000),
+            10, new CoinPackageInfo(500000, 4320000)
     );
+
+    @Transactional(readOnly = true)
+    public PrepareChargeResponseDTO prepareCharge(PrepareChargeRequestDTO requestDto) {
+        CoinPackageInfo packageInfo = COIN_PACKAGES.get(requestDto.getPackageId());
+        if (packageInfo == null) {
+            throw new IllegalArgumentException("존재하지 않는 패키지입니다.");
+        }
+
+        List<String> paymentMethods = List.of("카드결제", "계좌이체", "간편 결제");
+
+        return PrepareChargeResponseDTO.builder()
+                .coinAmount(packageInfo.coinAmount())
+                .paymentAmount(packageInfo.paymentAmount())
+                .paymentMethods(paymentMethods)
+                .build();
+    }
 
     @Transactional
     public CoinResponseDTO chargeCoin(String loginId, CoinChargeRequestDTO requestDto) {
@@ -37,21 +55,23 @@ public class CoinService {
         if (packageInfo == null) {
             throw new IllegalArgumentException("존재하지 않는 패키지입니다.");
         }
-        if (!packageInfo.coinAmount.equals(requestDto.getCoinAmount()) || !packageInfo.paymentAmount.equals(requestDto.getPaymentAmount())) {
-            throw new IllegalArgumentException("요청된 코인 또는 결제 금액이 패키지 정보와 일치하지 않습니다.");
+
+        List<String> validPaymentMethods = List.of("카드결제", "계좌이체", "간편결제");
+        if (!validPaymentMethods.contains(requestDto.getPaymentMethod())) {
+            throw new IllegalArgumentException("유효하지 않은 결제 수단입니다.");
         }
 
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
-        user.setPoint(user.getPoint() + packageInfo.coinAmount);
+        user.setPoint(user.getPoint() + packageInfo.coinAmount());
         userRepository.saveUser(user);
 
         Coin newCoin = new Coin();
         newCoin.setUsers(user);
-        newCoin.setCoinAmount(packageInfo.coinAmount); // 양수
-        newCoin.setPaymentAmount(packageInfo.paymentAmount);
-        newCoin.setPaymentMethod("CHARGE"); // 사용자의 요청대로 고정값 저장
+        newCoin.setCoinAmount(packageInfo.coinAmount()); // 양수
+        newCoin.setPaymentAmount(packageInfo.paymentAmount());
+        newCoin.setPaymentMethod(requestDto.getPaymentMethod()); // Set payment method from request
         Coin savedCoin = coinRepository.save(newCoin);
 
         return CoinResponseDTO.success("코인이 성공적으로 충전되었습니다.", savedCoin, user.getPoint());

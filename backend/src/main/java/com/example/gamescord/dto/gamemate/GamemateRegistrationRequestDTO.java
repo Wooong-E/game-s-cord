@@ -1,5 +1,6 @@
 package com.example.gamescord.dto.gamemate;
 
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ public class GamemateRegistrationRequestDTO {
         private Long gameId;
 
         @NotNull(message = "가격은 필수입니다.")
+        @Max(value = 2000, message = "가격은 판당 2000코인을 초과할 수 없습니다.")
         private Long price;
 
         @jakarta.validation.constraints.NotBlank(message = "티어는 필수입니다.")
