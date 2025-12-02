@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "./page/MyPage/Sidebar";
 import "./requestdetail.css";
 
 const dummySent = [
@@ -29,16 +31,15 @@ export default function RequestHistoryPage() {
   return (
     <div className="page">
       <div className="request-layout">
-        <aside className="request-sidebar">
-          <ul>
-            <li className="disabled-menu">마이페이지</li>
-            <li className="active-menu">신청내역</li>
-            <li className="disabled-menu">결제 및 정산</li>
-          </ul>
-        </aside>
+        <Sidebar />
 
         <section className="request-content">
-          <h1 className="request-title">신청내역</h1>
+          <Link to="/requestdetail" className="request-title">
+            신청내역
+          </Link>
+          <Link to="/requestReceived" className="request-title">
+            받은내역
+          </Link>
 
           <div className="request-tabs">
             <button
