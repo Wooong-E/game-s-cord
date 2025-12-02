@@ -261,7 +261,10 @@
 .rate-input-row label {
   font-size: 14px;
   font-weight: normal;
+  /* min-width: 50px; 기존 값 유지 */
   min-width: 50px;
+  /* 라벨 너비는 고정 (내용이 길어도 줄어들지 않음) */
+  flex-shrink: 0;
 }
 
 .rate-input-row input {
@@ -276,20 +279,44 @@
   flex-grow: 1;
 }
 
+.game-select {
+  flex-basis: 150px;
+  flex-grow: 1;
+  flex-shrink: 1;
+  max-width: 250px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
 .rate-input-group {
   display: flex;
   align-items: center;
+  /* 요금 부분은 너비가 고정되거나, 유연하게 줄어들지 않도록 설정 */
+  flex-shrink: 0;
+  flex-basis: auto; /* 내용에 따라 너비 결정 */
 }
 
 .rate-input-group input[type="number"] {
-  width: 80px;
+  /* ... 기존 스타일 유지 ... */
+  width: 80px; /* 너비 고정 */
   text-align: right;
   margin-right: 5px;
+  flex-shrink: 0; /* 너비가 줄어들지 않도록 함 */
 }
 
 .rate-input-group span {
   font-size: 14px;
   min-width: 20px;
+}
+
+.rate-input-label {
+  /* 컴포넌트 코드의 `label`에 이 클래스를 추가해야 합니다. */
+  flex-shrink: 0;
+  min-width: 30px; /* '요금:' 텍스트를 위한 최소 너비 */
+  font-weight: bold; /* '요금:'을 강조하는 스타일 */
+  margin-left: 10px;
 }
 
 /* 선호 게임 설정 */
