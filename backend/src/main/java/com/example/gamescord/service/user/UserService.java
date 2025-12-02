@@ -82,6 +82,12 @@ public class UserService {
         return toUserResponseDTO(savedUser);
     }
 
+    // 아이디 중복 확인
+    @Transactional(readOnly = true)
+    public boolean checkLoginIdDuplicate(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
+
     // 로그인 처리 후 액세스 토큰과 리프레시 토큰 발급
     @Transactional
     public UserLoginResponseDTO login(UserLoginRequestDTO requestDto) {

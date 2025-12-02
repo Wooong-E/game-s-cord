@@ -36,13 +36,16 @@ public class SecurityConfig {
                                 // User & Auth
                                 "/api/users/signup",
                                 "/api/users/login",
+                                "/users/login", // "/api" 프리픽스 없이 들어오는 로그인 요청 처리
                                 "/api/auth/refresh",
+                                "/api/auth/request-verification",
 
                                 // Gamemate Public
                                 "/api/gamemates/search",
                                 "/api/gamemates/profile/**",
                                 "/api/gamemates/popular",
                                 "/api/gamemates/filter",
+                                "/api/users/check-id",
 
                                 // Swagger
                                 "/swagger-ui/**",

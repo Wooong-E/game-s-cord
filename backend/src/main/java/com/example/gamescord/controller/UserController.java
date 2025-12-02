@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -34,6 +36,13 @@ public class UserController {
     public ResponseEntity<UserResponseDTO> signUp(@Valid @RequestBody UserSignupRequestDTO requestDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(userService.signup(requestDto));
+    }
+
+    // 아이디 중복 확인
+    @GetMapping("/check-id")
+    public ResponseEntity<Map<String, Boolean>> checkLoginIdDuplicate(@RequestParam String loginId) {
+        boolean isDuplicate = userService.checkLoginIdDuplicate(loginId);
+        return ResponseEntity.ok(Map.of("isDuplicate", isDuplicate));
     }
 
     // 사용자 로그인, 성공 시 JWT 토큰 반환
