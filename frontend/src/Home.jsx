@@ -174,7 +174,7 @@ function Home() {
     );
   };
 
-  const UserComponent = ({ index,userId,name, tier, game, price }) => {
+  const UserComponent = ({ index, userId, name, tier, game, price }) => {
     return (
       <div
         className={styles.user}
