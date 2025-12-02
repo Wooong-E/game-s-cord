@@ -69,6 +69,15 @@ public class UserRepository {
         return count != null;
     }
 
+    public boolean existsByLoginId(String loginId) {
+        Integer count = queryFactory
+                .selectOne()
+                .from(user)
+                .where(user.loginId.eq(loginId))
+                .fetchFirst();
+        return count != null;
+    }
+
 
     public List<User> findAllById(Iterable<Long> ids) {
         return userRepository.findAllById(ids);
