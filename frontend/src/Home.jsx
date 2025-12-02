@@ -14,7 +14,18 @@ import user4 from "./assets/user4.png";
 import user5 from "./assets/user5.png";
 import user6 from "./assets/user6.png";
 import user7 from "./assets/user7.png";
+import user8 from "./assets/user8.png";
+import user9 from "./assets/user9.png";
+import user10 from "./assets/user10.png";
+import user11 from "./assets/user11.png";
+import user12 from "./assets/user12.png";
+import user13 from "./assets/user13.png";
+import user14 from "./assets/user14.png";
+import user15 from "./assets/user15.png";
 import coin from "./assets/coin.jpg";
+import banner1 from "./assets/banner1.png"
+import banner2 from "./assets/banner2.png"
+import banner3 from "./assets/banner3.png"
 
 // 스크롤 로직을 담당하는 커스텀 훅
 function useScroll(ref, scrollAmount) {
@@ -63,7 +74,7 @@ function Home() {
   const [bgUsers, setBgUsers] = useState([]);
   const [owUsers, setOwUsers] = useState([]);
 
-  const userImages = [user1, user2, user3, user4, user5, user6, user7];
+  const userImages = [user1, user2, user3, user4, user5, user6, user7, user8, user9, user10, user11, user12, user13, user14, user15];
 
   const [users, setUsers] = useState([]);
   const gameBoxRef = useRef(null);
@@ -79,7 +90,13 @@ function Home() {
   const lolUserScroll = useScroll(lolUserBoxRef, 440); 
   const bgUserScroll = useScroll(bgUserBoxRef, 440); 
   const owUserScroll = useScroll(owUserBoxRef, 440);
-  
+
+  // 무한 배너
+  const rawBanners = [banner1, banner2, banner3];
+  const banners = [rawBanners[rawBanners.length - 1], ...rawBanners, rawBanners[0]];
+  const [index, setIndex] = useState(1); // 복제구간 때문에 실제 시작은 1
+  const [transition, setTransition] = useState(true);
+
   const navigate = useNavigate();
 
   const gameIdMap = {
@@ -110,6 +127,40 @@ function Home() {
 
     fetchUsers();
   }, []);
+
+  // 자동 슬라이드 5S
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => prev + 1);
+      setTransition(true);
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  // 무한 루프 처리
+  useEffect(() => {
+    if (index === banners.length - 1) {
+      // 마지막 복제 노드 → 실제 첫 번째로 순간 이동
+      setTimeout(() => {
+        setTransition(false);
+        setIndex(1);
+      }, 600);
+    }
+
+    if (index === 0) {
+      // 첫 번째 복제 노드 → 실제 마지막으로 순간 이동
+      setTimeout(() => {
+        setTransition(false);
+        setIndex(banners.length - 2);
+      }, 600);
+    }
+  }, [index]);
+
+  const goDot = (target) => {
+    setIndex(target + 1); // 실제 index 보정
+    setTransition(true);
+  };
 
   const GameComponent = ({ game }) => {
     return (
@@ -149,6 +200,31 @@ function Home() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.section}>
+        <div className={styles.bannerWrapper}>
+          <div
+            className={styles.bannerSlideBox}
+            style={{
+              transform: `translateX(-${index * 100}%)`,
+              transition: transition ? "transform 0.6s ease-in-out" : "none",
+            }}
+          >
+            {banners.map((src, i) => (
+              <img key={i} src={src} className={styles.bannerImage} />
+            ))}
+          </div>
+
+          {/* Dot Navigation */}
+          <div className={styles.bannerDots}>
+            {rawBanners.map((_, i) => (
+              <div
+                key={i}
+                className={(i + 1 === index) ? styles.dotActive : styles.dot}
+                onClick={() => goDot(i)}
+              />
+            ))}
+          </div>
+        </div>
+
         <h1>추천 서비스</h1>
         <div className={styles.visible_gamebox} ref={gameBoxRef}>
           <div className={styles.gamebox}>

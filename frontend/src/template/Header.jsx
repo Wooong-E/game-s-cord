@@ -6,7 +6,7 @@ import {
 import { faBell } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../api/axios.js";
 import styles from "./Header.module.css";
 import useAuth from "../login/useAuth.js";
@@ -37,13 +37,13 @@ const Header = () => {
   const [notifications, setNotifications] = useState([]);
   const [showNoti, setShowNoti] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [notiEnabled, setNotiEnabled] = useState(true); 
 
   const serviceRef = useRef(null);
   const suggestionRef = useRef(null);
   const nosuggestionRef = useRef(null);
   const notiRef = useRef(null);
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   // 클릭 outside → 닫기
@@ -130,6 +130,7 @@ const Header = () => {
       console.log(res.data);
     } catch (e) {
       console.error("알림 불러오기 실패:", e);
+      alert("알림 내역 로드에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -151,8 +152,21 @@ const Header = () => {
     fetchUnreadCount();
   }, []);
 
+  // 알람 off 시 unreadcount = 0
+  useEffect(() => {
+    if (!notiEnabled) {
+      setUnreadCount(0);
+    }
+  }, [notiEnabled]);
+
   // 알림 bell 클릭 → 읽음 처리
   const handleBellClick = async () => {
+    if (!isLoggedIn) {
+      alert("로그인을 먼저 해주세요!");
+      navigate("/login");
+      return;
+    }
+    
     const newState = !showNoti;
     setShowNoti(newState);
     if (newState) {
@@ -169,6 +183,7 @@ const Header = () => {
         setUnreadCount(0);
       } catch (e) {
         console.error("알림 읽음 처리 실패:", e);
+        alert("알림 설정 변경에 실패했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -192,8 +207,8 @@ const Header = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.section}>
-        <Link className={styles.link} to="/" onClick={() => setsearch(false)}>
-          <img src={logo} style={{ width: "100px", paddingLeft: "40px" }} />
+        <Link className={`${styles.link} ${styles.logobox}`} to="/" onClick={() => setsearch(false)}>
+          <img src={logo} className={styles.logo} />
         </Link>
 
         {/* 서비스 메뉴 */}
@@ -334,14 +349,26 @@ const Header = () => {
         <div ref={notiRef} className={styles.notiWrapper}>
           <div className={styles.bellWrapper} onClick={handleBellClick}>
             <FontAwesomeIcon icon={faBell} className={styles.bellIcon} />
-            {unreadCount > 0 && (
+            {notiEnabled && unreadCount > 0 && (
               <div className={styles.badge}>{unreadCount}</div>
             )}
           </div>
 
           {showNoti && (
             <div className={styles.notiDropdown}>
-              <div className={styles.notiHeader}>알림</div>
+              <div className={styles.notiHeader}>
+                알림
+                <label className={styles.notiToggle}>
+                  <input
+                    type="checkbox"
+                    checked={notiEnabled}
+                    onChange={() => {
+                      setNotiEnabled(!notiEnabled);
+                    }}
+                  />
+                  <span className={styles.slider}></span>
+                </label>
+              </div>
 
               <div className={styles.notiList}>
                 {notifications.length === 0 ? (
@@ -362,6 +389,14 @@ const Header = () => {
                       onClick={() => handleNotificationClick(n.id)}
                     >
                       <b style={{ fontSize: "14px" }}>{n.message}</b>
+
+                      {/* ACCEPTED 타입이면 상대방 게임 ID 표시 */}
+                      {n.notificationType === "ACCEPTED" && n.matchId && (
+                        <div style={{ fontSize: "12px", marginTop: "4px", color: "#666" }}>
+                          매칭 게임 ID: {n.matchId}
+                        </div>
+                      )}
+
                       <div className={styles.notiTime}>
                         {new Date(n.createdAt).toLocaleString()}
                       </div>

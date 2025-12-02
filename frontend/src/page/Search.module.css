@@ -1,5 +1,5 @@
 .wrapper{
-    margin: 50px 80px;
+    margin: 40px 80px;
     font-size: 14px;
     color: #202124;
 }
@@ -24,53 +24,42 @@
     outline: none;
     background-color: white;
     border: 1px solid rgba(0,0,0,0.3);
-    padding: 6px 12px;
+    padding: 5px 12px;
     border-radius: 12px;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
 }
 
-.search input{
-    outline: none;
-    background-color: white;
-    border: 1px solid rgba(0,0,0,0.3);
-    padding: 7px 12px;
-    border-radius: 30px;
-    font-size: 14px;
-    width: 300px;
-    height: 25px;
-
-}
-
-.search input:focus {
-  border: 2px solid #3b82f6; /* 클릭 시 파란색으로 */
-  outline: none; /* 기본 파란 outline 제거 */
-}
-
-.search button{
-    display: none;
+.filter button:hover {
+  border: 1.5px solid #3b82f6 !important;
+  color: #3b82f6;
 }
 
 .Userbox{
     width: 240px;
-    height: 320px;
-    box-shadow: 0 1px 6px 0 hsla(0, 0%, 0%, 0.12), 0 1px 3px -1px hsla(0, 0%, 0%, 0.12);
-    border-radius: 15px;
+    height: 310px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    border: 1px solid rgb(91, 91, 91, 0.1);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
     overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.2s ease;
+    box-sizing: border-box;
 }
 
 .Userbox:hover{
-  box-shadow: 0 1px 8px 0 hsla(0, 0%, 0%, 0.18), 0 1px 5px -1px hsla(0, 0%, 0%, 0.18);
+    transform: translateY(-4px);
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.16);
 }
 
 .Userbio{
     display: flex;
     flex-direction: column;
-    background-color: rgba(217, 217, 217, 0.3);
-    height: 120px;
-    gap: 10px;
+    background: #f6f6f6;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    height: 90px;
+    gap: 8px;
     padding: 10px 18px;
 }
 
@@ -93,6 +82,7 @@ ul {
   display: none; /* 기본 숨김 */
   z-index: 999; /* 다른 요소 위로 */
   overflow: hidden;
+  font-size: 16px;
 }
 
 .filter ul li {
@@ -117,12 +107,12 @@ ul {
 
 .filterTag {
   background: #ddebfd;
-  padding: 6px 10px 6px 14px;
+  padding: 6px 15px 6px 14px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 14px;
+  font-size: 16px;
   color: #0062ff;
   font-weight: 500;
 }
