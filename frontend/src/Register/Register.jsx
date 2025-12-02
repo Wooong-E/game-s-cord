@@ -162,15 +162,18 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("/users/signup", {
-        loginId: id,
-        loginPwd: password,
-        email: email,
-        verificationCode: verificationCode,
-        usersName: name,
-        usersBirthday: birth, // "YYYY-MM-DD" 형식
-        usersDescription: "", // 선택값
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/users/signup",
+        {
+          loginId: id,
+          loginPwd: password,
+          email: email,
+          verificationCode: verificationCode,
+          usersName: name,
+          usersBirthday: birth, // "YYYY-MM-DD" 형식
+          usersDescription: "", // 선택값
+        }
+      );
 
       alert("회원가입에 성공하였습니다!!");
       navigate("/");
