@@ -1,8 +1,6 @@
 -- ============================================
 -- Gamescord Dummy Data SQL (FIXED Version)
 -- ============================================
-ALTER TABLE gamemates DROP COLUMN IF EXISTS `end`;
-
 SET FOREIGN_KEY_CHECKS = 0;
 TRUNCATE TABLE notifications;
 TRUNCATE TABLE reviews;
