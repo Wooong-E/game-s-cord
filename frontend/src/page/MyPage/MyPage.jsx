@@ -67,6 +67,11 @@ function MyPage(){
 
     const fetchResults = async () => {
         const token = localStorage.getItem('accessToken');
+        if (!token) {
+            alert("로그인 정보가 없습니다. 다시 로그인해 주세요.");
+            navigate("/login");
+            return;
+        }
         try {
             const res = await api.get('/users/me', {
               headers: { Authorization: `Bearer ${token}` },
