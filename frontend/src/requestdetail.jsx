@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./requestdetail.css";
 import api from "./api/axios";
 import Sidebar from "./page/MyPage/Sidebar";
@@ -40,7 +41,6 @@ export default function RequestHistoryPage() {
     }
   };
 
-
   const declineMatch = async (matchId) => {
     try {
       await api.patch(`/api/matches/${matchId}/decline`, null, getAuthHeader());
@@ -49,7 +49,6 @@ export default function RequestHistoryPage() {
       console.error("매칭 거절 실패:", error);
     }
   };
-
 
   const getStatusDotClass = (status) => {
     switch (status) {
@@ -67,13 +66,21 @@ export default function RequestHistoryPage() {
       <div className="request-layout">
         <Sidebar />
 
+        <Link to="/requestdetail" className="request-title">
+          신청내역
+        </Link>
+        <Link to="/requestReceived" className="request-title">
+          받은내역
+        </Link>
+
         <section className="request-content">
           <h1 className="request-title">신청 내역</h1>
 
           <div className="request-tabs">
             <button
               className={
-                "request-tab" + (activeTab === "sent" ? " request-tab--active" : "")
+                "request-tab" +
+                (activeTab === "sent" ? " request-tab--active" : "")
               }
               onClick={() => setActiveTab("sent")}
             >
@@ -114,9 +121,15 @@ export default function RequestHistoryPage() {
                     </div>
 
                     <div className="request-row-right">
-                      <span className="request-row-status-label">현재상태 :</span>
+                      <span className="request-row-status-label">
+                        현재상태 :
+                      </span>
 
-                      <span className={`status-dot ${getStatusDotClass(item.orderStatus)}`} />
+                      <span
+                        className={`status-dot ${getStatusDotClass(
+                          item.orderStatus
+                        )}`}
+                      />
 
                       <button className="info-button" disabled>
                         상대 정보 확인하기

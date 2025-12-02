@@ -90,38 +90,38 @@ const MatchDetail = () => {
   };
 
   const submitReview = async () => {
-  if (!newReview.trim()) {
-    alert("리뷰를 입력해주세요.");
-    return;
-  }
+    if (!newReview.trim()) {
+      alert("리뷰를 입력해주세요.");
+      return;
+    }
 
-  try {
-    const token = localStorage.getItem("accessToken");
+    try {
+      const token = localStorage.getItem("accessToken");
 
-    await axios.post(
-      `/gamemates/${userId}/${selectedGame.gameId}/reviews`,
-      {
-        score: newScore,
-        review: newReview
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await axios.post(
+        `/gamemates/${userId}/${selectedGame.gameId}/reviews`,
+        {
+          score: newScore,
+          review: newReview,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      }
-    );
+      );
 
-    alert("리뷰가 등록되었습니다!");
+      alert("리뷰가 등록되었습니다!");
 
-    setNewReview("");
-    setNewScore(5);
+      setNewReview("");
+      setNewScore(5);
 
-    fetchGameReviews(userId, selectedGame.gameId, setReviews);
-  } catch (e) {
-    console.error("리뷰 등록 실패:", e);
-    alert("리뷰 등록에 실패했습니다 사유:",e);
-  }
-};
+      fetchGameReviews(userId, selectedGame.gameId, setReviews);
+    } catch (e) {
+      console.error("리뷰 등록 실패:", e);
+      alert("리뷰 등록에 실패했습니다 사유:", e);
+    }
+  };
 
   if (!matchData) return null;
 
