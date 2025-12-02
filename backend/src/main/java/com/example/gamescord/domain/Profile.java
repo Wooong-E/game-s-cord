@@ -9,21 +9,20 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "files")
-public class File {
+@Table(name = "profiles")
+public class Profile {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "files_id", nullable = false)
+  @Column(name = "profiles_id", nullable = false)
   private Long id;
 
   @Size(max = 255)
   @NotNull
-  @Column(name = "files_url", nullable = false)
-  private String filesUrl;
+  @Column(name = "images_url", nullable = false)
+  private String imagesUrl;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "users_id", nullable = false)
-  private User users;
+  @JoinColumn(name = "gamemates_id", nullable = false)
+  private Gamemate gamemate;
 
 }

@@ -6,6 +6,9 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -30,10 +33,12 @@ public class Gamemate {
   @Column(name = "price", nullable = false)
   private Long price;
 
-
   @Size(max=45)
   @NotNull
   @Column(name="tier", nullable=false)
   private String tier;
+
+  @OneToMany(mappedBy="gamemate")
+  private List<Profile> profiles = new ArrayList<>();
 
 }

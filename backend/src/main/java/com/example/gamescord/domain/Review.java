@@ -34,7 +34,7 @@ public class Review {
     @Column(name = "score", nullable = false)
     private Integer score;
 
-    @Size(max = 255)
+    @Size(max = 255, min = 10)
     @Column(name = "reviews_description")
     private String reviewDescription;
 

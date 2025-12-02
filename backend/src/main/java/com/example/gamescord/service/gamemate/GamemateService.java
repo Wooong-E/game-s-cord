@@ -2,18 +2,29 @@ package com.example.gamescord.service.gamemate;
 
 import com.example.gamescord.domain.Game;
 import com.example.gamescord.domain.Gamemate;
+import com.example.gamescord.domain.Profile;
 import com.example.gamescord.domain.User;
 import com.example.gamescord.dto.gamemate.GamemateProfileResponseDTO;
 import com.example.gamescord.dto.gamemate.GamemateRegistrationRequestDTO;
 import com.example.gamescord.dto.gamemate.GamemateResponseDTO;
+import com.example.gamescord.repository.profile.ProfileRepository;
 import com.example.gamescord.repository.user.UserRepository;
 import com.example.gamescord.repository.game.GameRepository;
 import com.example.gamescord.repository.gamemate.GameMateRepository;
 import com.example.gamescord.repository.review.ReviewRepository;
+import com.example.gamescord.security.JwtUtil;
+import com.example.gamescord.service.refreshtoken.RefreshTokenService;
+import com.example.gamescord.service.s3.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.S3Client;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +39,14 @@ public class GamemateService {
     private final GameRepository gameRepository;
     private final GameMateRepository gameMateRepository;
     private final ReviewRepository reviewRepository;
+    private final ProfileRepository profileRepository;
+
+    private S3Service s3Service;
+
 
     @Transactional
-    public List<GamemateResponseDTO> registerGamemate(Long userId, GamemateRegistrationRequestDTO requestDto) {
+    public List<GamemateResponseDTO> registerGamemate(Long userId, GamemateRegistrationRequestDTO requestDto,
+                                                      MultipartFile imageFile) throws IOException {
         User user = userRepository.findById(userId);
 
         if (requestDto.getIntroduction() != null) {
@@ -40,6 +56,13 @@ public class GamemateService {
 
         if (requestDto.getGames() == null || requestDto.getGames().isEmpty()) {
             throw new IllegalArgumentException("등록할 게임 정보가 없습니다.");
+        }
+
+        // [3] S3 이미지 업로드 로직
+        String imageUrl = null;
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // S3Service를 사용하여 파일 업로드
+            imageUrl = s3Service.uploadFile(imageFile);
         }
 
         List<Gamemate> newGamemates = new ArrayList<>();
@@ -58,6 +81,16 @@ public class GamemateService {
             newGamemate.setGames(game);
             newGamemate.setPrice(gameInfo.getPrice());
             newGamemate.setTier(gameInfo.getTier());
+            if (imageUrl != null) {
+                Profile newProfile = new Profile();
+                newProfile.setImagesUrl(imageUrl);
+
+                // 양방향 관계 설정 (Gamemate와 Profile 연결)
+                newProfile.setGamemate(newGamemate); // @ManyToOne 관계 설정
+                newGamemate.getProfiles().add(newProfile); // @OneToMany 관계 설정 (선택 사항)
+
+                profileRepository.save(newProfile);
+            }
 
             gameMateRepository.saveGamemate(newGamemate);
             newGamemates.add(newGamemate);

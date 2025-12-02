@@ -15,10 +15,10 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserProfileUpdateRequestDTO {
 
-    @Size(max = 10, message = "사용자 이름은 10자 이하여야 합니다")
+    @Size(min = 2, max = 10, message = "사용자 이름은 2~10자 사이여야 합니다")
     private String usersName;
 
-    @Size(max = 255, message = "사용자 설명은 255자 이하여야 합니다")
+    @Size(min = 10, max = 255, message = "사용자 설명은 10~255자 사이여야 합니다")
     private String usersDescription;
 
     @NotNull(message = "생년월일은 필수입니다")

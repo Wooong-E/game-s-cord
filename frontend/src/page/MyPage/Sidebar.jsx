@@ -15,12 +15,20 @@ function Sidebar() {
         <div>마이페이지</div>
       </Link>
       <Link
-        to="/"
+        to="/requestdetail"
         className={`${styles.link} ${
           location.pathname === "/" ? styles.active : ""
         }`}
       >
         <div>신청내역</div>
+      </Link>
+      <Link
+        to="/mark"
+        className={`${styles.link} ${
+          location.pathname === "/mark" ? styles.active : ""
+        }`}
+      >
+        <div>즐겨찾기</div>
       </Link>
       <Link
         to="/coin"

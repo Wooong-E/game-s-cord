@@ -30,7 +30,7 @@ public class CoinService {
             7, new CoinPackageInfo(50000, 444000),
             8, new CoinPackageInfo(100000, 864000),
             9, new CoinPackageInfo(300000, 2592000),
-            10, new CoinPackageInfo(500000, 432000)
+            10, new CoinPackageInfo(500000, 4320000)
     );
 
     @Transactional(readOnly = true)

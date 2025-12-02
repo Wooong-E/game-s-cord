@@ -3,7 +3,10 @@ import { useState, useRef, useEffect } from "react";
 import api from "./api/axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleChevronLeft,
+  faCircleChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import LeagueofLeagends from "./assets/LeaguofLeagends.jpg";
 import Battleground from "./assets/Battleground.jpg";
 import overwatch from "./assets/Overwatch.jpg";
@@ -23,9 +26,9 @@ import user13 from "./assets/user13.png";
 import user14 from "./assets/user14.png";
 import user15 from "./assets/user15.png";
 import coin from "./assets/coin.jpg";
-import banner1 from "./assets/banner1.png"
-import banner2 from "./assets/banner2.png"
-import banner3 from "./assets/banner3.png"
+import banner1 from "./assets/banner1.png";
+import banner2 from "./assets/banner2.png";
+import banner3 from "./assets/banner3.png";
 
 // 스크롤 로직을 담당하는 커스텀 훅
 function useScroll(ref, scrollAmount) {
@@ -34,27 +37,27 @@ function useScroll(ref, scrollAmount) {
 
   const handleScroll = () => {
     const box = ref.current;
-    if (!box) return; 
+    if (!box) return;
     setCanScrollPrev(box.scrollLeft > 0);
     // 스크롤바가 끝까지 도달했는지 확인
     setCanScrollNext(box.scrollLeft < box.scrollWidth - box.clientWidth - 1);
   };
 
   const scrollNext = () => {
-    if (ref.current) { 
-        ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    if (ref.current) {
+      ref.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
 
   const scrollPrev = () => {
-    if (ref.current) { 
-        ref.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    if (ref.current) {
+      ref.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     }
   };
 
   useEffect(() => {
     const box = ref.current;
-    if (!box) return; 
+    if (!box) return;
     box.addEventListener("scroll", handleScroll);
     handleScroll();
     return () => box.removeEventListener("scroll", handleScroll);
@@ -74,26 +77,46 @@ function Home() {
   const [bgUsers, setBgUsers] = useState([]);
   const [owUsers, setOwUsers] = useState([]);
 
-  const userImages = [user1, user2, user3, user4, user5, user6, user7, user8, user9, user10, user11, user12, user13, user14, user15];
+  const userImages = [
+    user1,
+    user2,
+    user3,
+    user4,
+    user5,
+    user6,
+    user7,
+    user8,
+    user9,
+    user10,
+    user11,
+    user12,
+    user13,
+    user14,
+    user15,
+  ];
 
   const [users, setUsers] = useState([]);
   const gameBoxRef = useRef(null);
-  
+
   // Ref 중복 사용 문제 해결: 각 사용자 박스에 고유한 Ref를 할당
-  const lolUserBoxRef = useRef(null); 
-  const bgUserBoxRef = useRef(null); 
+  const lolUserBoxRef = useRef(null);
+  const bgUserBoxRef = useRef(null);
   const owUserBoxRef = useRef(null);
 
   const gameScroll = useScroll(gameBoxRef, 340);
-  
+
   // 각 섹션에 고유한 스크롤 훅을 적용
-  const lolUserScroll = useScroll(lolUserBoxRef, 440); 
-  const bgUserScroll = useScroll(bgUserBoxRef, 440); 
+  const lolUserScroll = useScroll(lolUserBoxRef, 440);
+  const bgUserScroll = useScroll(bgUserBoxRef, 440);
   const owUserScroll = useScroll(owUserBoxRef, 440);
 
   // 무한 배너
   const rawBanners = [banner1, banner2, banner3];
-  const banners = [rawBanners[rawBanners.length - 1], ...rawBanners, rawBanners[0]];
+  const banners = [
+    rawBanners[rawBanners.length - 1],
+    ...rawBanners,
+    rawBanners[0],
+  ];
   const [index, setIndex] = useState(1); // 복제구간 때문에 실제 시작은 1
   const [transition, setTransition] = useState(true);
 
@@ -113,10 +136,10 @@ function Home() {
         const ow = await api.get("/gamemates/popular/3");
 
         // API 응답 데이터가 배열인지 확인하고 설정, 배열이 아니면 빈 배열로 설정
-        setLolUsers(Array.isArray(lol.data) ? lol.data : []); 
+        setLolUsers(Array.isArray(lol.data) ? lol.data : []);
         setBgUsers(Array.isArray(bg.data) ? bg.data : []);
         setOwUsers(Array.isArray(ow.data) ? ow.data : []);
-        
+
         console.log(lol.data);
         console.log(bg.data);
         console.log(ow.data);
@@ -166,7 +189,9 @@ function Home() {
     return (
       <div
         className={styles.game}
-        onClick={() => navigate("/search", { state: { gameId: gameIdMap[game] } })}
+        onClick={() =>
+          navigate("/search", { state: { gameId: gameIdMap[game] } })
+        }
         style={{ cursor: "pointer" }}
       >
         <img src={games[game]} />
@@ -174,7 +199,7 @@ function Home() {
     );
   };
 
-  const UserComponent = ({ index,userId,name, tier, game, price }) => {
+  const UserComponent = ({ index, userId, name, tier, game, price }) => {
     return (
       <div
         className={styles.user}
@@ -182,13 +207,33 @@ function Home() {
         style={{ cursor: "pointer" }}
       >
         <div className={styles.imgbox}>
-          <img src={userImages[index % userImages.length]} /> {/* 이미지 인덱스가 배열 크기를 초과하지 않도록 수정 */}
+          <img src={userImages[index % userImages.length]} />{" "}
+          {/* 이미지 인덱스가 배열 크기를 초과하지 않도록 수정 */}
           <div className={styles.biobox}>
-            <div style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "5px", marginTop: "-5px" }}>{name}</div>
+            <div
+              style={{
+                fontSize: "22px",
+                fontWeight: "bold",
+                marginBottom: "5px",
+                marginTop: "-5px",
+              }}
+            >
+              {name}
+            </div>
             <div style={{ marginBottom: "2px" }}>{game}</div>
-            <div style={{ marginBottom: "5px", fontSize: "15px" }}>Level : {tier}</div>
+            <div style={{ marginBottom: "5px", fontSize: "15px" }}>
+              Level : {tier}
+            </div>
             <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-              <img src={coin} style={{ width: "20px", height: "20px", marginLeft: "0", marginTop: "3px" }} />
+              <img
+                src={coin}
+                style={{
+                  width: "20px",
+                  height: "20px",
+                  marginLeft: "0",
+                  marginTop: "3px",
+                }}
+              />
               <div style={{ color: "#f1a100ff" }}>{price}/판</div>
             </div>
           </div>
@@ -218,7 +263,7 @@ function Home() {
             {rawBanners.map((_, i) => (
               <div
                 key={i}
-                className={(i + 1 === index) ? styles.dotActive : styles.dot}
+                className={i + 1 === index ? styles.dotActive : styles.dot}
                 onClick={() => goDot(i)}
               />
             ))}
@@ -252,7 +297,7 @@ function Home() {
           <FontAwesomeIcon icon={faCircleChevronRight} />
         </button>
 
-        <div className={styles.visible_userbox} ref={lolUserBoxRef}> 
+        <div className={styles.visible_userbox} ref={lolUserBoxRef}>
           <div className={styles.userbox}>
             {/* u.map 오류 해결: lolUsers가 null/undefined일 때 빈 배열로 대체 */}
             {(lolUsers || []).map((item, index) => (
@@ -287,7 +332,7 @@ function Home() {
           <FontAwesomeIcon icon={faCircleChevronRight} />
         </button>
 
-        <div className={styles.visible_userbox} ref={bgUserBoxRef}> 
+        <div className={styles.visible_userbox} ref={bgUserBoxRef}>
           <div className={styles.userbox}>
             {/* u.map 오류 해결: bgUsers가 null/undefined일 때 빈 배열로 대체 */}
             {(bgUsers || []).map((item, index) => (
@@ -322,7 +367,7 @@ function Home() {
           <FontAwesomeIcon icon={faCircleChevronRight} />
         </button>
 
-        <div className={styles.visible_userbox} ref={owUserBoxRef}> 
+        <div className={styles.visible_userbox} ref={owUserBoxRef}>
           <div className={styles.userbox}>
             {/* u.map 오류 해결: owUsers가 null/undefined일 때 빈 배열로 대체 */}
             {(owUsers || []).map((item, index) => (

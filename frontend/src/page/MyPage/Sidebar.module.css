@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .outer {
   display: flex;
   flex-direction: column;
@@ -8,6 +9,19 @@
   margin-right: 50px;
   margin-top: 30px;
   border-right: 1px solid rgba(0, 0, 0, 0.15);
+=======
+.outer{
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     width: 120px;
+     padding: 25px 0px;
+     padding-right: 30px;
+     margin-right: 50px;
+     margin-top: 30px;
+     border-right: 1px solid rgba(0,0,0,0.15);
+     flex-shrink: 0;
+>>>>>>> feature/frontend/Home
 }
 
 .link {

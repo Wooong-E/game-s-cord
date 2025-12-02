@@ -36,10 +36,8 @@ const Login = () => {
         setErrorMsg("로그인 응답에 토큰이 없습니다.");
         return;
       }
-
       navigate("/");
       setTimeout(() => window.location.reload(), 100);
-
     } catch (error) {
       console.error("로그인 오류:", error.response || error);
 
