@@ -183,7 +183,7 @@ function Search() {
     setFilterHistory((prev) => prev.filter((item) => item.key !== key));
   };
 
-  const Usercard=({index, img, name, star, price})=>{
+  const Usercard=({index, img, name, star, price,userId})=>{
     return(
       <div className={styles.Userbox}
       onClick={() => navigate("/matchdetail", { state: { userId } })}
@@ -279,6 +279,7 @@ function Search() {
               <Usercard
                 index={index}
                 key={index}
+                userId={user.userId}
                 img={user.profileImageUrl || user1}  // 기본 이미지
                 name={user.userName}
                 star={user.tier}
