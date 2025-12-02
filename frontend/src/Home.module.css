@@ -1,5 +1,5 @@
 .wrapper{
-    margin: 50px 80px;
+    margin: 40px 80px;
     font-size: 14px;
     color: #202124;
 }
@@ -10,7 +10,7 @@
 }
 
 .section h1{
-    margin: 30px 0;
+    margin: 25px 0;
 }
 
 .visible_gamebox, .visible_userbox{
@@ -93,6 +93,7 @@
 
 .userbox{
     display: flex;
+    padding: 5px 0;
     padding-left: 0; /* 겹치게 할 거라 패딩 제거 */
     gap: 20px;
     font-weight: 500;
@@ -102,7 +103,6 @@
     width: 420px;
     height: 180px;
     flex-shrink: 0;
-    overflow: hidden;
     scroll-snap-align: start; /* 스크롤 스냅 */
     margin-left: -80px; /* 카드 겹치기 */
 }
@@ -110,7 +110,8 @@
 .imgbox{
     height: 178px;
     background-color: #ffffff;
-    border: 1px solid rgb(91, 91, 91, 0.2);
+    border: 1px solid rgb(91, 91, 91, 0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -122,7 +123,7 @@
 }
 
 .imgbox:hover{
-    box-shadow: 0 1px 5px 0 hsla(0, 0%, 0%, 0.08), 0 1px 5px -1px hsla(0, 0%, 0%, 0.08);
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.16);
     border: 1px solid rgb(91, 91, 91, 0.1);
     transform: scale(0.95);
 }
@@ -133,6 +134,7 @@
 
 .user img{
     height: 140px;
+    max-width: 150px;
     background-color: #ffffff;
     margin-left: 20px;
 }
@@ -145,4 +147,130 @@
     width: 48px;
     height: 48px;
     visibility: hidden;
+}
+
+.bannerWrapper {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 20px;
+  margin-bottom: 40px;
+}
+
+.bannerSlideBox {
+  display: flex;
+  height: 100%;
+}
+
+.bannerImage {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 20px;
+  image-rendering: -webkit-optimize-contrast;
+
+}
+
+/* Dots */
+.bannerDots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  display: flex;
+  gap: 10px;
+  transform: translateX(-50%);
+}
+
+.dot,
+.dotActive {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ffffff77;
+  cursor: pointer;
+}
+
+.dotActive {
+  background: #ffffff;
+}
+
+
+/* 모바일: 한 화면에 카드 1개씩 */
+@media (max-width: 480px) {
+  .wrapper {
+    margin: 20px;
+  }
+
+  .section{
+    margin-bottom: 30px;
+  }
+
+  .visible_gamebox,
+  .visible_userbox {
+    width: 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+  }
+
+  /* 카드들이 화면을 꽉 채우도록 */
+  .game,
+  .user {
+    width: 100%;        /* 한 화면에 1개 */
+    margin-left: 0;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+  }
+
+  /* 게임 이미지도 전체폭 */
+  .game img {
+    left: 0;
+    width: 100%;
+    height: 160px;
+    border-radius: 15px;
+  }
+
+  .game {
+    height: 160px;
+  }
+
+  /* 유저 카드 전체 */
+  .imgbox {
+    width: 92%;
+    margin-left: 0;
+    padding: 10px;
+    height: 150px;
+    display: flex;
+    gap: 12px;
+  }
+
+  .user img {
+    height: 110px;
+    margin-left: 30px;
+  }
+
+  .biobox {
+    font-size: 14px;
+    margin-left: 30px;
+  }
+
+  /* 스크롤 버튼 숨기기 */
+  .prev,
+  .next {
+    display: none;
+  }
+
+  /* 배너도 줄이기 */
+  .bannerWrapper {
+    height: 160px;
+    margin-bottom: 40px;
+  }
+
+  .bannerImage {
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+  }
 }

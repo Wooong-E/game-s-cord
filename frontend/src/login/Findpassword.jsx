@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const FindPassword = () => {
   const [email, setEmail] = useState("");
@@ -8,8 +8,8 @@ const FindPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "https://your-backend-api.com/find-password",
+      const response = await api.post(
+        "/users/find-password",
         { email }
       );
       if (response.status === 200) {

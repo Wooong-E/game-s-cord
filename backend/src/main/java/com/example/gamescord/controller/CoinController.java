@@ -1,10 +1,7 @@
 package com.example.gamescord.controller;
 
 
-import com.example.gamescord.dto.coin.CoinChargeRequestDTO;
-import com.example.gamescord.dto.coin.CoinHistoryResponseDTO;
-import com.example.gamescord.dto.coin.CoinRefundRequestDTO;
-import com.example.gamescord.dto.coin.CoinResponseDTO;
+import com.example.gamescord.dto.coin.*;
 import com.example.gamescord.security.CustomUserDetails;
 import com.example.gamescord.service.coin.CoinService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -23,6 +20,13 @@ import java.util.List;
 public class CoinController {
 
     private final CoinService coinService;
+
+    @PostMapping("/prepare-charge")
+    public ResponseEntity<PrepareChargeResponseDTO> prepareCharge(
+            @Valid @RequestBody PrepareChargeRequestDTO requestDto) {
+        PrepareChargeResponseDTO response = coinService.prepareCharge(requestDto);
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/charge")
     public ResponseEntity<CoinResponseDTO> chargeCoin(

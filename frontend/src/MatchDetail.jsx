@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./MatchDetail.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "./api/axios";
 
 import profileImage from "./assets/user1.png";
 import pubg from "./assets/Battleground.jpg";
 import lol from "./assets/LeaguofLeagends.jpg";
 import overwatch from "./assets/Overwatch.jpg";
 
-// 특정 게임의 리뷰 데이터를 비동기로 불러오는 함수
 const fetchGameReviews = async (userId, gameId, setReviews) => {
   if (!userId || !gameId) return;
   try {
@@ -29,6 +28,8 @@ const MatchDetail = () => {
   const [matchData, setMatchData] = useState(null);
   const [selectedGame, setSelectedGame] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [newScore, setNewScore] = useState(5);
+  const [newReview, setNewReview] = useState("");
 
   useEffect(() => {
     if (!userId) {
@@ -38,14 +39,13 @@ const MatchDetail = () => {
 
     const fetchMatchDetail = async () => {
       try {
-        const res = await axios.get(`/api/gamemates/profile/${userId}`);
+        const res = await axios.get(`/gamemates/profile/${userId}`);
         setMatchData(res.data);
 
         if (res.data.games && res.data.games.length > 0) {
           const defaultGame = res.data.games[0];
           setSelectedGame(defaultGame);
-          // 초기 게임 선택 후 바로 리뷰 로드
-          await fetchGameReviews(userId, defaultGame.gameId, setReviews); 
+          await fetchGameReviews(userId, defaultGame.gameId, setReviews);
         }
       } catch (e) {
         console.error(e);
@@ -56,7 +56,6 @@ const MatchDetail = () => {
   }, [userId, navigate]);
 
   useEffect(() => {
-    // selectedGame이 변경될 때마다 리뷰 다시 불러오기
     if (selectedGame) {
       fetchGameReviews(userId, selectedGame.gameId, setReviews);
     }
@@ -66,12 +65,70 @@ const MatchDetail = () => {
     setSelectedGame(game);
   };
 
+  const handleMatchRequest = async (game) => {
+    try {
+      const token = localStorage.getItem("accessToken");
+
+      const res = await api.post(
+        "/matches",
+        {
+          orderedUsersId: userId,
+          ordersGameId: selectedGame.gameId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("매치 신청이 완료되었습니다!");
+    } catch (e) {
+      console.error("매치 신청 오류:", e);
+      alert("매치 신청에 실패했습니다.");
+    }
+  };
+
+  const submitReview = async () => {
+  if (!newReview.trim()) {
+    alert("리뷰를 입력해주세요.");
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("accessToken");
+
+    await axios.post(
+      `/gamemates/${userId}/${selectedGame.gameId}/reviews`,
+      {
+        score: newScore,
+        review: newReview
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    );
+
+    alert("리뷰가 등록되었습니다!");
+
+    setNewReview("");
+    setNewScore(5);
+
+    fetchGameReviews(userId, selectedGame.gameId, setReviews);
+  } catch (e) {
+    console.error("리뷰 등록 실패:", e);
+    alert("리뷰 등록에 실패했습니다 사유:",e);
+  }
+};
+
   if (!matchData) return null;
 
-  // 리뷰 패널에 표시할 평점 및 리뷰 수 결정 (선택된 게임 > 전체)
-  const displayRating = selectedGame?.averageScore || matchData.overallAverageScore;
+  const displayRating =
+    selectedGame?.averageScore || matchData.overallAverageScore;
   const displayReviewCount = selectedGame?.reviewCount || matchData.reviewCount;
-  
+
   return (
     <div className="match-detail-page">
       <div className="left-panel">
@@ -87,7 +144,7 @@ const MatchDetail = () => {
       <div className="right-panel">
         <div className="game-list">
           {matchData.games?.map((game) => {
-            if (!game) return null; 
+            if (!game) return null;
 
             return (
               <button
@@ -116,6 +173,20 @@ const MatchDetail = () => {
             );
           })}
         </div>
+        {selectedGame && (
+          <div className="game-detail-panel">
+            <h3>{selectedGame.name}</h3>
+            <p>게임 유형: {selectedGame.gameType || "N/A"}</p>
+            <p>가격: {selectedGame.price}원</p>
+            <p>설명: {selectedGame.description || "등록된 설명이 없습니다."}</p>
+            <button
+              className="match-request-btn"
+              onClick={() => handleMatchRequest(selectedGame)}
+            >
+              매치 신청하기
+            </button>
+          </div>
+        )}
 
         <div className="review-panel">
           <div className="review-title">
@@ -130,12 +201,42 @@ const MatchDetail = () => {
               reviews.map((r, idx) => (
                 <div className="review-item" key={r.reviewId || idx}>
                   <p className="review-content">{r.review}</p>
-                  <span className="review-date">{r.createdAt.substring(0, 10)}</span>
+                  <span className="review-date">
+                    {r.createdAt.substring(0, 10)}
+                  </span>
                 </div>
               ))
             ) : (
               <div className="no-review">리뷰 없음</div>
             )}
+          </div>
+
+          <div className="review-form">
+            <h4>리뷰 작성</h4>
+
+            <div className="review-inputs">
+              <div className="star-select-container">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`star ${newScore >= star ? "filled" : ""}`}
+                    onClick={() => setNewScore(star)}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+
+              <textarea
+                placeholder="리뷰를 입력하세요"
+                value={newReview}
+                onChange={(e) => setNewReview(e.target.value)}
+                className="review-textarea"
+              />
+              <button className="submit-review-btn" onClick={submitReview}>
+                리뷰 등록
+              </button>
+            </div>
           </div>
         </div>
       </div>

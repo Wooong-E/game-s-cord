@@ -2,7 +2,8 @@ import "../css/CoinRecharge.css";
 import coinImage from "../assets/coin.jpg";
 import HeaderTabs from "../Coin/HeaderTabs";
 import { useNavigate } from "react-router-dom";
-
+import Sidebar from "../page/MyPage/Sidebar";
+import styles from ".././page/MyPage/MyPage.module.css";
 //코인 가격 배열 points: 코인 갯수 price : 가격, id: 인덱스
 const coinProducts = [
   { id: 1, points: "500", price: "4,680" },
@@ -55,17 +56,20 @@ const CoinItem = ({ id, points, price }) => {
 
 const CoinRecharge = () => {
   return (
-    <div>
-      <HeaderTabs />
-      <div className="coin-list-container">
-        {coinProducts.map((product, index) => (
-          <CoinItem
-            key={index}
-            id={product.id}
-            points={product.points}
-            price={product.price}
-          />
-        ))}
+    <div className={styles.wrapper} >
+      <Sidebar/>
+      <div style={{flex : 1, marginRight:"80px", minHeight:"500px"}}>
+        <HeaderTabs />
+        <div className="coin-list-container">
+          {coinProducts.map((product, index) => (
+            <CoinItem
+              key={index}
+              id={product.id}
+              points={product.points}
+              price={product.price}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

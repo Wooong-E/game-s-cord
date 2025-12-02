@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import styles from "./Search.module.css"
 import coin from "../assets/coin.jpg"
+import crown from "../assets/crown.jpg"
 import user1 from "../assets/user1.png"
 import user2 from "../assets/user2.png"
 import user3 from "../assets/user3.png"
@@ -16,13 +17,15 @@ function Search() {
   const [showGame, setShowGame] = useState(false);
   const [showGender, setShowGender] = useState(false);
   const [showRank, setShowRank] = useState(false);
+  const [showSort, setShowSort] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
 
   const [filters, setFilters] = useState({
     gameId: "",
     game: "",       // 게임 종류(리그 오브 레전드 / 배틀그라운드 / 오버워치)
     gender: "",     // 성별(남 / 여 / 모두)
-    rank: ""        // 티어 / 랭크(S, A, B, C, F)
+    rank: "",        // 티어 / 랭크(S, A, B, C, F)
+    sortBy:"reviewsScore"
   });
   const [filterHistory, setFilterHistory] = useState([]);
 
@@ -31,6 +34,7 @@ function Search() {
   const dropdownGameRef = useRef(null);
   const dropdownGenderRef = useRef(null);
   const dropdownRankRef = useRef(null);
+  const dropdownSortRef = useRef(null);
 
   useEffect(() => {
     if (!location.state?.gameId) return;
@@ -46,22 +50,25 @@ function Search() {
     setFilters(prev => ({
       ...prev,
       gameId: id,
-      game: gameNameMap[id]
+      game: gameNameMap[id],
+      sortBy: "reviewsScore"
     }));
 
     // 필터 히스토리에도 자동 추가
     addFilterHistory("game", gameNameMap[id]);
+    addFilterHistory("sortBy", "평점순");
   }, [location.state]);
 
 
   //API 요청 함수
   const fetchResults = async () => {
       try {
-        const res = await axios.get(`/api/gamemates/filter`, {
+        const res = await api.get(`/gamemates/filter`, {
           params: {
             gameId: filters.gameId || undefined,
             gender: filters.gender || undefined,
-            tier: filters.rank || undefined
+            tier: filters.rank || undefined,
+            sortBy: filters.sortBy || undefined
           }
         });
         setSearchResults(res.data);
@@ -87,6 +94,9 @@ function Search() {
       }
       if (dropdownRankRef.current && !dropdownRankRef.current.contains(e.target)) {
         setShowRank(false);
+      }
+      if (dropdownSortRef.current && !dropdownSortRef.current.contains(e.target)) {
+          setShowSort(false);
       }
   };
     document.addEventListener("mouseup", handleClickOutside);
@@ -149,6 +159,23 @@ function Search() {
     setShowRank(false);
   };
 
+  const handleSortFilter = (value) => {
+    setFilters(prev => ({
+      ...prev,
+      sortBy: value
+    }));
+
+    const sortLabelMap = {
+      reviewsScore: "평점순",
+      reviewsCount: "인기순",
+      highPrice: "가격 높은 순",
+      lowPrice: "가격 낮은 순",
+    };
+
+    addFilterHistory("sortBy", sortLabelMap[value]);
+    setShowSort(false);
+  };
+
   //필터 삭제
   const removeFilter = (key) => {
     if (key == "game") return;
@@ -156,16 +183,17 @@ function Search() {
     setFilterHistory((prev) => prev.filter((item) => item.key !== key));
   };
 
-  const Usercard=({index, img, name, star, num, price})=>{
+  const Usercard=({index, img, name, star, price})=>{
     return(
       <div className={styles.Userbox}>
         <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
           <img src={user[index]} style={{height:"170px"}}></img>
         </div>
         <div className={styles.Userbio}>
-          <div style={{fontSize:"18px", fontWeight:"bold", marginBottom:"5px"}}>{name}</div>
-          <div>
-            ⭐ {star} | 받은 의뢰 수 {num}
+          <div style={{fontSize:"18px", fontWeight:"bold"}}>{name}</div>
+          <div style={{marginBottom:"-3px", display:"flex", alignItems:"center"}}>
+            <img src={crown} style={{width:"18px", height:"14px", marginLeft:"1px", marginRight:"4px"}}></img> 
+            <div>Level : {star}</div> 
           </div>
           <div style={{display:"flex", alignItems:"center", gap:"3px"}}>
             <img src={coin} style={{width:"20px", borderRadius:"50%"}}/>
@@ -207,19 +235,35 @@ function Search() {
             </div>
             <div ref={dropdownGenderRef} style={{position: "relative"}}>
               <button className={filters.gender ? styles.border : ""} type="button" onClick={(e) =>{e.stopPropagation(); setShowGender((prev) => !prev);}}>성별</button>
-              <ul className={showGender ? styles.show : ""}style={{width:"80px"}}>
+              <ul className={showGender ? styles.show : ""}style={{width:"60px"}}>
                 <li onClick={() => {handleGenderFilter("남")}}>남성</li>
                 <li onClick={() => {handleGenderFilter("여")}}>여성</li>
               </ul>
             </div>
           </div>
+          <div ref={dropdownSortRef} style={{position: "relative"}}>
+            <button
+              className={filters.sortBy ? styles.border : ""} type="button"
+              onClick={(e) => { e.stopPropagation(); setShowSort(prev => !prev); }}
+            >
+              정렬순
+            </button>
+
+            <ul className={showSort ? styles.show : ""} style={{ width: "120px" }}>
+              <li onClick={() => handleSortFilter("reviewsScore")}>평점순</li>
+              <li onClick={() => handleSortFilter("reviewsCount")}>인기순</li>
+              <li onClick={() => handleSortFilter("highPrice")}>가격 높은 순</li>
+              <li onClick={() => handleSortFilter("lowPrice")}>가격 낮은 순</li>
+            </ul>
+          </div>
+
         </div>
 
         <div className={styles.activeFilters}>
             {filterHistory.map((f, index) => (
               <div key={index} className={styles.filterTag}>
                 {f.label}
-                {f.key !== "game" && (
+                {f.key !== "game" && f.key !== "sortBy" && (
                   <button onClick={() => removeFilter(f.key)}>✕</button>
                 )}
               </div>
@@ -234,8 +278,7 @@ function Search() {
                 key={index}
                 img={user.profileImageUrl || user1}  // 기본 이미지
                 name={user.userName}
-                star={user.score || "5.0"}
-                num={user.reviewCount || "0"}
+                star={user.tier}
                 price={user.price}
               />
             ))

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../login.css";
-
-const BACKEND_URL = "http://localhost:8080";
+import api from "../api/axios";
 
 const Login = () => {
   const [input, setInput] = useState({ id: "", password: "" });
@@ -16,6 +15,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
+
     const { id, password } = input;
 
     const requestBody = {
@@ -24,64 +24,32 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch(`${BACKEND_URL}/api/users/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
-      let responseData;
-      let displayMsg = "로그인 처리 중 오류가 발생했습니다.";
-      const contentType = response.headers.get("content-type");
-      const isJson = contentType && contentType.includes("application/json");
+      const response = await api.post("/users/login", requestBody);
 
-      if (isJson) {
-        responseData = await response.json();
+      const { accessToken, refreshToken } = response.data;
+
+      if (accessToken && refreshToken) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        console.log("JWT 토큰 저장 완료");
       } else {
-        responseData = await response.text();
+        setErrorMsg("로그인 응답에 토큰이 없습니다.");
+        return;
       }
-
-      if (response.ok) {
-        console.log("로그인 성공:", responseData);
-        const accessToken = responseData.accessToken;
-        const refreshToken = responseData.refreshToken;
-        if (accessToken && refreshToken) {
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          console.log("JWT 토큰 저장 완료");
-        } else {
-          console.warn("응답 데이터에 토큰이 없습니다.");
-        }
-
-        navigate("/");
-
-        setTimeout(() => {
-          //navigate용 delay
-          window.location.reload();
-        }, 100);
-      } else {
-        console.error(`로그인 실패 응답 (${response.status}):`, responseData);
-        if (isJson && responseData.message) {
-          displayMsg = responseData.message;
-        } else if (
-          typeof responseData === "string" &&
-          response.status === 400
-        ) {
-          displayMsg = responseData;
-        } else if (response.status === 401) {
-          displayMsg = "아이디 또는 비밀번호가 일치하지 않습니다.";
-        } else if (response.status === 404) {
-          displayMsg = "서버 경로를 찾을 수 없습니다.";
-        } else {
-          displayMsg = `서버 오류 발생 (상태 코드: ${response.status})`;
-        }
-        setErrorMsg(displayMsg);
-      }
+      navigate("/");
+      setTimeout(() => window.location.reload(), 100);
     } catch (error) {
-      console.error("네트워크 또는 처리 오류:", error);
+      console.error("로그인 오류:", error.response || error);
 
-      setErrorMsg("서버와의 통신 연결에 문제가 발생했습니다.");
+      if (error.response?.status === 401) {
+        setErrorMsg("아이디 또는 비밀번호가 일치하지 않습니다.");
+      } else if (error.response?.status === 404) {
+        setErrorMsg("서버를 찾을 수 없습니다.");
+      } else if (error.response?.data?.message) {
+        setErrorMsg(error.response.data.message);
+      } else {
+        setErrorMsg("서버와의 통신 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -103,11 +71,14 @@ const Login = () => {
           onChange={onChangePassword}
           value={input.password}
         />
+
         {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+
         <div>
           <Link to="/signup">회원가입</Link>
           <Link to="/find-password">비밀번호 재설정</Link>
         </div>
+
         <button type="submit">Log in</button>
       </form>
     </div>

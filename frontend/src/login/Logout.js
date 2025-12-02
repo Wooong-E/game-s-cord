@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-const BACKEND_URL = "http://localhost:8080";
+import api from '../api/axios';
 
 const useLogout = () => {
     const navigate = useNavigate();
@@ -10,7 +8,7 @@ const useLogout = () => {
         const accessToken = localStorage.getItem('accessToken');
         if (accessToken) {
             try {
-                await axios.post(`${BACKEND_URL}/api/auth/logout`, {}, {
+                await api.post(`/auth/logout`, {}, {
                     headers: { 'Authorization': `Bearer ${accessToken}` }
                 });
                 console.log("server discard token complete");

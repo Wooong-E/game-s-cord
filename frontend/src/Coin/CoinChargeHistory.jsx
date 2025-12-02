@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import HeaderTabs from "./HeaderTabs";
 import PaymentItem from "./PaymentItem";
 import "../css/CoinChargeHistory.css";
-
-// API 호출 기본 URL
-const BASE_URL = "http://localhost:8080/api/coins";
+import Sidebar from "../page/MyPage/Sidebar";
+import styles from ".././page/MyPage/MyPage.module.css";
 
 const CoinChargeHistory = () => {
   // 상태: 충전 내역, 로딩 상태, 에러 상태 관리
@@ -30,7 +29,7 @@ const CoinChargeHistory = () => {
     };
 
     try {
-      const response = await axios.get(`${BASE_URL}/history`, config);
+      const response = await api.get(`/coins/history`, config);
 
       const transformedData = response.data.map((item, index) => ({
         id: item.coinId || index, // key로 사용할 ID
@@ -76,7 +75,7 @@ const CoinChargeHistory = () => {
 
     try {
       // API Call: POST /api/coins/refund
-      const response = await axios.post(`${BASE_URL}/refund`, payload, config);
+      const response = await api.post(`/coins/refund`, payload, config);
 
       // API 응답 구조를 확인하여 성공 여부를 판단합니다.
       if (response.data && response.data.success) {
@@ -126,21 +125,27 @@ const CoinChargeHistory = () => {
   // 데이터가 없는 경우
   if (history.length === 0) {
     return (
-      <div>
-        <HeaderTabs />
-        <div className="empty-message">충전 내역이 없습니다.</div>
+      <div className={styles.wrapper} >
+        <Sidebar/>
+        <div style={{flex : 1, marginRight:"80px", minHeight:"500px"}}>
+          <HeaderTabs />
+          <div className="empty-message">충전 내역이 없습니다.</div>
+        </div>
       </div>
     );
   }
 
   // 내역 목록 렌더링
   return (
-    <div>
-      <HeaderTabs />
-      <div className="payment-list-wrapper">
-        {history.map((item) => (
-          <PaymentItem key={item.id} data={item} onRefund={handleRefund} />
-        ))}
+    <div className={styles.wrapper} >
+      <Sidebar/>
+      <div style={{flex : 1, marginRight:"80px", minHeight:"500px"}}>
+        <HeaderTabs />
+        <div className="payment-list-wrapper">
+          {history.map((item) => (
+            <PaymentItem key={item.id} data={item} onRefund={handleRefund} />
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -5,12 +5,10 @@ import AccountTransfer from "../assets/accountTransfer.png";
 import EasyPayment from "../assets/Easypayment.png";
 
 import PaymentConfirmPopup from "./PaymentConfirmPopup";
-import axios from "axios";
+import api from "../api/axios";
 
 import "../css/Payment.css";
 
-// API 호출 기본 URL 및 엔드포인트
-const BASE_URL = "http://localhost:8080/api/coins";
 
 const Payment = () => {
   const location = useLocation();
@@ -83,7 +81,7 @@ const Payment = () => {
     };
 
     try {
-      const response = await axios.post(`${BASE_URL}/charge`, payload, config);
+      const response = await api.post(`/coins/charge`, payload, config);
 
       // 성공 처리
       const successMessage =

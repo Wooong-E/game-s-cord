@@ -61,3 +61,9 @@
   height: 30px;
   font-size: 12px;
 }
+
+.empty-message{
+  margin: 60px 0 0 40px;
+  font-size: 20px;
+  height: 280px;
+}

@@ -36,6 +36,11 @@ public class User {
   @Column(name = "login_pwd", nullable = false)
   private String loginPwd;
 
+  @Size(max = 255)
+  @NotNull
+  @Column(name = "email", nullable = false, unique = true)
+  private String email;
+
   @NotNull
   @Column(name = "point", nullable = false)
   private Long point;
@@ -69,4 +74,14 @@ public class User {
 
   @Column(name = "lockout_until")
   private LocalDateTime lockoutUntil;
+
+  @Column(name = "enabled", nullable = false)
+  private boolean enabled = false;
+
+  @Size(max = 255)
+  @Column(name = "reset_token")
+  private String resetToken;
+
+  @Column(name = "reset_token_expiry")
+  private LocalDateTime resetTokenExpiry;
 }

@@ -34,10 +34,10 @@ public class RefreshTokenService {
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with loginId: " + loginId));
 
-        // 기존에 해당 유저의 리프레시 토큰이 있다면 삭제
-        refreshTokenRepository.deleteByUser(user);
+        // 기존 토큰이 있는지 확인하고, 있으면 업데이트, 없으면 새로 생성
+        RefreshToken refreshToken = refreshTokenRepository.findByUser(user)
+                .orElse(new RefreshToken());
 
-        RefreshToken refreshToken = new RefreshToken();
         refreshToken.setUser(user);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());

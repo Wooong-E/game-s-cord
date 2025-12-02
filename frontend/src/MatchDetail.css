@@ -8,6 +8,23 @@
   padding: 20px;
 }
 
+.match-request-btn {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  background-color: #3582da;
+  color: white;
+  font-size: 15px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.match-request-btn:hover {
+  background-color: #3582da;
+}
+
 .left-panel {
   width: 280px;
   background: #fff;
@@ -226,4 +243,66 @@
   color: #aaa;
   text-align: center;
   padding: 20px 0;
+}
+
+.star-select-container {
+  display: flex;
+  gap: 8px;
+  font-size: 32px;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.star {
+  color: #ccc;
+  transition: color 0.2s;
+}
+
+.star.filled {
+  color: #FFD700;
+}
+
+.star:hover {
+  color: #ffdb4d;
+  transform: scale(1.1);
+}
+
+.review-form {
+  margin-top: 20px;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.review-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.score-select {
+  width: 120px;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.review-textarea {
+  width: 100%;
+  height: 80px;
+  padding: 10px;
+  resize: none;
+  font-size: 14px;
+}
+
+.submit-review-btn {
+  background-color: #3582da;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.submit-review-btn:hover {
+  background-color:#3582da;
 }

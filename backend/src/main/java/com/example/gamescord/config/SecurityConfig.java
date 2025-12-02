@@ -37,12 +37,16 @@ public class SecurityConfig {
                                 "/api/users/signup",
                                 "/api/users/login",
                                 "/api/auth/refresh",
+                                "/api/auth/request-verification",
+                                "/api/users/check-id",
+
 
                                 // Gamemate Public
                                 "/api/gamemates/search",
                                 "/api/gamemates/profile/**",
                                 "/api/gamemates/popular/**",
                                 "/api/gamemates/filter",
+                                "/api/users/check-id",
 
                                 // Swagger
                                 "/swagger-ui/**",

@@ -25,7 +25,7 @@ function Sidebar() {
       <Link
         to="/coin"
         className={`${styles.link} ${
-          location.pathname === "/" ? styles.active : ""
+          location.pathname === "/coin" || location.pathname ==="/coinHistory" ? styles.active : ""
         }`}
       >
         <div>결제 및 충전</div>

@@ -38,6 +38,22 @@ public class UserRepository {
         return Optional.ofNullable(foundUser);
     }
 
+    public Optional<User> findByEmail(String email) {
+        User foundUser = queryFactory
+                .selectFrom(user)
+                .where(user.email.eq(email))
+                .fetchOne();
+        return Optional.ofNullable(foundUser);
+    }
+
+    public Optional<User> findByResetToken(String resetToken) {
+        User foundUser = queryFactory
+                .selectFrom(user)
+                .where(user.resetToken.eq(resetToken))
+                .fetchOne();
+        return Optional.ofNullable(foundUser);
+    }
+
     public User findById(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다"));
@@ -49,6 +65,15 @@ public class UserRepository {
                 .selectOne()
                 .from(user)
                 .where(user.id.eq(id))
+                .fetchFirst();
+        return count != null;
+    }
+
+    public boolean existsByLoginId(String loginId) {
+        Integer count = queryFactory
+                .selectOne()
+                .from(user)
+                .where(user.loginId.eq(loginId))
                 .fetchFirst();
         return count != null;
     }
