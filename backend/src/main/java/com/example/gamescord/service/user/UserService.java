@@ -73,7 +73,6 @@ public class UserService {
         newUser.setEmail(requestDto.getEmail());
         newUser.setUsersName(requestDto.getUsersName());
         newUser.setUsersBirthday(requestDto.getUsersBirthday());
-        newUser.setUsersDescription(requestDto.getUsersDescription());
         newUser.setGender("None");
         newUser.setPoint(0L);
         newUser.setLoginFailCount(0);
