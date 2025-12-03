@@ -11,6 +11,7 @@ public class GamemateResponseDTO {
     private Long gamemateId;
     private Long userId;
     private String userName;
+    private String profileImageUrl;
     private Long gameId;
     private String gameName;
     private Long price;
@@ -24,6 +25,7 @@ public class GamemateResponseDTO {
                 .gamemateId(gamemate.getId())
                 .userId(gamemate.getUsers().getId())
                 .userName(gamemate.getUsers().getUsersName())
+                .profileImageUrl(gamemate.getUsers().getProfileImageUrl())
                 .gameId(gamemate.getGames().getId())
                 .gameName(gamemate.getGames().getGamesName())
                 .price(gamemate.getPrice())

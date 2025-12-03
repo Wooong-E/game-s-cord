@@ -53,4 +53,11 @@ public class CoinController {
         CoinResponseDTO response = coinService.refundCoin(userDetails.getUsername(), requestDto);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity<CoinBalanceResponseDTO> getBalance(
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+        CoinBalanceResponseDTO response = coinService.getBalance(userDetails.getUsername());
+        return ResponseEntity.ok(response);
+    }
 }
