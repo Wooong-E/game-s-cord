@@ -1,11 +1,9 @@
 /* 전역 컨테이너 */
 
 .join-game-match-container {
-  max-width: 1200px;
+  max-width: 1500px;
 
   margin: 0 auto;
-
-  padding: 30px 20px;
 
   font-family: Arial, sans-serif;
 
@@ -26,7 +24,7 @@
 
 .content-area {
   display: flex;
-
+  margin-right: 300px;
   gap: 40px;
 }
 
@@ -230,6 +228,9 @@
   align-items: center;
 
   margin-bottom: 5px;
+}
+
+.rate-input-row time-input-row {
 }
 
 /* 시계 아이콘 스타일 */
@@ -626,7 +627,7 @@
 
   padding-top: 10px;
 
-  margin-right: 200px;
+  margin-right: 100px;
 }
 
 .register-button,

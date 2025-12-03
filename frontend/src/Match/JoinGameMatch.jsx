@@ -225,35 +225,7 @@ const JoinGameMatch = () => {
     <div className="join-game-match-container">
       <h1 className="page-header">게임 메이트 등록</h1>
       <div className="content-area">
-        <div className="profile-section">
-          <div className="available-time">
-            <div className="available-time-header">
-              <FaClock className="clock-icon" />
-              <label className="section-title">이용가능 시간대</label>
-            </div>
-            <div className="time-game-name-input-row"></div>
-            <div className="rate-input-row time-input-row">
-              <label>이용 시간:</label>
-              <input
-                type="time"
-                value={availableTime.start}
-                onChange={(e) =>
-                  setAvailableTime({ ...availableTime, start: e.target.value })
-                }
-                className="time-input"
-              />
-              <span className="time-separator">~</span>
-              <input
-                type="time"
-                value={availableTime.end}
-                onChange={(e) =>
-                  setAvailableTime({ ...availableTime, end: e.target.value })
-                }
-                className="time-input"
-              />
-            </div>
-          </div>
-        </div>
+        <div className="profile-section"></div>
         <div className="settings-section">
           <div className="setting-box">
             <h3 className="setting-header">
@@ -322,6 +294,33 @@ const JoinGameMatch = () => {
                   onChange={handleRateChange}
                 />
               ))}
+            </div>
+          </div>
+          <div className="available-time">
+            <div className="available-time-header">
+              <FaClock className="clock-icon" />
+              <label className="section-title">이용가능 시간대</label>
+            </div>
+            <div className="time-game-name-input-row"></div>
+            <div className="rate-input-row time-input-row">
+              <label>이용 시간:</label>
+              <input
+                type="time"
+                value={availableTime.start}
+                onChange={(e) =>
+                  setAvailableTime({ ...availableTime, start: e.target.value })
+                }
+                className="time-input"
+              />
+              <span className="time-separator">~</span>
+              <input
+                type="time"
+                value={availableTime.end}
+                onChange={(e) =>
+                  setAvailableTime({ ...availableTime, end: e.target.value })
+                }
+                className="time-input"
+              />
             </div>
           </div>
           <div className="action-buttons">
