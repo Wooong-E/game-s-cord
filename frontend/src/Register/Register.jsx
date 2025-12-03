@@ -163,7 +163,6 @@ const Register = () => {
         verificationCode: verificationCode,
         usersName: name,
         usersBirthday: birth,
-        usersDescription: "안녕하세요, 잘 부탁드립니다.",
       });
 
       alert("회원가입에 성공하였습니다!!");
