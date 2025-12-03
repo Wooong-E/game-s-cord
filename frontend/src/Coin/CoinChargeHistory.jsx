@@ -79,9 +79,7 @@ const CoinChargeHistory = () => {
       // API 응답 구조를 확인하여 성공 여부를 판단합니다.
       if (response.data && response.data.success) {
         // 성공 메시지 표시
-        alert(
-          `환불이 성공적으로 완료되었습니다. (환불 코인: ${response.data.coinAmount}, 현재 잔액: ${response.data.currentBalance})`
-        );
+        alert(`환불이 성공적으로 완료되었습니다.`);
 
         // 핵심: history 상태를 업데이트하여 환불된 항목을 목록에서 제거합니다.
         setHistory((prevHistory) =>
