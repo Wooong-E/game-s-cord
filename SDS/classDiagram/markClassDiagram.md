@@ -24,7 +24,9 @@ classDiagram
     class MarkRepository {
         <<Repository>>
         -SDJpaMarkRepository markRepository
+        -EntityManager em
         -JPAQueryFactory queryFactory
+        +MarkRepository(em: EntityManager)
         +saveMark(mark: Mark): void
         +findMarkByUsersId(usersId: Long): List~Mark~
         +findByUsersIdAndMarkedUsersId(usersId: Long, markedUsersId: Long): Mark
