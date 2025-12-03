@@ -197,28 +197,4 @@ public class GamemateService {
                 .map(GamemateResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
-
-    /*
-    @Transactional(readOnly = true)
-    public List<GamemateResponseDTO> searchGamematesByFilter(Long gameId, String gender, String tier) {
-        boolean hasGender = gender != null && !gender.isEmpty() && !"모두".equals(gender);
-        boolean hasTier = tier != null && !tier.isEmpty();
-
-        List<Gamemate> gamemates;
-
-        if (hasGender && hasTier) {
-            gamemates = gameMateRepository.findByGenderAndTier(gender, tier, gameId);
-        } else if (hasGender) {
-            gamemates = gameMateRepository.findByGender(gender, gameId);
-        } else if (hasTier) {
-            gamemates = gameMateRepository.findByTier(tier, gameId);
-        } else {
-            gamemates = gameMateRepository.findByGameId(gameId);
-        }
-
-        return gamemates.stream()
-                .map(GamemateResponseDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-    */
 }

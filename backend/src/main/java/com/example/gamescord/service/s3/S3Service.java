@@ -8,7 +8,10 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
@@ -34,9 +37,12 @@ public class S3Service {
    * @throws IOException 파일 처리 중 발생한 오류
    */
   public String uploadFile(MultipartFile file) throws IOException {
-    // 파일의 고유 이름 생성 (중복 방지)
+    // 파일의 원본 이름에서 공백 및 특수문자 인코딩
     String originalFilename = file.getOriginalFilename();
-    String uniqueFileName = UUID.randomUUID().toString() + "-" + originalFilename;
+    String encodedFilename = (originalFilename == null) ? "file" : UriUtils.encode(originalFilename, StandardCharsets.UTF_8);
+
+    // 파일의 고유 이름 생성 (중복 방지)
+    String uniqueFileName = UUID.randomUUID().toString() + "-" + encodedFilename;
 
     // 1. S3에 파일 업로드 요청 생성
     PutObjectRequest putObjectRequest = PutObjectRequest.builder()

@@ -1,6 +1,5 @@
 package com.example.gamescord.domain;
 
-import com.example.gamescord.dto.user.UserResponseDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -77,5 +76,4 @@ public class User {
   @Column(name = "enabled", nullable = false)
   private boolean enabled = false;
 
-  
 }
