@@ -37,7 +37,7 @@
 .profile-img {
   width: 150px;
   height: 150px;
-  border-radius: 50%;
+  border-radius: 20%;
   object-fit: cover;
   margin-bottom: 20px;
 }
@@ -89,8 +89,8 @@
   background: #e0e0e0;           
 }
 .game-icon {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   border-radius: 8px;
   margin-right: 10px;         
 }
@@ -102,6 +102,7 @@
 }
 
 .game-name {
+  font-size: 25px;
   font-weight: 600;
   margin-bottom: 5px;           
 }
@@ -310,21 +311,24 @@
     background: #f9f9f9; /* 배경색으로 주변과 구분 */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 은은한 그림자 */
     margin-bottom: 30px; /* 리뷰 패널과의 간격 */
     border: 1px solid #eee; /* 테두리 추가 */
 }
 .game-detail-name {
-    font-size: 30px;
+    font-size: 45px;
     font-weight:bold;
     line-height: 1.6;
     color: #000000;
     margin-bottom: 10px;
 
 }
-
+.game-detail-coin {
+    height: 20px;
+    width: 20px;
+}
 .game-detail-panel p {
     font-size: 15px;
+    font-weight:bold;
     line-height: 1.6;
     color: #000000;
     margin-bottom: 10px;
