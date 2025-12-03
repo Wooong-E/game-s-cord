@@ -195,6 +195,19 @@ const Header = () => {
     }
   };
 
+  function translateGameName(gameName) {
+    switch (gameName) {
+      case "League of Legends":
+        return "리그 오브 레전드";
+      case "Battlegrounds":
+        return "배틀 그라운드";
+      case "Overwatch":
+        return "오버워치";
+      default:
+        return gameName;
+    }
+} 
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.section}>
@@ -313,8 +326,10 @@ const Header = () => {
                         {item.userName}
                       </div>
                       <div className={styles.suggestionSkill}>
-                        Skill:{" "}
-                        {(item.games || []).map((g) => g.gameName).join(", ")}
+                        Skill:{" "} 
+                        {(item.games || [])
+                        .map((g) => translateGameName(g.gameName))
+                        .join(", ")}
                       </div>
                     </div>
 
