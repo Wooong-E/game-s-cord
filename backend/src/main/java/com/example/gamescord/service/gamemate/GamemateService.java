@@ -132,6 +132,8 @@ public class GamemateService {
                             .gameName(gamemate.getGames().getGamesName())
                             .price(gamemate.getPrice())
                             .tier(gamemate.getTier())
+                            .start(gamemate.getStart().toString())
+                            .end(gamemate.getEnd().toString())
                             .averageScore(formatScore(averageScore))
                             .build();
                 })
