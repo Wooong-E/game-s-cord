@@ -64,7 +64,7 @@ function MarkPage(){
     const UserComponent = ({name, id, img, isFavorite}) => {
         const navigate = useNavigate();
         const handleUserClick = () => {
-            navigate("/")
+            navigate("/matchdetail", {state: { userId: id },});
         };
         const handleStarClick = (e) => {
             e.stopPropagation(); // 사용자 박스 클릭 이벤트 전파 막기
