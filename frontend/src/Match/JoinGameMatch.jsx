@@ -236,10 +236,10 @@ const JoinGameMatch = () => {
     }
 
     // 3) 메인 프로필 이미지 체크
-    if (!profileFiles[0]) {
+    /* if (!profileFiles[0]) {
       alert("메인 프로필 이미지를 등록해야 합니다.");
       return;
-    }
+    }*/
 
     // -----------------------------
     // 2. JSON 데이터 구성 (요구사항 맞춤)
