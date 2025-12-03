@@ -22,14 +22,13 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // Spring Security의 필터 체인을 정의
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // csrf 비활성화
-                .httpBasic(httpBasic -> httpBasic.disable()) // httpBasic 인증 방식 비활성화
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션을 사용하지 않도록 변경
-                .formLogin(form -> form.disable()) // Spring 기본 로그인 폼 비활성화
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .formLogin(form -> form.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.GET, "/api/gamemates/*/*/reviews").permitAll()
                         .requestMatchers(
@@ -42,33 +41,34 @@ public class SecurityConfig {
 
                                 "/api/auth/request-password-reset",
                                 "/api/auth/reset-password",
+                                "/api/users/check-id",
 
                                 // Gamemate Public
                                 "/api/gamemates/search",
                                 "/api/gamemates/profile/**",
                                 "/api/gamemates/popular/**",
                                 "/api/gamemates/filter",
-                                "/api/users/check-id",
+
+                                // Games Public
+                                "/api/games/**",
 
                                 // Swagger
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-resources/**"
                         ).permitAll()
-                        .anyRequest().authenticated() // 위 경로 외 모든 요청은 인증 필요
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // 비밀번호 암호화를 위한 PasswordEncoder 빈 등록
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // 인증 처리를 위한 AuthenticationManager 빈 등록
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
