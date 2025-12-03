@@ -314,25 +314,23 @@
     margin-bottom: 30px; /* 리뷰 패널과의 간격 */
     border: 1px solid #eee; /* 테두리 추가 */
 }
+.game-detail-name {
+    font-size: 30px;
+    font-weight:bold;
+    line-height: 1.6;
+    color: #000000;
+    margin-bottom: 10px;
 
-.game-detail-panel h3 {
-    font-size: 20px;
-    font-weight: 700;
-    color: #333;
-    margin-bottom: 15px;
-    border-bottom: 2px solid #3582da; /* 제목 아래 파란색 구분선 */
-    padding-bottom: 5px;
-    display: inline-block; /* 구분선이 제목 너비만큼만 차지하도록 */
 }
 
 .game-detail-panel p {
     font-size: 15px;
     line-height: 1.6;
-    color: #555;
+    color: #000000;
     margin-bottom: 10px;
 }
 
 .game-detail-panel p strong {
     font-weight: 600;
-    color: #333;
+    color: #000000;
 }

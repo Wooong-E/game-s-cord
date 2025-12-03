@@ -10,6 +10,7 @@ import profileImage from "./assets/user1.png";
 import pubg from "./assets/Battleground.jpg";
 import lol from "./assets/LeaguofLeagends.jpg";
 import overwatch from "./assets/Overwatch.jpg";
+import coin from "./assets/coin.jpg"
 
 
 const fetchGameReviews = async (userId, gameId, setReviews) => {
@@ -207,9 +208,10 @@ const MatchDetail = () => {
 
         {selectedGame && (
           <div className="game-detail-panel">
-            <h3>{selectedGame.name}</h3>
-            <p>게임 유형: {selectedGame.gameName || "N/A"}</p>
-            <p>가격: {selectedGame.price}원</p>
+            <p className="game-detail-name">{selectedGame.gameName || "N/A"}</p>
+            <p>
+              <img src={coin} className="game-detail-coin"></img>
+              {selectedGame.price}/판</p>
             <p>티어: {selectedGame.tier || "등록된 설명이 없습니다."}</p>
             <p>시간: {selectedGame.start}~{selectedGame.end}</p>
 
