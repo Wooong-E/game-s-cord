@@ -3,6 +3,7 @@ package com.example.gamescord.service.match;
 import com.example.gamescord.domain.Gamemate;
 import com.example.gamescord.domain.Match;
 import com.example.gamescord.domain.User;
+import com.example.gamescord.dto.match.MatchListResponseDTO;
 import com.example.gamescord.dto.match.MatchRequestDTO;
 import com.example.gamescord.dto.match.MatchResponseDTO;
 import com.example.gamescord.dto.match.MatchStatusUpdateByKeyDTO;
@@ -79,20 +80,44 @@ public class MatchService {
 
     // 내가 보낸 매칭 요청 목록 조회
     @Transactional(readOnly = true)
-    public List<MatchResponseDTO> getSentMatches(Long userId) {
+    public List<MatchListResponseDTO> getSentMatches(Long userId) {
         List<Match> matches = matchRepository.findByOrderUsersId(userId);
+
         return matches.stream()
-                .map(MatchResponseDTO::of)
+                .map(match -> {
+                    User orderedUser = userRepository.findById(match.getOrderedUsersId());
+                    return MatchListResponseDTO.builder()
+                            .ordersId(match.getId())
+                            .usersId(match.getUsers().getId())
+                            .orderedUsersId(match.getOrderedUsersId())
+                            .orderUsersId(match.getOrderUsersId())
+                            .ordersGameId(match.getOrdersGameId())
+                            .orderStatus(match.getOrderStatus())
+                            .orderedUsername(orderedUser.getUsersName()) // ★ 상대방 이름
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
 
     // 매칭 요청 목록 조회
     @Transactional(readOnly = true)
-    public List<MatchResponseDTO> getReceivedMatches(Long userId) {
+    public List<MatchListResponseDTO> getReceivedMatches(Long userId) {
         List<Match> matches = matchRepository.findByOrderedUsersId(userId);
+
         return matches.stream()
-                .map(MatchResponseDTO::of)
+                .map(match -> {
+                    User requesterUser = userRepository.findById(match.getOrderUsersId());
+                    return MatchListResponseDTO.builder()
+                            .ordersId(match.getId())
+                            .usersId(match.getUsers().getId())
+                            .orderedUsersId(match.getOrderedUsersId())
+                            .orderUsersId(match.getOrderUsersId())
+                            .ordersGameId(match.getOrdersGameId())
+                            .orderStatus(match.getOrderStatus())
+                            .orderedUsername(requesterUser.getUsersName()) // ★ 상대방 이름
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package com.example.gamescord.controller;
 
+import com.example.gamescord.dto.match.MatchListResponseDTO;
 import com.example.gamescord.dto.match.MatchRequestDTO;
 import com.example.gamescord.dto.match.MatchResponseDTO;
 import com.example.gamescord.dto.match.MatchStatusUpdateByKeyDTO;
@@ -32,17 +33,17 @@ public class MatchController {
     }
      // 내가 보낸 매칭 요청 목록 조회
     @GetMapping("/sent")
-    public ResponseEntity<List<MatchResponseDTO>> getSentMatches(
+    public ResponseEntity<List<MatchListResponseDTO>> getSentMatches(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<MatchResponseDTO> matches = matchService.getSentMatches(userDetails.getId());
+        List<MatchListResponseDTO> matches = matchService.getSentMatches(userDetails.getId());
         return ResponseEntity.ok(matches);
     }
 
      // 내가 받은 매칭 요청 목록 조회
     @GetMapping("/received")
-    public ResponseEntity<List<MatchResponseDTO>> getReceivedMatches(
+    public ResponseEntity<List<MatchListResponseDTO>> getReceivedMatches(
             @AuthenticationPrincipal CustomUserDetails userDetails) {
-        List<MatchResponseDTO> matches = matchService.getReceivedMatches(userDetails.getId());
+        List<MatchListResponseDTO> matches = matchService.getReceivedMatches(userDetails.getId());
         return ResponseEntity.ok(matches);
     }
 
