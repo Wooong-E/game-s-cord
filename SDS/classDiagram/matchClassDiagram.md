@@ -7,13 +7,13 @@ classDiagram
     class MatchController {
         <<Controller>>
         -MatchService matchService
-        +requestMatch(userDetails, requestDto): ResponseEntity~MatchResponseDTO~
-        +getSentMatches(userDetails): ResponseEntity~List~MatchResponseDTO~~
-        +getReceivedMatches(userDetails): ResponseEntity~List~MatchResponseDTO~~
-        +acceptMatch(matchId, userDetails): ResponseEntity~MatchResponseDTO~
-        +declineMatch(matchId, userDetails): ResponseEntity~MatchResponseDTO~
-        +updateMatchStatus(requestDto, userDetails): ResponseEntity~MatchResponseDTO~
-        +cancelMatch(matchId, userDetails): ResponseEntity~MatchResponseDTO~
+        +requestMatch(userDetails: CustomUserDetails, requestDto: MatchRequestDTO): ResponseEntity~MatchResponseDTO~
+        +getSentMatches(userDetails: CustomUserDetails): ResponseEntity~List~MatchResponseDTO~~
+        +getReceivedMatches(userDetails: CustomUserDetails): ResponseEntity~List~MatchResponseDTO~~
+        +acceptMatch(matchId: Long, userDetails: CustomUserDetails): ResponseEntity~MatchResponseDTO~
+        +declineMatch(matchId: Long, userDetails: CustomUserDetails): ResponseEntity~MatchResponseDTO~
+        +updateMatchStatus(requestDto: MatchStatusUpdateByKeyDTO, userDetails: CustomUserDetails): ResponseEntity~MatchResponseDTO~
+        +cancelMatch(matchId: Long, userDetails: CustomUserDetails): ResponseEntity~MatchResponseDTO~
     }
 
     class MatchService {
@@ -23,26 +23,28 @@ classDiagram
         -GameMateRepository gameMateRepository
         -CoinService coinService
         -NotificationService notificationService
-        +requestMatch(requesterId, requestDto): MatchResponseDTO
-        +getSentMatches(userId): List~MatchResponseDTO~
-        +getReceivedMatches(userId): List~MatchResponseDTO~
-        +acceptMatch(matchId, userId): MatchResponseDTO
-        +declineMatch(matchId, userId): MatchResponseDTO
-        +updateMatchStatus(requestDto, currentUserId): MatchResponseDTO
-        +cancelMatchByUser(matchId, requesterId): MatchResponseDTO
+        +requestMatch(requesterId: Long, requestDto: MatchRequestDTO): MatchResponseDTO
+        +getSentMatches(userId: Long): List~MatchResponseDTO~
+        +getReceivedMatches(userId: Long): List~MatchResponseDTO~
+        +acceptMatch(matchId: Long, userId: Long): MatchResponseDTO
+        +declineMatch(matchId: Long, userId: Long): MatchResponseDTO
+        +updateMatchStatus(requestDto: MatchStatusUpdateByKeyDTO, currentUserId: Long): MatchResponseDTO
+        +cancelMatchByUser(matchId: Long, requesterId: Long): MatchResponseDTO
     }
 
     class MatchRepository {
         <<Repository>>
         -SDJpaMatchRepository matchRepository
+        -EntityManager em
         -JPAQueryFactory queryFactory
+        +MatchRepository(em: EntityManager)
         +saveMatch(match: Match): void
         +findById(id: Long): Optional~Match~
-        +findPendingMatch(usersId, order, ordered, game): Match
+        +findPendingMatch(usersId: Long, order: Long, ordered: Long, game: Long): Match
         +deleteMatch(match: Match): void
-        +existsCompletedMatch(userA, userB, gameId): boolean
-        +findByOrderUsersId(orderUsersId): List~Match~
-        +findByOrderedUsersId(orderedUsersId): List~Match~
+        +existsCompletedMatch(userA: Long, userB: Long, gameId: Long): boolean
+        +findByOrderUsersId(orderUsersId: Long): List~Match~
+        +findByOrderedUsersId(orderedUsersId: Long): List~Match~
     }
 
     class Match {

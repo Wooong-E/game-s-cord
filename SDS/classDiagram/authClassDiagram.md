@@ -11,11 +11,11 @@ classDiagram
         -UserService userService
         -EmailService emailService
         -VerificationCodeService verificationCodeService
-        +requestVerificationCode(request): ResponseEntity
-        +requestPasswordReset(request): ResponseEntity
-        +resetPassword(request): ResponseEntity
-        +refreshToken(request): ResponseEntity
-        +logoutUser(userDetails): ResponseEntity
+        +requestVerificationCode(request: EmailVerificationRequestDTO): ResponseEntity<?>
+        +requestPasswordReset(request: PasswordResetRequestDTO): ResponseEntity<?>
+        +resetPassword(request: PasswordResetDTO): ResponseEntity<?>
+        +refreshToken(request: TokenRefreshRequestDTO): ResponseEntity<?>
+        +logoutUser(userDetails: CustomUserDetails): ResponseEntity<?>
     }
 
     class UserService { <<Service>> }
