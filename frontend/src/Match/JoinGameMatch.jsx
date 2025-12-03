@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../css/JoinGameMatch.css";
-import { FaPlus, FaClock, FaGamepad } from "react-icons/fa";
+import { FaClock, FaGamepad } from "react-icons/fa";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { GiGamepad } from "react-icons/gi";
 import PUBGIcon from "../assets/smallBattle.png";
@@ -8,6 +8,7 @@ import LOLIcon from "../assets/smallLOL.png";
 import OverIcon from "../assets/smallOver.png";
 import api from "../api/axios";
 
+// 게임 목록
 const availableGames = [
   { id: 0, name: "게임명 선택" },
   { id: 1, name: "리그 오브 레전드" },
@@ -15,6 +16,7 @@ const availableGames = [
   { id: 3, name: "오버워치 2" },
 ];
 
+// 게임 티어 목록
 const availableTiers = [
   { value: "", name: "티어 선택" },
   { value: "B", name: "브론즈" },
@@ -28,10 +30,9 @@ const availableTiers = [
 
 const GameTierSelect = ({ rate, onChange }) => {
   const isGameSelected = rate.name !== "게임명 선택";
-  const title =
-    rate.name === "게임명 선택"
-      ? `게임 ${rate.id.slice(-1).toUpperCase()} 티어`
-      : rate.name;
+  const title = isGameSelected
+    ? rate.name
+    : `게임 ${rate.id.slice(-1).toUpperCase()} 티어`;
   const selectedTierName =
     availableTiers.find((t) => t.value === rate.tier)?.name ||
     availableTiers[0].name;
@@ -101,8 +102,6 @@ const GameRateInput = ({ rate, onChange, selectedNames }) => {
 };
 
 const JoinGameMatch = () => {
-  const [profileFiles, setProfileFiles] = useState(Array(5).fill(null));
-  const [profileImages, setProfileImages] = useState(Array(5).fill(null));
   const [preferredGame, setPreferredGame] = useState("LOL");
   const [gameRates, setGameRates] = useState([
     {
@@ -165,18 +164,6 @@ const JoinGameMatch = () => {
     );
   };
 
-  const handleImageChange = (index, event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-    const newImages = [...profileImages];
-    newImages[index] = URL.createObjectURL(file);
-    setProfileImages(newImages);
-
-    const newFiles = [...profileFiles];
-    newFiles[index] = file;
-    setProfileFiles(newFiles);
-  };
-
   const handleSubmit = async () => {
     const invalidRate = gameRates.find(
       (g) =>
@@ -220,13 +207,6 @@ const JoinGameMatch = () => {
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(jsonData));
-    profileFiles.forEach((file, index) => {
-      if (file) {
-        const fileNamePrefix =
-          index === 0 ? "profile_main" : `profile_sub_${index}`;
-        formData.append("image", file, `${fileNamePrefix}_${file.name}`);
-      }
-    });
 
     try {
       await api.post("/gamemates", formData, {
@@ -246,76 +226,12 @@ const JoinGameMatch = () => {
       <h1 className="page-header">게임 메이트 등록</h1>
       <div className="content-area">
         <div className="profile-section">
-          <div className="profile-main-box">
-            {profileImages[0] ? (
-              <img
-                src={profileImages[0]}
-                className="profile-image"
-                alt="메인 프로필 이미지"
-              />
-            ) : (
-              <FaPlus className="plus-icon-lg" />
-            )}
-            <input
-              type="file"
-              id="main-image-upload"
-              className="hidden-file-input"
-              onChange={(e) => handleImageChange(0, e)}
-            />
-            <label
-              htmlFor="main-image-upload"
-              className="image-overlay"
-            ></label>
-          </div>
-          <div className="profile-sub-buttons">
-            {profileImages.slice(1).map((img, index) => (
-              <div key={index + 1} className="sub-image-wrapper">
-                {img ? (
-                  <img
-                    src={img}
-                    className="profile-image-sm"
-                    alt={`서브 프로필 이미지 ${index + 1}`}
-                  />
-                ) : (
-                  <FaPlus className="plus-icon-sm" />
-                )}
-                <input
-                  type="file"
-                  id={`sub-image-upload-${index + 1}`}
-                  className="hidden-file-input"
-                  onChange={(e) => handleImageChange(index + 1, e)}
-                />
-                <label
-                  htmlFor={`sub-image-upload-${index + 1}`}
-                  className="sub-image-label"
-                ></label>
-              </div>
-            ))}
-          </div>
-          <div className="section-group introduction">
-            <label className="section-title">소개</label>
-            <textarea
-              className="intro-textarea"
-              value={introduction}
-              placeholder="자신을 자유롭게 소개해주세요"
-              onChange={(e) => setIntroduction(e.target.value)}
-            />
-          </div>
           <div className="available-time">
             <div className="available-time-header">
               <FaClock className="clock-icon" />
               <label className="section-title">이용가능 시간대</label>
             </div>
-            <div className="time-game-name-input-row">
-              <p className="game-name-label">게임명:</p>
-              <input
-                type="text"
-                value={availableTime.game}
-                onChange={(e) =>
-                  setAvailableTime({ ...availableTime, game: e.target.value })
-                }
-              />
-            </div>
+            <div className="time-game-name-input-row"></div>
             <div className="rate-input-row time-input-row">
               <label>이용 시간:</label>
               <input
@@ -338,7 +254,6 @@ const JoinGameMatch = () => {
             </div>
           </div>
         </div>
-
         <div className="settings-section">
           <div className="setting-box">
             <h3 className="setting-header">
@@ -355,7 +270,6 @@ const JoinGameMatch = () => {
               ))}
             </div>
           </div>
-
           <div className="setting-game">
             <h3 className="setting-header">
               <GiGamepad /> 선호 게임 설정
@@ -396,7 +310,6 @@ const JoinGameMatch = () => {
               </div>
             </div>
           </div>
-
           <div className="setting-box tier-verification-box">
             <h3 className="setting-header">
               <FaGamepad /> 게임 별 티어 선택
@@ -411,7 +324,6 @@ const JoinGameMatch = () => {
               ))}
             </div>
           </div>
-
           <div className="action-buttons">
             <button className="register-button" onClick={handleSubmit}>
               등록하기
