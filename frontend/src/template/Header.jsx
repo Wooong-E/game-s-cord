@@ -17,7 +17,7 @@ import logo from "../assets/logo.png";
 import LeagueofLeagends from "../assets/LeaguofLeagends.jpg";
 import Battleground from "../assets/Battleground.jpg";
 import overwatch from "../assets/Overwatch.jpg";
-import user from "../assets/user2.png";
+import logo_img from "../assets/logo_profile.png";
 
 const Header = () => {
   const [query, setQuery] = useState("");
@@ -317,7 +317,11 @@ const Header = () => {
                     }}
                   >
                     <img
-                      src={item.profileImageUrl || user}
+                      src={!item.profileImageUrl
+                          ? logo_img
+                          : item.profileImageUrl.startsWith("http://example.com/")
+                              ? logo_img
+                              : encodeURI(item.profileImageUrl)}
                       className={styles.suggestionAvatar}
                     />
 

@@ -73,7 +73,11 @@ function MarkPage(){
         return (
           <div className={styles.userBox} onClick={handleUserClick}>
             <div className={styles.userSection}>
-                <img src={img.startsWith("http://example.com/") ? logo_img : img} alt="profile" className={styles.userImg}></img>
+                <img src={
+                !img || img === null || img === undefined || img.startsWith("http://example.com/")
+                ? logo_img
+                : img
+                } alt="profile" className={styles.userImg}></img>
                 <div className={styles.userName}>{name}</div>
             </div>
             <div className={styles.userSection}>

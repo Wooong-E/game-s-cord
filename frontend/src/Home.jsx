@@ -7,44 +7,11 @@ import { faCircleChevronLeft, faCircleChevronRight } from "@fortawesome/free-sol
 import LeagueofLeagends from "./assets/LeaguofLeagends.jpg";
 import Battleground from "./assets/Battleground.jpg";
 import overwatch from "./assets/Overwatch.jpg";
-import user1 from "./assets/user1.png";
-import user2 from "./assets/user2.png";
-import user3 from "./assets/user3.png";
-import user4 from "./assets/user4.png";
-import user5 from "./assets/user5.png";
-import user6 from "./assets/user6.png";
-import user7 from "./assets/user7.png";
-import user8 from "./assets/user8.png";
-import user9 from "./assets/user9.png";
-import user10 from "./assets/user10.png";
-import user11 from "./assets/user11.png";
-import user12 from "./assets/user12.png";
-import user13 from "./assets/user13.png";
-import user14 from "./assets/user14.png";
-import user15 from "./assets/user15.png";
+import logo_img from "./assets/logo_profile.png";
 import coin from "./assets/coin.jpg";
 import banner1 from "./assets/banner1.png";
 import banner2 from "./assets/banner2.png";
 import banner3 from "./assets/banner3.png";
-
-// 더미 프로필 이미지
-const userImages = [
-  user1,
-  user2,
-  user3,
-  user4,
-  user5,
-  user6,
-  user7,
-  user8,
-  user9,
-  user10,
-  user11,
-  user12,
-  user13,
-  user14,
-  user15,
-];
 
 // 스크롤 로직을 담당하는 커스텀 훅
 function useScroll(ref, scrollAmount) {
@@ -159,9 +126,9 @@ function UserCard({ index, userId, name, tier, game, price, onClick, img }) {
       <div className={styles.imgbox}>
         <div style={{width: "150px", height: "140px", display:"flex", alignItems:"center", justifyContent:"center"}}>
         <img src={!img
-                    ? userImages[index % userImages.length]
+                    ? logo_img
                     : img.startsWith("http://example.com/")
-                        ? userImages[index % userImages.length]
+                        ? logo_img
                         : encodeURI(img)} alt="user profile" />
         </div>
         <div className={styles.biobox}>

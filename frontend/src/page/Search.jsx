@@ -4,13 +4,7 @@ import api from "../api/axios";
 import styles from "./Search.module.css"
 import coin from "../assets/coin.jpg"
 import crown from "../assets/crown.jpg"
-import user1 from "../assets/user1.png"
-import user2 from "../assets/user2.png"
-import user3 from "../assets/user3.png"
-import user4 from "../assets/user4.png"
-import user5 from "../assets/user5.png"
-import user6 from "../assets/user6.png"
-import user7 from "../assets/user7.png"
+import logo_img from "../assets/logo_profile.png";
 
 function Search() {
   const location = useLocation();
@@ -28,8 +22,6 @@ function Search() {
     sortBy:"reviewsScore"
   });
   const [filterHistory, setFilterHistory] = useState([]);
-
-  const user = [user1, user2, user3, user4, user5, user6, user7];
   
   const dropdownGameRef = useRef(null);
   const dropdownGenderRef = useRef(null);
@@ -190,7 +182,11 @@ function Search() {
       style={{ cursor: "pointer" }}
       >
         <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
-          <img src={user[index]} style={{height:"170px"}}></img>
+          <img src={!img
+                        ? logo_img
+                        : img.startsWith("http://example.com/")
+                            ? logo_img
+                            : encodeURI(img)} style={{height:"170px"}}></img>
         </div>
         <div className={styles.Userbio}>
           <div style={{fontSize:"18px", fontWeight:"bold"}}>{name}</div>
@@ -280,7 +276,7 @@ function Search() {
                 index={index}
                 key={index}
                 userId={user.userId}
-                img={user.profileImageUrl || user1}  // 기본 이미지
+                img={user.profileImageUrl}  // 기본 이미지
                 name={user.userName}
                 star={user.tier}
                 price={user.price}
