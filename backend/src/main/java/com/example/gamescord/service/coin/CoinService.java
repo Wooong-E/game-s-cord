@@ -150,4 +150,15 @@ public class CoinService {
         refundCoin.setPaymentMethod("MATCH_CANCELLED");
         return coinRepository.save(refundCoin);
     }
+
+    @Transactional(readOnly = true)
+    public CoinBalanceResponseDTO getBalance(String loginId) {
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        return CoinBalanceResponseDTO.builder()
+                .userId(user.getId())
+                .balance(user.getPoint())
+                .build();
+    }
 }
