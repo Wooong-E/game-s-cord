@@ -6,6 +6,7 @@ import { GiGamepad } from "react-icons/gi";
 import PUBGIcon from "../assets/smallBattle.png";
 import LOLIcon from "../assets/smallLOL.png";
 import OverIcon from "../assets/smallOver.png";
+import api from "../api/axios";
 
 // 게임 목록
 const availableGames = [
@@ -18,13 +19,13 @@ const availableGames = [
 // 게임 티어 목록 (예시)
 const availableTiers = [
   { value: "", name: "티어 선택" },
-  { value: "BRONZE", name: "브론즈" },
-  { value: "SILVER", name: "실버" },
-  { value: "GOLD", name: "골드" },
-  { value: "PLATINUM", name: "플래티넘" },
-  { value: "DIAMOND", name: "다이아몬드" },
-  { value: "MASTER", name: "마스터" },
-  { value: "GRANDMASTER", name: "그랜드마스터" },
+  { value: "B", name: "브론즈" },
+  { value: "S", name: "실버" },
+  { value: "G", name: "골드" },
+  { value: "P", name: "플래티넘" },
+  { value: "D", name: "다이아몬드" },
+  { value: "M", name: "마스터" },
+  { value: "G", name: "그랜드마스터" },
 ];
 
 const GameTierSelect = ({ rate, onChange }) => {
@@ -193,12 +194,10 @@ const JoinGameMatch = () => {
   };
 
   const handleSubmit = async () => {
-    // 1. 유효성 검사: 2000 코인 초과 여부 확인
     const invalidRate = gameRates.find((g) => {
       const price = Number(g.price);
       return g.name !== "게임명 선택" && !isNaN(price) && price > 2000;
     });
-
     if (invalidRate) {
       alert(
         "등록하려는 게임 코인 중 2000코인을 초과하는 항목이 있습니다. 코인을 2000이하로 설정해주세요."
@@ -206,9 +205,8 @@ const JoinGameMatch = () => {
       return;
     }
 
-    // 1.2 유효성 검사: 게임 선택 시 티어, 가격 선택했는지 확인 (time 제거)
     const incompleteGameRate = gameRates.find(
-      (g) => g.name !== "게임명 선택" && (!g.tier || !g.price) // time 유효성 검사 제거
+      (g) => g.name !== "게임명 선택" && (!g.tier || !g.price)
     );
     if (incompleteGameRate) {
       alert(
@@ -217,39 +215,27 @@ const JoinGameMatch = () => {
       return;
     }
 
-    // 1.3 유효성 검사: 메인 프로필 이미지 확인
-    if (!profileFiles[0]) {
-      alert("메인 프로필 이미지를 등록해야 합니다.");
-      return;
-    }
-
-    // 2. 서버 전송 데이터 (JSON data) 준비
     const gamesData = gameRates
-      .filter((g) => g.name !== "게임명 선택" && g.price && g.tier) // time 필터링 제거
-      .map((g) => ({
-        gameId: g.gameId,
-        tier: g.tier,
-        price: Number(g.price),
-        // time 필드 제거
-      }));
+      .filter((g) => g.name !== "게임명 선택" && g.price && g.tier)
+      .map((g) => {
+        const PLACEHOLDER_START_TIME = "18:00:00";
+        const PLACEHOLDER_END_TIME = "23:00:00";
+        return {
+          gameId: g.gameId,
+          price: Number(g.price),
+          tier: g.tier,
+          start: g.start || PLACEHOLDER_START_TIME,
+          end: g.end || PLACEHOLDER_END_TIME,
+        };
+      });
 
-    const jsonData = {
-      games: gamesData,
-      introduction,
-      preferredGame,
-      // availableTime 필드 제거
-      profileImageCount: profileFiles.filter((f) => f).length,
-    };
+    const jsonData = { games: gamesData, introduction };
 
     console.log("전송 데이터 (JSON):", jsonData);
 
-    // 3. FormData 객체 생성 및 데이터 추가 (multipart/form-data)
     const formData = new FormData();
-
-    // a. 'data' 필드: JSON 데이터를 문자열로 변환하여 추가
     formData.append("data", JSON.stringify(jsonData));
 
-    // b. 'image' 필드: 프로필 이미지를 추가
     profileFiles.forEach((file, index) => {
       if (file) {
         const fileNamePrefix =
@@ -258,23 +244,37 @@ const JoinGameMatch = () => {
       }
     });
 
-    // 4. 서버 전송
-    try {
-      const response = await fetch("/api/gamemates", {
-        method: "POST",
-        body: formData,
-      });
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      alert("인증 토큰이 없습니다. 로그인 상태를 확인해주세요.");
+      return;
+    }
 
-      if (response.ok) {
-        alert("게임 메이트 등록이 완료되었습니다.");
+    try {
+      const response = await api.post("/gamemates", formData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      alert("게임 메이트 등록이 완료되었습니다.");
+    } catch (error) {
+      if (error.response) {
+        const status = error.response.status;
+        let errorData = error.response.data;
+        let errorText;
+
+        if (typeof errorData === "object" && errorData !== null) {
+          try {
+            errorText = JSON.stringify(errorData).substring(0, 100);
+          } catch {
+            errorText = "서버 응답 데이터(객체) 처리 오류";
+          }
+        } else {
+          errorText = (errorData || "서버 오류").toString().substring(0, 100);
+        }
+
+        alert(`등록 실패: ${status} - ${errorText}...`);
       } else {
-        const errorText = await response.text();
-        alert(
-          `등록 실패: ${response.status} - ${errorText.substring(0, 100)}...`
-        );
+        alert(`네트워크 오류 발생: ${error.message}`);
       }
-    } catch (e) {
-      alert(`네트워크 오류 발생: ${e.message}`);
     }
   };
 
