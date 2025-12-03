@@ -13,6 +13,7 @@ import Login from "./login/Login";
 import Requestdetail from "./requestdetail.jsx";
 import RequestReceived from "./RequestReceived/RequestReceived.jsx";
 import MarkPage from "./page/MyPage/MarkPage";
+import FindPassword from "./login/Findpassword.jsx";
 
 const App = () => {
   return (
