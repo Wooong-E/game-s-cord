@@ -22,14 +22,10 @@ const CoinChargeHistory = () => {
       return;
     }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
+
 
     try {
-      const response = await api.get(`/coins/history`, config);
+      const response = await api.get(`/coins/history`);
 
       const transformedData = response.data.map((item, index) => ({
         id: item.coinId || index, // key로 사용할 ID
@@ -62,19 +58,14 @@ const CoinChargeHistory = () => {
       return;
     }
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
+
 
     // POST /api/coins/refund API의 요청 본문
     const payload = { coinId: coinIdToRemove };
 
     try {
       // API Call: POST /api/coins/refund
-      const response = await api.post(`/coins/refund`, payload, config);
+      const response = await api.post(`/coins/refund`, payload);
 
       // API 응답 구조를 확인하여 성공 여부를 판단합니다.
       if (response.data && response.data.success) {

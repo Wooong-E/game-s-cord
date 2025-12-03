@@ -60,15 +60,10 @@ const Payment = () => {
 
     // Axios 요청 Configuration (헤더에 토큰 포함)
     // Bearer Scheme을 사용하여 토큰을 포함합니다.
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    };
+
 
     try {
-      const response = await api.post(`/coins/charge`, payload, config);
+      const response = await api.post(`/coins/charge`, payload);
 
       // 성공 처리
       const successMessage =

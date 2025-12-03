@@ -73,9 +73,7 @@ function MyPage(){
             return;
         }
         try {
-            const res = await api.get('/users/me', {
-              headers: { Authorization: `Bearer ${token}` },
-            });
+            const res = await api.get('/users/me');
             setUser(res.data);
             setUpdatedUser(res.data);
             setProfilePreview(res.data.profileImageUrl || null);
@@ -104,12 +102,7 @@ function MyPage(){
                 formData.append("image", updatedUser.profileImageFile);
             }
 
-            const res = await api.patch("/users/me", formData, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    //"Content-Type": "multipart/form-data",
-                },
-            });
+            const res = await api.patch("/users/me", formData);
 
             setUser(res.data);
             setProfilePreview(res.data.profileImageUrl);

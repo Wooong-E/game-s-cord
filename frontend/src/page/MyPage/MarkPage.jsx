@@ -20,9 +20,7 @@ function MarkPage(){
                 return;
             }
             try {
-                const res = await api.get('/marks', {
-                headers: { Authorization: `Bearer ${token}` },
-                });
+                const res = await api.get('/marks');
                 setUsers(res.data.map(u => ({
                     ...u,
                     isFavorite: u.isFavorite ?? true // 서버에서 값이 없으면 기본 true
@@ -48,13 +46,9 @@ function MarkPage(){
             let response;
 
             if (currentFav) {
-                response = await api.delete(`/marks/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                response = await api.delete(`/marks/${id}`);
             } else {
-                response = await api.post(`/marks/${id}`, {}, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                response = await api.post(`/marks/${id}`, {});
             }
 
             console.log(response.data);

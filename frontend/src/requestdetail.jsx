@@ -11,16 +11,12 @@ export default function RequestHistoryPage() {
   const [sentList, setSentList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
 
-  const getAuthHeader = () => ({
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-    },
-  });
+
 
   const fetchMatchData = async () => {
     try {
-      const sent = await api.get("/matches/sent", getAuthHeader());
-      const received = await api.get("/matches/received", getAuthHeader());
+      const sent = await api.get("/matches/sent");
+      const received = await api.get("/matches/received");
 
       setSentList(sent.data);
       setReceivedList(received.data);
