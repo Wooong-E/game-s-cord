@@ -24,6 +24,7 @@ const Header = () => {
   const [search, setsearch] = useState(false);
   const isLoggedIn = useAuth();
   const logout = useLogout();
+  const [coinBalance, setCoinBalance] = useState(0);
 
   // User 검색
   const [suggestions, setSuggestions] = useState([]);
@@ -117,6 +118,15 @@ const Header = () => {
       console.error("검색 실패", error);
     }
   };
+  //코인 잔액확인 api
+  const fetchCoinbalance = async () =>{
+    try {
+      const res = await api.get("/coins/balance");
+      setCoinBalance(res.data.balance);
+    } catch(error){
+      console.error("코인 잔액 로드 실패:", error);
+    }
+  }
 
   // 알림 목록 불러오기
   const fetchNotifications = async () => {
@@ -154,6 +164,12 @@ const Header = () => {
       setUnreadCount(0);
     }
   }, [notiEnabled]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchCoinbalance();
+    }
+  }, [isLoggedIn]);
 
   // 알림 bell 클릭 → 읽음 처리
   const handleBellClick = async () => {
@@ -311,7 +327,7 @@ const Header = () => {
                     key={idx}
                     className={styles.suggestionItem}
                     onClick={() => {
-                      navigate("/", { state: { keyword: item.userName } });
+                      navigate("/matchdetail", { state: { userId : item.userId } });
                       setShowSuggestions(false);
                       setQuery("");
                     }}
@@ -420,7 +436,7 @@ const Header = () => {
 
         <Link className={styles.link} to="/coin">
           <img src={coin} className={styles.coin} />
-          <span>충전</span>
+          <span>({coinBalance})</span>
         </Link>
 
         {isLoggedIn ? (
