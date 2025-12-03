@@ -4,54 +4,84 @@
 sequenceDiagram
     participant Client
     participant Controller as GamemateController
+    participant ObjectMapper
     participant Service as GamemateService
+    participant S3Service
     participant Repo as GameMateRepository
     participant UserRepo as UserRepository
     participant GameRepo as GameRepository
+    participant ProfileRepo as ProfileRepository
     participant DB
+    participant S3
 
-    Client->>Controller: POST /api/gamemates (requestDto, userDetails)
-    Controller->>Service: registerGamemate(userDetails.getId(), requestDto)
+    Client->>Controller: POST /api/gamemates (multipart/form-data: data, image)
+    Controller->>ObjectMapper: readValue(requestJson, GamemateRegistrationRequestDTO.class)
+    ObjectMapper-->>Controller: requestDto
+
+    Controller->>Service: registerGamemate(userId, requestDto, imageFile)
 
     Service->>UserRepo: findById(userId)
     UserRepo->>DB: SELECT * FROM users WHERE id=userId
     DB-->>UserRepo: User user
     UserRepo-->>Service: user
 
-    Service->>GameRepo: findGameById(requestDto.getGameId())
-    GameRepo->>DB: SELECT * FROM games WHERE id=gameId
-    DB-->>GameRepo: Game game
-    GameRepo-->>Service: game
-
-    Service->>Repo: findGamemateByUsersId(userId, gameId)
-    Repo->>DB: SELECT * FROM gamemates WHERE users_id=userId AND games_id=gameId
-    DB-->>Repo: Gamemate existingGamemate
-    Repo-->>Service: existingGamemate (null/object)
-    
-    alt If existingGamemate is not null
-        Service->>Service: throw IllegalArgumentException
+    alt If introduction is provided
+        Service->>Service: user.setUsersDescription(introduction)
+        Service->>UserRepo: saveUser(user)
     end
 
-    Service->>Service: newGamemate = new Gamemate(user, game, price)
+    alt If imageFile is provided
+        Service->>S3Service: uploadFile(imageFile)
+        S3Service->>S3: PUT object
+        S3-->>S3Service: S3 URL
+        S3Service-->>Service: imageUrl
+    end
+
+    loop For each game in requestDto.games
+        Service->>GameRepo: findGameById(gameId)
+        GameRepo->>DB: SELECT * FROM games WHERE id=gameId
+        DB-->>GameRepo: Game game
+        GameRepo-->>Service: game
+
+        Service->>Repo: findGamemateByUsersId(userId, gameId)
+        Repo->>DB: SELECT * FROM gamemates WHERE users_id=? AND games_id=?
+        DB-->>Repo: Gamemate existingGamemate
+        Repo-->>Service: existingGamemate (null/object)
+        
+        alt If existingGamemate is not null
+            Service->>Service: throw IllegalArgumentException
+        end
+
+        Service->>Service: newGamemate = new Gamemate(user, game, price, tier, start, end)
+        
+        alt If imageUrl exists
+            Service->>ProfileRepo: save(newProfile with imageUrl)
+            ProfileRepo->>DB: INSERT INTO profiles (...)
+        end
+
+        Service->>Repo: saveGamemate(newGamemate)
+        Repo->>DB: INSERT INTO gamemates (...)
+        DB-->>Repo: (Success)
+    end
     
-    Service->>Repo: saveGamemate(newGamemate)
-    Repo->>Repo: gameMateRepository.save(newGamemate)
-    Repo->>DB: INSERT INTO gamemates (...)
-    DB-->>Repo: (Success)
-    Repo-->>Service: 
-    
-    Service->>Service: GamemateResponseDTO.fromEntity(newGamemate)
-    Service-->>Controller: responseDto
-    Controller->>Client: 201 Created (responseDto)
+    Service->>Service: Convert List<Gamemate> to List<GamemateResponseDTO>
+    Service-->>Controller: List<GamemateResponseDTO>
+    Controller->>Client: 201 Created (List<GamemateResponseDTO>)
 ```
+
+---
 
 ## 1. 게임메이트 등록 (POST `/api/gamemates`)
 
-| 항목             | 흐름 요약                                                                                                    | 핵심 비즈니스 로직            |
-|:---------------|:---------------------------------------------------------------------------------------------------------|:----------------------|
-| **목표**         | 특정 게임의 게임메이트 등록 및 가격 정보 설정                                                                               | 중복 등록 방지              |
-| **요청 수신 및 인증** | `Client` 요청 수신 후, `Controller`는 `userDetails`를 통해 **사용자 ID를 추출**하여 `Service`로 전달합니다.                     | -                     |
-| **필수 데이터 확인**  | `GamemateService`는 `UserRepository`와 `GameRepository`를 통해 등록에 필요한 **User** 및 **Game** 엔티티의 존재 유무를 확인합니다. | 유효성 검사 (사용자/게임 존재)    |
-| **중복 등록 방지**   | `Service`는 `GameMateRepository`의 `findGamemateByUsersId`를 호출하여 **해당 조합의 레코드가 이미 DB에 있는지** 확인합니다.         | **중복 레코드 확인** (예외 처리) |
-| **데이터 저장**     | 중복이 없으면, `Service`는 새 `Gamemate` 엔티티를 생성하고, `GameMateRepository`를 통해 DB에 **INSERT**를 요청합니다.              | 트랜잭션 기반 데이터 저장        |
-| **응답 반환**      | `Service`는 저장된 엔티티를 DTO로 변환하여 `Controller`를 거쳐 `Client`에게 **HTTP 201 Created** 응답과 함께 반환합니다.             | -                     |
+| 항목 | 흐름 요약 | 핵심 비즈니스 로직 |
+|:---|:---|:---|
+| **목표** | 특정 게임의 게임메이트 등록 및 가격 정보 설정 | 중복 등록 방지, 다중 게임 등록 |
+| **요청 형식** | `multipart/form-data`로 JSON 데이터(`data`)와 이미지 파일(`image`)을 함께 전송합니다. | **JSON + 이미지 동시 업로드** |
+| **JSON 파싱** | `ObjectMapper`를 사용하여 JSON 문자열을 `GamemateRegistrationRequestDTO`로 변환합니다. | - |
+| **자기소개 업데이트** | `introduction`이 제공되면 사용자의 `usersDescription`을 업데이트합니다. | 사용자 정보 업데이트 |
+| **이미지 업로드** | 이미지 파일이 제공되면 `S3Service`를 통해 **S3에 업로드**하고 URL을 획득합니다. | **S3 이미지 업로드** |
+| **다중 게임 등록** | `requestDto.games` 배열을 순회하며 각 게임에 대해 게임메이트를 등록합니다. | **여러 게임 동시 등록** |
+| **중복 등록 방지** | 각 게임에 대해 `findGamemateByUsersId`를 호출하여 **이미 등록되어 있는지** 확인합니다. | **중복 레코드 확인** (예외 처리) |
+| **프로필 이미지 연결** | 이미지 URL이 있으면 `Profile` 엔티티를 생성하여 `Gamemate`와 연결합니다. | **프로필 이미지 관리** |
+| **응답 반환** | 등록된 모든 게임메이트를 `List<GamemateResponseDTO>`로 변환하여 **HTTP 201 Created** 응답과 함께 반환합니다. | - |
+
