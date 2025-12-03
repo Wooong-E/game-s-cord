@@ -91,6 +91,13 @@ function MyPage() {
     try {
       const formData = new FormData();
 
+      const data = {
+        usersName: updatedUser.usersName,
+        gender: updatedUser.gender,
+        usersBirthday: updatedUser.usersBirthday,
+        usersDescription: updatedUser.usersDescription,
+      };
+
       formData.append("data", JSON.stringify(data));
       if (updatedUser.profileImageFile) {
         formData.append("image", updatedUser.profileImageFile);
@@ -100,13 +107,6 @@ function MyPage() {
         headers: {
           Authorization: `Bearer ${token}`,
           //"Content-Type": "multipart/form-data",
-        },
-      });
-
-      const res = await api.patch("/users/me", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -154,10 +154,11 @@ function MyPage() {
             <div className={styles.imgbox}>
               <img
                 src={
-                  profilePreview &&
-                  profilePreview.startsWith("http://example.com/")
+                  !profilePreview
                     ? defaultImg
-                    : profilePreview || defaultImg
+                    : profilePreview.startsWith("http://example.com/")
+                    ? defaultImg
+                    : encodeURI(profilePreview)
                 }
                 className={modify ? styles.imgDark : ""}
                 style={{

@@ -6,6 +6,7 @@ import { GiGamepad } from "react-icons/gi";
 import PUBGIcon from "../assets/smallBattle.png";
 import LOLIcon from "../assets/smallLOL.png";
 import OverIcon from "../assets/smallOver.png";
+import api from "../api/axios";
 
 const availableGames = [
   { id: 0, name: "게임명 선택" },
@@ -178,10 +179,10 @@ const JoinGameMatch = () => {
       const headers = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
 
-      const response = await fetch("http://localhost:8080/api/gamemates", {
-        method: "POST",
-        headers,
-        body: JSON.stringify(jsonData),
+      const response = await api.post("/api/gamemates", jsonData, {
+        headers: {
+          Authorization: token ? `Bearer ${token}` : "",
+        },
       });
 
       if (response.ok) alert("등록 완료되었습니다.");
