@@ -123,7 +123,7 @@ public class MatchService {
         // 상태 변경 및 코인 지급
         match.setOrderStatus("ACCEPTED");
         coinService.payoutToGamemate(gamemateUser, price);
-        matchRepository.saveMatch(match);
+        matchRepository.deleteMatch(match);
 
         // 요청자에게 수락 알람 생성
         String acceptMessage = String.format("%s님이 매칭을 수락했습니다.", gamemateUser.getUsersName());
