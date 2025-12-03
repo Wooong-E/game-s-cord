@@ -152,6 +152,11 @@ const MatchDetail = () => {
     <div className="match-detail-page">
 
       <div className="left-panel">
+        <FontAwesomeIcon 
+              icon={faStar} 
+              className={isMarked ? styles.activeStar : styles.star}
+              onClick={toggleMark}
+              />
         <img
           src={matchData.profileImageUrl && matchData.profileImageUrl !== "string" 
             ? matchData.profileImageUrl 
@@ -161,14 +166,11 @@ const MatchDetail = () => {
         />
 
         <div className="username">{matchData.userName}</div>
+        <div className="bio-bio">소개</div>
         <div className="bio-text">{matchData.userDescription}</div>
 
 
-        <FontAwesomeIcon 
-              icon={faStar} 
-              className={isMarked ? styles.activeStar : styles.star}
-              onClick={toggleMark}
-              />
+        
       </div>
 
 
