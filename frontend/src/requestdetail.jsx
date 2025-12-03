@@ -31,7 +31,7 @@ export default function RequestHistoryPage() {
 
   const acceptMatch = async (matchId) => {
     try {
-      await api.patch(`/matches/${matchId}/accept`, null, getAuthHeader());
+      await api.patch(`/matches/${matchId}/accept`, null);
       fetchMatchData();
     } catch (error) {
       console.error("매칭 수락 실패:", error);
@@ -40,7 +40,7 @@ export default function RequestHistoryPage() {
 
   const declineMatch = async (matchId) => {
     try {
-      await api.patch(`/api/matches/${matchId}/decline`, null, getAuthHeader());
+      await api.patch(`/api/matches/${matchId}/decline`, null);
       fetchMatchData();
     } catch (error) {
       console.error("매칭 거절 실패:", error);
