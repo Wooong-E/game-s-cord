@@ -358,7 +358,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td width="30%">Step</td><td>Action</td></tr>
 <tr><td>1</td><td>사용자가 게임 종류를 검색한다.</td></tr>
 <tr><td>2</td><td>시스템은 해당 게임에 등록된 게임 메이트 목록을 표시한다.</td></tr>
-<tr><td>3</td><td>사용자가 티어/랭크, 가격, 성별 등으로 필터링할 수 있다.</td></tr>
+<tr><td>3</td><td>사용자가 티어/랭크, 정렬순순, 성별 등으로 필터링할 수 있다.</td></tr>
 <tr><td>4</td><td>시스템은 필터링 조건에 맞는 게임 메이트 목록을 갱신하여 표시한다.</td></tr>
 
 <!-- EXTENSION -->
