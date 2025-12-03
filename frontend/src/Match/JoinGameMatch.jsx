@@ -137,7 +137,6 @@ const JoinGameMatch = () => {
     start: "18:00",
     end: "23:00",
   });
-  const [introduction, setIntroduction] = useState("");
 
   const selectedNames = gameRates
     .map((g) => g.name)
@@ -203,7 +202,7 @@ const JoinGameMatch = () => {
         end: availableTime.end + ":00",
       }));
 
-    const jsonData = { games: gamesData, introduction };
+    const jsonData = { games: gamesData };
 
     const formData = new FormData();
     formData.append("data", JSON.stringify(jsonData));
