@@ -186,9 +186,9 @@ const MatchDetail = () => {
                 <img
                   src={
                     game.iconUrl ||
-                    (game.gameName?.includes("pu")
+                    (game.gameName?.includes("Battle")
                       ? pubg
-                      : game.gameName?.includes("lea")
+                      : game.gameName?.includes("League")
                       ? lol
                       : overwatch)
                   }
