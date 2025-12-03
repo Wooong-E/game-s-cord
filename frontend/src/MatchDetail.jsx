@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "./MatchDetail.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import api from "./api/axios";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import styles from "./page/MyPage/MarkPage.module.css"
 
 import profileImage from "./assets/user1.png";
 import pubg from "./assets/Battleground.jpg";
@@ -160,9 +163,11 @@ const MatchDetail = () => {
         <div className="bio-text">{matchData.userDescription}</div>
 
 
-        <button className="bookmark-btn" onClick={toggleMark}>
-          {isMarked ? "⭐" : "☆"}
-        </button>
+        <FontAwesomeIcon 
+              icon={faStar} 
+              className={isMarked ? styles.activeStar : styles.star}
+              onClick={toggleMark}
+              />
       </div>
 
 
