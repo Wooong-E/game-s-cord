@@ -36,7 +36,6 @@ const CoinChargeHistory = () => {
         // "2025-11-24T10:34:50.317Z" 형태의 문자열을 로컬 날짜로 변환
         paymentDate: new Date(item.createdAt).toLocaleDateString(),
         paymentMethod: item.paymentMethod || "결제 수단 정보 없음",
-        //TODO : 실제 금액 정보가 API에 없으므로 코인 수를 금액으로 임시 표시합니다.
         chargeAmount: ` ₩ ${item.paymentAmount}`,
         coinCount: item.coinAmount, // 충전 코인 갯수
       }));
