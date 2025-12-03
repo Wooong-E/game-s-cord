@@ -111,7 +111,7 @@ export default function RequestHistoryPage() {
                 <li key={item.ordersId} className="request-row">
                   <div className="request-row-left">
                     <span className="request-row-title">
-                      {item.usersName || "상대"} 님과의 매칭
+                      {item.userName || "상대"} 님과의 매칭
                     </span>
                   </div>
 
