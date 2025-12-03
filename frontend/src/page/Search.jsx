@@ -35,7 +35,7 @@ function Search() {
   const dropdownGenderRef = useRef(null);
   const dropdownRankRef = useRef(null);
   const dropdownSortRef = useRef(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (!location.state?.gameId) return;
 
@@ -176,16 +176,19 @@ function Search() {
     setShowSort(false);
   };
 
-  //필터 삭제
+
   const removeFilter = (key) => {
     if (key == "game") return;
     setFilters((prev) => ({ ...prev, [key]: "" }));
     setFilterHistory((prev) => prev.filter((item) => item.key !== key));
   };
 
-  const Usercard=({index, img, name, star, price})=>{
+  const Usercard=({index, img, name, star, price,userId})=>{
     return(
-      <div className={styles.Userbox}>
+      <div className={styles.Userbox}
+      onClick={() => navigate("/matchdetail", { state: { userId } })}
+      style={{ cursor: "pointer" }}
+      >
         <div style={{height:"200px", display:"flex", alignItems:"end", justifyContent:"center"}}>
           <img src={user[index]} style={{height:"170px"}}></img>
         </div>
@@ -276,6 +279,7 @@ function Search() {
               <Usercard
                 index={index}
                 key={index}
+                userId={user.userId}
                 img={user.profileImageUrl || user1}  // 기본 이미지
                 name={user.userName}
                 star={user.tier}
