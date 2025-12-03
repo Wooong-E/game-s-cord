@@ -11,8 +11,6 @@ export default function RequestHistoryPage() {
   const [sentList, setSentList] = useState([]);
   const [receivedList, setReceivedList] = useState([]);
 
-
-
   const fetchMatchData = async () => {
     try {
       const sent = await api.get("/matches/sent");
@@ -68,9 +66,6 @@ export default function RequestHistoryPage() {
       >
         <Link to="/requestdetail" className="request-title">
           신청내역
-        </Link>
-        <Link to="/requestReceived" className="request-title">
-          받은내역
         </Link>
         <div className="request-tabs">
           <button

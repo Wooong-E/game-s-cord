@@ -12,7 +12,6 @@ import Search from "./page/Search";
 import MyPage from "./page/MyPage/MyPage";
 import Login from "./login/Login";
 import Requestdetail from "./requestdetail.jsx";
-import RequestReceived from "./RequestReceived/RequestReceived.jsx";
 import MarkPage from "./page/MyPage/MarkPage";
 import FindPassword from "./login/Findpassword.jsx";
 
@@ -34,7 +33,6 @@ const App = () => {
           <Route path="/gameMate" element={<JoinGameMatch />} />
           <Route path="/matchdetail" element={<MatchDetail />} />
           <Route path="/requestdetail" element={<Requestdetail />} />
-          <Route path="/requestReceived" element={<RequestReceived />} />
           <Route path="/mark" element={<MarkPage />} />
         </Routes>
       </Template>
