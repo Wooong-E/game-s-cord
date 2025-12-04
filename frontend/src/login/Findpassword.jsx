@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import "./FindPassword.css"; // 👈 CSS 파일 import
+import "./Findpassword.css";
 
 const FindPassword = () => {
   const navigate = useNavigate();
