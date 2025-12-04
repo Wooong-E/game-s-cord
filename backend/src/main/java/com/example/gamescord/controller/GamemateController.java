@@ -68,6 +68,18 @@ public class GamemateController {
         }
     }
 
+    @PatchMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<List<GamemateResponseDTO>> updateGamemate(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody GamemateRegistrationRequestDTO requestDto) {
+
+        List<GamemateResponseDTO> responseDtos =
+                gamemateService.updateGamemate(userDetails.getId(), requestDto);
+
+        return ResponseEntity.ok(responseDtos);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<GamemateResponseDTO>> searchGamemates(@RequestParam String userName) {
         List<GamemateResponseDTO> results = gamemateService.searchGamematesByUserName(userName);

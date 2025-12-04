@@ -103,6 +103,48 @@ public class GamemateService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public List<GamemateResponseDTO> updateGamemate(Long userId, GamemateRegistrationRequestDTO requestDto) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
+        }
+
+        if (requestDto.getIntroduction() != null) {
+            user.setUsersDescription(requestDto.getIntroduction());
+            userRepository.saveUser(user);
+        }
+
+        List<Gamemate> updatedGamemates = new ArrayList<>();
+        if (requestDto.getGames() != null && !requestDto.getGames().isEmpty()) {
+            for (GamemateRegistrationRequestDTO.GameInfo gameInfo : requestDto.getGames()) {
+                Game game = gameRepository.findGameById(gameInfo.getGameId());
+                if (game == null) {
+                    throw new IllegalArgumentException("게임을 찾을 수 없습니다: ID " + gameInfo.getGameId());
+                }
+
+                Gamemate gamemate = gameMateRepository.findGamemateByUsersId(userId, gameInfo.getGameId());
+                if (gamemate == null) {
+                    gamemate = new Gamemate();
+                    gamemate.setUsers(user);
+                    gamemate.setGames(game);
+                }
+
+                gamemate.setPrice(gameInfo.getPrice());
+                gamemate.setTier(gameInfo.getTier());
+                gamemate.setStart(gameInfo.getStart());
+                gamemate.setEnd(gameInfo.getEnd());
+
+                gameMateRepository.saveGamemate(gamemate);
+                updatedGamemates.add(gamemate);
+            }
+        }
+
+        return updatedGamemates.stream()
+                .map(GamemateResponseDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
     @Transactional(readOnly = true)
     public List<GamemateResponseDTO> searchGamematesByUserName(String userName) {
         List<Gamemate> gamemates = gameMateRepository.findGamematesByUsersName(userName);
