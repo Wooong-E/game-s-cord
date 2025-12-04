@@ -32,11 +32,11 @@ public class GamemateUpdateRequestDTO {
         private String tier;
 
         @NotNull(message = "시작 시간은 필수입니다.")
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm:ss")
         private Time start;
 
         @NotNull(message = "마감 시간은 필수입니다.")
-        @JsonFormat(pattern = "HH:mm")
+        @JsonFormat(pattern = "HH:mm:ss")
         private Time end;
     }
 }
