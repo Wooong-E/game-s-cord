@@ -153,10 +153,9 @@ const MatchDetail = () => {
 
       <div className="left-panel">
         <FontAwesomeIcon 
-              icon={faStar} 
-              className={isMarked ? styles.activeStar : styles.star}
-              onClick={toggleMark}
-              />
+          icon={faStar} 
+          className={isMarked ? styles.activeStar : styles.star}
+          onClick={toggleMark}/>
         <img
           src={matchData.profileImageUrl && matchData.profileImageUrl !== "string" 
             ? matchData.profileImageUrl 
