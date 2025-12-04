@@ -76,7 +76,7 @@ function MarkPage(){
                 <img src={
                 !img || img === null || img === undefined || img.startsWith("http://example.com/")
                 ? logo_img
-                : img
+                : encodeURI(img)
                 } alt="profile" className={styles.userImg}></img>
                 <div className={styles.userName}>{name}</div>
             </div>
