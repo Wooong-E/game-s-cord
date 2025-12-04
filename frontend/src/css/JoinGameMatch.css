@@ -20,6 +20,8 @@
   padding-bottom: 10px;
 
   border-bottom: 2px solid #eee;
+
+  transform: translate(-300px, 0);
 }
 
 .content-area {
