@@ -46,7 +46,7 @@ function Sidebar() {
           location.pathname === "/gameMate" ? styles.active : ""
         }`}
       >
-        <div>메이트 등록</div>
+        <div>메이트 등록/수정</div>
       </Link>
     </div>
   );

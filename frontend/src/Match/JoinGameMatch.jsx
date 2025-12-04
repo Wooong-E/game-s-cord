@@ -1,12 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/JoinGameMatch.css";
 import { FaClock, FaGamepad } from "react-icons/fa";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { GiGamepad } from "react-icons/gi";
-import PUBGIcon from "../assets/smallBattle.png";
-import LOLIcon from "../assets/smallLOL.png";
-import OverIcon from "../assets/smallOver.png";
 import api from "../api/axios";
 import Sidebar from "../page/MyPage/Sidebar";
 import styles from ".././page/MyPage/MyPage.module.css";
@@ -22,13 +18,11 @@ const availableGames = [
 // 게임 티어 목록
 const availableTiers = [
   { value: "", name: "티어 선택" },
-  { value: "B", name: "브론즈" },
-  { value: "S", name: "실버" },
-  { value: "G", name: "골드" },
-  { value: "P", name: "플래티넘" },
-  { value: "D", name: "다이아몬드" },
-  { value: "M", name: "마스터" },
-  { value: "G", name: "그랜드마스터" },
+  { value: "S", name: "S" },
+  { value: "A", name: "A" },
+  { value: "B", name: "B" },
+  { value: "C", name: "C" },
+  { value: "F", name: "F" },
 ];
 
 const GameTierSelect = ({ rate, onChange }) => {
@@ -104,8 +98,8 @@ const GameRateInput = ({ rate, onChange, selectedNames }) => {
   );
 };
 
+//게임별로 시간이 다르게 등록이 되어서 시간은 기본값이 start : 18:00, end: 23:00
 const JoinGameMatch = () => {
-  const [preferredGame, setPreferredGame] = useState("LOL");
   const [gameRates, setGameRates] = useState([
     {
       id: "rate-a",
@@ -142,6 +136,65 @@ const JoinGameMatch = () => {
   });
 
   const navigate = useNavigate();
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  // ✔ 수정 페이지 진입 시 PATCH로 기존 데이터 불러오기
+  useEffect(() => {
+    const fetchExisting = async () => {
+      try {
+        // GET으로 사용자 gamemate 조회
+        const res = await api.get("/gamemates");
+
+        if (res.data && res.data.games) {
+          const loadedGames = [0, 1, 2].map((idx) => {
+            const g = res.data.games[idx]; // 서버에서 해당 인덱스 게임이 있는지
+            if (g) {
+              return {
+                id: ["rate-a", "rate-b", "rate-c"][idx],
+                gameId: g.gameId,
+                name:
+                  availableGames.find((ag) => ag.id === g.gameId)?.name ||
+                  "게임명 선택",
+                tier: g.tier,
+                price: g.price,
+                start: g.start,
+                end: g.end,
+              };
+            } else {
+              // 서버에 없으면 기본값 채움
+              return {
+                id: ["rate-a", "rate-b", "rate-c"][idx],
+                gameId: 0,
+                name: "게임명 선택",
+                tier: "",
+                price: "",
+                start: "18:00",
+                end: "23:00",
+              };
+            }
+          });
+
+          setGameRates(loadedGames);
+
+          const firstStart = loadedGames[0].start;
+          const firstEnd = loadedGames[0].end;
+
+          setAvailableTime({
+            start: firstStart,
+            end: firstEnd,
+          });
+
+          // 수정 모드로 전환
+          setIsRegistered(true);
+        }
+      } catch (err) {
+        console.log("아직 등록 안됨 (신규 등록 모드)");
+        setIsRegistered(false);
+      }
+    };
+
+    fetchExisting();
+  }, []);
 
   const selectedNames = gameRates
     .map((g) => g.name)
@@ -213,10 +266,41 @@ const JoinGameMatch = () => {
     formData.append("data", JSON.stringify(jsonData));
 
     try {
-      await api.post("/gamemates", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      alert("게임 메이트 등록이 완료되었습니다.");
+      if (isRegistered) {
+        // PATCH(JSON)
+
+        const payload = gameRates.map((g) =>
+          g.name !== "게임명 선택"
+            ? {
+                gameId: g.gameId,
+                price: Number(g.price),
+                tier: g.tier,
+                start: availableTime.start + ":00",
+                end: availableTime.end + ":00",
+              }
+            : {
+                gameId: 0, // 기본값
+                price: 0, // 기본값
+                tier: "", // 빈 문자열
+                start: "00:00:00", // 기본 시간
+                end: "00:00:00", // 기본 시간
+              }
+        );
+
+        const request = { games: payload };
+
+        await api.patch("/gamemates", request, {
+          headers: { "Content-Type": "application/json" },
+        });
+        alert("게임메이트 정보 수정 완료!");
+      } else {
+        // 처음 등록(POST)
+        await api.post("/gamemates", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+        alert("게임메이트 등록이 완료되었습니다.");
+      }
+
       navigate("/");
     } catch (e) {
       console.error("등록 실패:", e);
@@ -230,7 +314,9 @@ const JoinGameMatch = () => {
     <div className={styles.wrapper}>
       <Sidebar />
       <div className="join-game-match-container">
-        <h1 className="page-header">게임 메이트 등록</h1>
+        <h1 className="page-header">
+          {isRegistered ? "게임 메이트 수정" : "게임 메이트 등록"}
+        </h1>
         <div className="content-area">
           <div className="profile-section"></div>
           <div className="settings-section">
@@ -249,7 +335,7 @@ const JoinGameMatch = () => {
                 ))}
               </div>
             </div>
-            <div className="setting-game">
+            {/*} <div className="setting-game">
               <h3 className="setting-header">
                 <GiGamepad /> 선호 게임 설정
               </h3>
@@ -288,7 +374,7 @@ const JoinGameMatch = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div>*/}
             <div className="setting-box tier-verification-box">
               <h3 className="setting-header">
                 <FaGamepad /> 게임 별 티어 선택
@@ -335,7 +421,7 @@ const JoinGameMatch = () => {
             </div>
             <div className="action-buttons">
               <button className="register-button" onClick={handleSubmit}>
-                등록하기
+                {isRegistered ? "수정하기" : "등록하기"}
               </button>
               <button className="cancel-button" onClick={() => navigate(-1)}>
                 취소
