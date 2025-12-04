@@ -111,8 +111,8 @@ export default function RequestHistoryPage() {
                     <span className="request-row-title">
                       {item.orderedUsername || "상대"} 님과의 매칭
                     </span>
-                    <span style={{marginRight:16}}>
-                      게임명:{getGameName(item.ordersGameId)}
+                    <span>
+                      {getGameName(item.ordersGameId)}
                     </span>
                   </div>
                   
@@ -135,8 +135,11 @@ export default function RequestHistoryPage() {
               <li key={item.ordersId} className="request-row">
                 <div className="request-row-left">
                   <span className="request-row-title">
-                    {item.orderedUsername || "상대"} 님의 매칭요청 게임명:{getGameName(item.ordersGameId)}
+                    {item.orderedUsername || "상대"} 님의 매칭요청
                   </span>
+                  <span>
+                      {getGameName(item.ordersGameId)}
+                    </span>
                 </div>
 
                 <div className="request-row-right">
