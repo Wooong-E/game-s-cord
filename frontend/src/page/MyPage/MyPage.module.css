@@ -95,9 +95,8 @@ button{
     transition: all 0.15s ease;
 }
 
-/* 포커스 시 자연스럽게만 보이게 */
 .inputStyle:focus {
-    border-color: #a0a0a0;
+    border-color: #4A8CFF;
     background-color: #fff;
 }
 
@@ -117,7 +116,7 @@ button{
 }
 
 .textareaStyle:focus {
-    border-color: #a0a0a0;
+    border-color: #4A8CFF;
     background-color: #fff;
 }
 
@@ -158,4 +157,40 @@ button{
     font-size: 14px;
     margin-top: 6px;
     margin-bottom: -26px;
+}
+
+.readonlyBox {
+  font-size: 18px;
+  font-family: inherit;
+  color: #202124;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border:1px solid #e6e6e6;
+  width: 350px;
+  min-height: 48px;   
+  display: flex;
+  align-items: center; 
+  box-sizing: border-box;
+}
+
+.readonlyTextarea {
+  font-size: 18px;
+  font-family: inherit;
+  color: #202124;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border:1px solid #e6e6e6;
+  width: 350px;
+  min-height: 120px;
+  box-sizing: border-box;
+  white-space: pre-wrap;  
+  word-break: break-word; 
+  display: block;
+}
+
+.placeholder {
+  color: #bcbcbc;
+  font-size: 17px;
 }

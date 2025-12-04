@@ -245,8 +245,8 @@ function MyPage() {
                 )}
               </>
             ) : (
-              <div className={styles.data} style={{ marginBottom: "30px" }}>
-                {user.usersName}
+              <div className={styles.readonlyBox}>
+                {user.usersName || "닉네임을 등록해주세요"}
               </div>
             )}
 
@@ -282,8 +282,10 @@ function MyPage() {
                 )}
               </>
             ) : (
-              <div className={styles.data} style={{ marginBottom: "30px" }}>
-                {user.gender}
+              <div className={`${styles.readonlyBox} ${
+                (!user.gender || user.gender === "None") ? styles.placeholder : ""
+              }`} >
+                {user.gender && user.gender !== "None" ? user.gender : "성별을 선택해주세요."}
               </div>
             )}
 
@@ -308,8 +310,10 @@ function MyPage() {
                 )}{" "}
               </>
             ) : (
-              <div className={styles.data} style={{ marginBottom: "30px" }}>
-                {user.usersBirthday}
+              <div className={`${styles.readonlyBox} ${
+                !user.usersBirthday ? styles.placeholder : ""
+              }`}>
+                {user.usersBirthday||"생년월일을 등록해주세요."}
               </div>
             )}
 
@@ -335,7 +339,10 @@ function MyPage() {
                 )}
               </>
             ) : (
-              <div className={styles.data}>{user.usersDescription}</div>
+              <div className={`${styles.readonlyTextarea} ${
+                !user.usersDescription ? styles.placeholder : ""
+              }`}>
+                {user.usersDescription || "자기소개를 입력해주세요."}</div>
             )}
           </div>
         </form>
