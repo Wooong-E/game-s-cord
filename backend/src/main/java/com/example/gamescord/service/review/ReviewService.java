@@ -31,6 +31,7 @@ public class ReviewService {
         // 1. 엔티티 조회
         User author = userRepository.findById(authorId);
         Gamemate gamemate = gameMateRepository.findGamemateByUsersId(targetUserId, gameId);
+
         if (gamemate == null) {
             throw new IllegalArgumentException("리뷰할 대상(게임메이트) 정보를 찾을 수 없습니다.");
         }
@@ -47,10 +48,13 @@ public class ReviewService {
         }
 
         // 2c. 완료된 매칭이 있는지 확인
+        /////////////////////////////////////////////////////////////////////////////////////// 이 케이스 일단 배제.
+        /*
         boolean hasCompletedMatch = matchRepository.existsCompletedMatch(authorId, targetUserId, gameId);
         if (!hasCompletedMatch) {
             throw new IllegalArgumentException("리뷰를 작성하려면 먼저 해당 게임메이트와 매칭을 완료해야 합니다.");
         }
+        */
 
         // 3. 리뷰 엔티티 생성 및 저장
         Review newReview = new Review();
