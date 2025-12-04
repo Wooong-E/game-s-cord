@@ -64,9 +64,9 @@ export default function RequestHistoryPage() {
         className="request-content"
         style={{ flex: 1, marginRight: "80px", minHeight: "500px" }}
       >
-        <Link to="/requestdetail" className="request-title">
+        <div className="request-title">
           신청내역
-        </Link>
+        </div>
         <div className="request-tabs">
           <button
             className={
@@ -75,7 +75,7 @@ export default function RequestHistoryPage() {
             }
             onClick={() => setActiveTab("sent")}
           >
-            받은 요청
+            대기중
           </button>
           <button
             className={
@@ -89,17 +89,7 @@ export default function RequestHistoryPage() {
         </div>
         {activeTab === "sent" && (
           <>
-            <div className="status-legend">
-              <span>
-                <span className="status-dot status-dot--accepted" /> 수락됨
-              </span>
-              <span>
-                <span className="status-dot status-dot--rejected" /> 거절됨
-              </span>
-              <span>
-                <span className="status-dot status-dot--pending" /> 응답없음
-              </span>
-            </div>
+            
 
             <ul className="request-list">
               {sentList.map((item) => (
@@ -111,17 +101,8 @@ export default function RequestHistoryPage() {
                   </div>
 
                   <div className="request-row-right">
-                    <span className="request-row-status-label">현재상태 :</span>
+                    <span className="request-row-status-label">요청 대기중</span>
 
-                    <span
-                      className={`status-dot ${getStatusDotClass(
-                        item.orderStatus
-                      )}`}
-                    />
-
-                    <button className="info-button" disabled>
-                      상대 정보 확인하기
-                    </button>
                   </div>
                 </li>
               ))}
