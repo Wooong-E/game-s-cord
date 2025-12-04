@@ -109,32 +109,55 @@ public class GamemateService {
             throw new IllegalArgumentException("사용자를 찾을 수 없습니다.");
         }
 
-        List<Gamemate> updatedGamemates = new ArrayList<>();
-        if (requestDto.getGames() != null && !requestDto.getGames().isEmpty()) {
-            for (GamemateUpdateRequestDTO.GameInfo gameInfo : requestDto.getGames()) {
-                Game game = gameRepository.findGameById(gameInfo.getGameId());
-                if (game == null) {
-                    throw new IllegalArgumentException("게임을 찾을 수 없습니다: ID " + gameInfo.getGameId());
-                }
+        // 1. 요청에 포함된 게임 ID들을 Set으로 변환합니다.
+        Set<Long> requestedGameIds = requestDto.getGames().stream()
+                .map(GamemateUpdateRequestDTO.GameInfo::getGameId)
+                .collect(Collectors.toSet());
 
-                Gamemate gamemate = gameMateRepository.findGamemateByUsersId(userId, gameInfo.getGameId());
-                if (gamemate == null) {
-                    gamemate = new Gamemate();
-                    gamemate.setUsers(user);
-                    gamemate.setGames(game);
-                }
+        // 2. 사용자의 현재 모든 게임메이트 등록 정보를 가져옵니다.
+        List<Gamemate> existingGamemates = gameMateRepository.findGamematesByUsersId(userId);
 
-                gamemate.setPrice(gameInfo.getPrice());
-                gamemate.setTier(gameInfo.getTier());
-                gamemate.setStart(gameInfo.getStart());
-                gamemate.setEnd(gameInfo.getEnd());
+        // 3. 요청에 포함되지 않은 기존 등록 정보를 삭제합니다.
+        List<Gamemate> gamematesToDelete = existingGamemates.stream()
+                .filter(existing -> !requestedGameIds.contains(existing.getGames().getId()))
+                .collect(Collectors.toList());
 
-                gameMateRepository.saveGamemate(gamemate);
-                updatedGamemates.add(gamemate);
-            }
+        for (Gamemate toDelete : gamematesToDelete) {
+            gameMateRepository.deleteGamemate(toDelete);
         }
 
-        return updatedGamemates.stream()
+        // 4. 요청에 포함된 정보를 기준으로 등록하거나 업데이트합니다.
+        List<Gamemate> finalGamemates = new ArrayList<>();
+        for (GamemateUpdateRequestDTO.GameInfo gameInfo : requestDto.getGames()) {
+            Game game = gameRepository.findGameById(gameInfo.getGameId());
+            if (game == null) {
+                // 이 게임 ID가 유효하지 않으면 건너뛰거나 예외를 발생시킬 수 있습니다.
+                continue;
+            }
+
+            // 기존 등록 정보가 있는지 확인하고, 없으면 새로 만듭니다.
+            Gamemate gamemate = existingGamemates.stream()
+                    .filter(existing -> existing.getGames().getId().equals(gameInfo.getGameId()))
+                    .findFirst()
+                    .orElse(new Gamemate());
+
+            if (gamemate.getId() == null) { // 새 엔티티인 경우
+                gamemate.setUsers(user);
+                gamemate.setGames(game);
+            }
+
+            // 정보 업데이트
+            gamemate.setPrice(gameInfo.getPrice());
+            gamemate.setTier(gameInfo.getTier());
+            gamemate.setStart(gameInfo.getStart());
+            gamemate.setEnd(gameInfo.getEnd());
+
+            gameMateRepository.saveGamemate(gamemate);
+            finalGamemates.add(gamemate);
+        }
+
+        // 5. 최종 결과를 DTO로 변환하여 반환합니다.
+        return finalGamemates.stream()
                 .map(GamemateResponseDTO::fromEntity)
                 .collect(Collectors.toList());
     }
