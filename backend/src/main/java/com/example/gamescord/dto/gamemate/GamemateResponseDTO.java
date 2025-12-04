@@ -31,8 +31,8 @@ public class GamemateResponseDTO {
                 .price(gamemate.getPrice())
                 .tier(gamemate.getTier())
                 .gender(gamemate.getUsers().getGender())
-                .start(gamemate.getStart().toString())
-                .end(gamemate.getEnd().toString())
+                .start(gamemate.getStart().toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")))
+                .end(gamemate.getEnd().toLocalTime().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")))
                 .build();
     }
 
