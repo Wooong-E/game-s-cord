@@ -351,10 +351,5 @@
 .game-detail-img {
     width: 100%;
     height: auto;
-    max-height: 400px;
-    
     border-radius: 8px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #f0f0f0; 
 }
