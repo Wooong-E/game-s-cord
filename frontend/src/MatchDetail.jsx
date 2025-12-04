@@ -209,7 +209,7 @@ const MatchDetail = () => {
                   <span className="game-name">{game.gameName}</span>
                   <div className="game-price" style={{marginTop:"1.5px"}}>
                     <img src={coin} className="game-detail-coin"></img>
-                    <div> {game.price}/판 </div>
+                    <div style={{marginBottom:"3px"}}> {game.price}/판 </div>
                   </div>
                 </div>
               </button>
