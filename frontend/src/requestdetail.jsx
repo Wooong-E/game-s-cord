@@ -5,6 +5,19 @@ import api from "./api/axios";
 import Sidebar from "./page/MyPage/Sidebar";
 import styles from "./page/MyPage/MyPage.module.css";
 
+const getGameName = (gameId) => {
+  switch (gameId) {
+    case 1:
+      return "League of Legends";
+    case 2:
+      return "Battlegrounds";
+    case 3:
+      return "Overwatch";
+    default:
+      return "Unknown Game";
+  }
+};
+
 export default function RequestHistoryPage() {
   const [activeTab, setActiveTab] = useState("sent");
 
@@ -98,9 +111,16 @@ export default function RequestHistoryPage() {
                     <span className="request-row-title">
                       {item.orderedUsername || "상대"} 님과의 매칭
                     </span>
+                    <span style={{marginRight:16}}>
+                      게임명:{getGameName(item.ordersGameId)}
+                    </span>
                   </div>
+                  
 
                   <div className="request-row-right">
+                    <span className="request-row-title">
+                      
+                    </span>
                     <span className="request-row-status-label">요청 대기중</span>
 
                   </div>
@@ -115,7 +135,7 @@ export default function RequestHistoryPage() {
               <li key={item.ordersId} className="request-row">
                 <div className="request-row-left">
                   <span className="request-row-title">
-                    {item.orderedUsername || "상대"} 님의 매칭요청
+                    {item.orderedUsername || "상대"} 님의 매칭요청 게임명:{getGameName(item.ordersGameId)}
                   </span>
                 </div>
 
