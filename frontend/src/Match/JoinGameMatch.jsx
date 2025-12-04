@@ -145,7 +145,7 @@ const JoinGameMatch = () => {
         // GET으로 사용자 gamemate 조회
         const res = await api.get("/gamemates");
 
-        if (res.data && res.data.games) {
+        if (res.data && res.data.games && res.data.games.length > 0) {
           const loadedGames = [0, 1, 2].map((idx) => {
             const g = res.data.games[idx]; // 서버에서 해당 인덱스 게임이 있는지
             if (g) {
