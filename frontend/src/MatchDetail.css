@@ -53,6 +53,7 @@
   color: #1d1c1c;
   margin-bottom: 20px;
   text-align: left;
+  margin-left:10px;
 
 }
 .bio-text {
@@ -345,4 +346,21 @@
 .game-detail-panel p strong {
     font-weight: 600;
     color: #000000;
+}
+
+.game-detail-img {
+    width: 100%;
+    /* max-height: 250px; 제거 또는 더 크게 설정 */
+    height: auto; /* 높이를 콘텐츠 비율에 맞게 유연하게 설정 */
+    max-height: 400px; /* 이미지가 너무 커지는 것을 방지하기 위한 충분한 최대 높이 설정 */
+    
+    /* ⬇️ 변경: 잘림 방지를 위해 'contain' 사용 ⬇️ */
+    object-fit: contain; 
+    
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    /* 이미지가 contain으로 인해 여백이 생길 경우 배경색을 지정할 수 있습니다. */
+    background-color: #f0f0f0; 
 }

@@ -112,7 +112,7 @@ const MatchDetail = () => {
       alert("매치 신청이 완료되었습니다!");
     } catch (e) {
       console.error("매치 신청 오류:", e);
-      alert("매치 신청에 실패했습니다.");
+      alert("매치 신청에 실패했습니다. 사유:",e);
     }
   };
 
