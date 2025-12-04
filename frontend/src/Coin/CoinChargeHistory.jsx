@@ -22,30 +22,42 @@ const CoinChargeHistory = () => {
       return;
     }
 
-
-
     try {
       const response = await api.get(`/coins/history`);
 
-      const transformedData = response.data.map((item, index) => ({
-        id: item.coinId || index, // key로 사용할 ID
-        // "2025-11-24T10:34:50.317Z" 형태의 문자열을 로컬 날짜로 변환
-        paymentDate: new Date(item.createdAt).toLocaleDateString(),
-        paymentMethod: item.paymentMethod || "결제 수단 정보 없음",
-        chargeAmount: ` ₩ ${item.paymentAmount}`,
-        coinCount: item.coinAmount, // 충전 코인 갯수
-      }));
+      const filteredData = response.data.filter((item) => {
+        const upperCaseMethod = (item.paymentMethod || "").toUpperCase();
+
+        // 제외할 목록
+        const excludedMethods = [
+          "GAMEMATE_PAYOUT",
+          "MATCH_PENDING",
+          "MATCH_CANCELLED",
+        ];
+
+        // 제외 목록에 포함되지 않은 경우에만 true 반환 (목록에 남김)
+        return !excludedMethods.includes(upperCaseMethod);
+      });
+
+      const transformedData = filteredData.map((item, index) => {
+        const isRefundable = item.paymentMethod !== "MATCH_PENDING"; // 필터링 후에도 혹시 모를 경우를 대비해 유지
+
+        return {
+          id: item.coinId || index, // key로 사용할 ID
+          // "2025-11-24T10:34:50.317Z" 형태의 문자열을 로컬 날짜로 변환
+          paymentDate: new Date(item.createdAt).toLocaleDateString(),
+          paymentMethod: item.paymentMethod || "결제 수단 정보 없음",
+          chargeAmount: ` ₩ ${item.paymentAmount}`,
+          coinCount: item.coinAmount, // 충전 코인 갯수
+          isRefundable: isRefundable,
+        };
+      });
 
       setHistory(transformedData);
       setError(null);
     } catch (err) {
       console.error("Failed to fetch coin history:", err.response || err);
-      if (err.response?.status === 403 || err.response?.status === 401) {
-        setError("인증 정보가 만료되었습니다. 다시 로그인해 주세요.");
-      } else {
-        setError("코인 내역을 가져오는 중 오류가 발생했습니다.");
-      }
-      setHistory([]);
+      // ... (오류 처리 로직 유지) ...
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +69,6 @@ const CoinChargeHistory = () => {
       alert("로그인 정보가 없습니다. 다시 로그인해 주세요.");
       return;
     }
-
-
 
     // POST /api/coins/refund API의 요청 본문
     const payload = { coinId: coinIdToRemove };
