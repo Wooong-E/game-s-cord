@@ -165,7 +165,7 @@ const MatchDetail = () => {
           onClick={toggleMark}/>
         <img
           src={matchData.profileImageUrl && matchData.profileImageUrl !== "string" 
-            ? matchData.profileImageUrl 
+            ? encodeURI(matchData.profileImageUrl) 
             : profileImage}
           alt="profile"
           className="profile-img"
