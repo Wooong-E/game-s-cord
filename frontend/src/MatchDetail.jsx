@@ -6,7 +6,7 @@ import { faStar } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "./page/MyPage/MarkPage.module.css"
 
-import profileImage from "./assets/user1.png";
+import profileImage from "./assets/logo_profile.png";
 import pubg from "./assets/Battleground.jpg";
 import lol from "./assets/LeaguofLeagends.jpg";
 import overwatch from "./assets/Overwatch.jpg";
@@ -164,9 +164,15 @@ const MatchDetail = () => {
           className={isMarked ? styles.activeStar : styles.star}
           onClick={toggleMark}/>
         <img
-          src={matchData.profileImageUrl && matchData.profileImageUrl !== "string" 
-            ? encodeURI(matchData.profileImageUrl) 
-            : profileImage}
+          src={
+            matchData.profileImageUrl &&
+            matchData.profileImageUrl !== "string" &&
+            matchData.profileImageUrl !== "null" &&
+            matchData.profileImageUrl !== "undefined" &&
+            !matchData.profileImageUrl.startsWith("http://example.com/")
+              ? encodeURI(matchData.profileImageUrl)
+              : profileImage
+          }
           alt="profile"
           className="profile-img"
         />
