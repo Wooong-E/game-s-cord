@@ -1,0 +1,132 @@
+.wrapper{
+    margin: 40px 80px;
+    font-size: 14px;
+    color: #202124;
+}
+
+.section{
+    margin-bottom: 50px;    
+    position: relative;
+}
+
+.section h1{
+    margin: 0 0 30px 0;
+}
+
+.filter{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filter button{
+    outline: none;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 5px 12px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.filter button:hover {
+  border: 1.5px solid #3b82f6 !important;
+  color: #3b82f6;
+}
+
+.Userbox{
+    width: 240px;
+    height: 310px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    border: 1px solid rgb(91, 91, 91, 0.1);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.Userbox:hover{
+    transform: translateY(-4px);
+    box-shadow: 0px 3px 8px rgba(0,0,0,0.16);
+}
+
+.Userbio{
+    display: flex;
+    flex-direction: column;
+    background: #f6f6f6;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    height: 90px;
+    gap: 8px;
+    padding: 10px 18px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none; /* 원형 점 제거 (선택) */
+
+}
+
+.filter ul {
+  position: absolute;
+  top: 120%; /* 버튼 바로 아래 */
+  left: 0;
+  list-style: none;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 0;
+  display: none; /* 기본 숨김 */
+  z-index: 999; /* 다른 요소 위로 */
+  overflow: hidden;
+  font-size: 16px;
+}
+
+.filter ul li {
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.filter ul li:hover {
+  background-color: #f5f5f5;
+}
+
+.filter .show {
+  display: block; /* 클릭 시 표시 */
+}
+
+.activeFilters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.filterTag {
+  background: #ddebfd;
+  padding: 6px 15px 6px 14px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  color: #0062ff;
+  font-weight: 500;
+}
+
+.border{
+  border: 1.5px solid #3b82f6 !important;
+  color: #0062ff;
+  font-weight: 500;
+}
+
+.filterTag button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12px;
+  color: #0062ff;
+}

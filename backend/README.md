@@ -1,20 +1,20 @@
 # Backend Part
 ---
 ## 기술 스택
-- **언어**: Java  
-- **프레임워크**: Spring (Spring Boot 포함)  
-- **데이터베이스**: MySQL  
+- **언어**: Java
+- **프레임워크**: Spring (Spring Boot 포함)
+- **데이터베이스**: MySQL
 - **기타 도구**: Maven/Gradle, Lombok
 
 ---
 
 ## 프로젝트 구조
 backend/
-- **config**: Spring 설정, DB 연결, 보안 설정 등  
-- **controller**: HTTP 요청 처리 및 엔드포인트 구현  
-- **service**: 비즈니스 로직 처리, Controller와 Repository 사이 연결  
-- **domain**: DB 엔티티 및 도메인 모델 정의  
-- **dto**: Controller와 Service 간 데이터 전송 객체 정의  
+- **config**: Spring 설정, DB 연결, 보안 설정 등
+- **controller**: HTTP 요청 처리 및 엔드포인트 구현
+- **service**: 비즈니스 로직 처리, Controller와 Repository 사이 연결
+- **domain**: DB 엔티티 및 도메인 모델 정의
+- **dto**: Controller와 Service 간 데이터 전송 객체 정의
 - **repository**: 데이터 접근 계층, DB 및 임시 메모리 저장소 구현
 
 ---

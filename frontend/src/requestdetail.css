@@ -1,0 +1,195 @@
+.page {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+
+
+.request-layout {
+  max-width: 1100px;
+  margin: 60px auto 80px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 40px;
+}
+
+
+
+.request-sidebar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.request-sidebar li {
+  padding: 10px 0;
+  font-size: 14px;
+}
+
+.request-sidebar .active-menu {
+  color: #000;
+  font-weight: 600;
+}
+
+.request-sidebar .disabled-menu {
+  color: #c8c8c8;
+}
+
+
+
+.request-content {
+  background: #fff;
+  padding: 40px 60px 50px;
+  border: 1px solid #e5e5e5;
+}
+
+.request-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+
+.request-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.request-tab {
+  border: none;
+  border-radius: 50px;
+  padding: 8px 22px;
+  background: #e5e5e5;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.request-tab:hover {
+  background: #d8d8d8;
+}
+
+.request-tab--active {
+  background: #4d4d4d;
+  color: #fff;
+}
+
+
+.status-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.status-dot--accepted {
+  background: #20b24b;
+}
+
+.status-dot--rejected {
+  background: #ff4d4f;
+}
+
+.status-dot--pending {
+  background: #1f7bff;
+}
+
+/* ---------- 공통 리스트 ---------- */
+
+.request-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.request-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.request-row-title {
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 30px;
+}
+
+.request-row-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.request-row-status-label {
+  color: #555;
+}
+
+/* ---------- 상대 정보 확인하기 버튼 ---------- */
+
+.info-button {
+  border: none;
+  padding: 6px 16px;
+  background: #f2f2f2;
+  color: #b0b0b0;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: not-allowed;
+}
+
+/* ---------- 수락·거절 버튼 (하단 디자인용) ---------- */
+
+.pill-button {
+  background: #fff;
+  border-radius: 50px;
+  padding: 5px 18px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.15s;
+  border: 1px solid #d3d3d3;
+}
+
+.pill-button--accept {
+  color: #20b24b;
+}
+
+.pill-button--reject {
+  color: #555;
+}
+
+.pill-button--filled.pill-button--accept {
+  background: #20b24b;
+  color: #fff;
+  border-color: #20b24b;
+}
+
+.pill-button--filled.pill-button--reject {
+  background: #555;
+  color: #fff;
+  border-color: #555;
+}
+.game-detail-img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

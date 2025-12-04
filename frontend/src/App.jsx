@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import MatchDetail from "./MatchDetail";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./Home";
+import Template from "./template/Template";
+import JoinGameMatch from "./Match/JoinGameMatch.jsx";
+import CoinRecharge from "./Coin/CoinRecharge";
+import CoinChargeHistory from "./Coin/CoinChargeHistory";
+import Payment from "./Coin/Payment";
+import Register from "./Register/Register";
+import Search from "./page/Search";
+import MyPage from "./page/MyPage/MyPage";
+import Login from "./login/Login";
+import Requestdetail from "./requestdetail.jsx";
+import MarkPage from "./page/MyPage/MarkPage";
+import FindPassword from "./login/Findpassword.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App = () => {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <BrowserRouter>
+      <Template>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/match" element={<JoinGameMatch />} /> {/*임시 라우트*/}
+          <Route path="/coin" element={<CoinRecharge />} />
+          <Route path="/coinHistory" element={<CoinChargeHistory />} />
+          <Route path="/pay" element={<Payment />} />
+          <Route path="/signup" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/find-password" element={<FindPassword />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/Mypage" element={<MyPage />} />
+          <Route path="/gameMate" element={<JoinGameMatch />} />
+          <Route path="/matchdetail" element={<MatchDetail />} />
+          <Route path="/requestdetail" element={<Requestdetail />} />
+          <Route path="/mark" element={<MarkPage />} />
+        </Routes>
+      </Template>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;

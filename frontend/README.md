@@ -1,12 +1,39 @@
-# React + Vite
+# GameMate (React + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+이 프로젝트는 React + Vite 기반의 웹 애플리케이션입니다.  
+프로젝트 초기 세팅 및 설치한 라이브러리들을 기록합니다.
 
-Currently, two official plugins are available:
+<br/>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### 🚀 실행 방법
 
-## Expanding the ESLint configuration
+```bash
+# 개발 서버 실행
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### 📦 설치 라이브러리
+
+#### 라우팅
+
+##### react-router-dom
+
+```bash
+npm install react-router-dom
+```
+
+#### 아이콘
+
+##### @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome @fortawesome/free-regular-svg-icons
+
+```bash
+npm install @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome @fortawesome/free-regular-svg-icons
+```
+
+###### 회원가입 아이콘
+
+```bash
+npm install react-icons
+```
+
+[React Icons 공식 문서](https://react-icons.github.io/react-icons/)

@@ -1,0 +1,73 @@
+/* 전체 배경 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Noto Sans KR", Arial, sans-serif;
+  background-color: #f7f7f8;
+}
+
+/* 로그인 박스 */
+.logincomponent {
+  width: 585px;
+  height: 690px;
+  margin: 100px auto;
+  padding: 40px 30px;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.logincomponent h2 {
+  margin-top: 132px;
+  font-size: 30px;
+  font-weight: 700;
+  color: #333;
+}
+
+.logincomponent input {
+  width: 440px;
+  height: 69px;
+  margin: 8px 0;
+  padding: 0 12px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.logincomponent input:focus {
+  border-color: #4e74ff;
+  box-shadow: 0 0 0 3px rgba(78, 116, 255, 0.2);
+}
+
+/* 버튼 */
+.logincomponent button {
+  width: 312px;
+  height: 62px;
+  margin-top: 32px;
+  background: #4e74ff;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logincomponent button:hover {
+  background: #3a5ed8;
+}
+
+.logincomponent a {
+  display: inline-block;
+  margin: 38px 20px 0; /* 위 38px, 좌우 20px */
+  font-size: 16px;
+  color: #4f4f4f; /* ← # 빠져있던거 수정 */
+  text-decoration: none;
+}
+.logincomponent a:hover {
+  text-decoration: underline;
+  color: #333;
+}

@@ -1,0 +1,13 @@
+.wrapper{
+    height: 120px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    background-color: rgb(229,229,229);
+    margin-top: 100px;
+    padding: 24px 80px;
+    color: #202124;
+}

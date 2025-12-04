@@ -1,0 +1,85 @@
+/*충전, 충전 내역 조회 */
+.header-titles {
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+  gap: 80px;
+  margin-left: 40px;
+}
+
+.title-link {
+  font-size: 2em;
+  font-weight: bold;
+  color: #4b4b4b;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.header-titles-hr {
+  margin-bottom: 80px;
+}
+
+/*코인 충전 목록 컨테이너*/
+.coin-list-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  row-gap: 60px;
+  column-gap: 50px;
+  max-width: 1000px;
+  margin: 0 auto; /* 좌우 자동 마진으로 중앙 정렬 */
+}
+
+/*코인 박스 스타일 */
+.coin-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  min-height: 100px;
+  cursor: pointer;
+  background-color: #fbfdfd;
+}
+
+.coin-item:hover {
+  border-color: #ff9900;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.coin-item hr {
+  width: 105%;
+  border: none;
+  border-top: 1px solid #d0d0d0;
+  margin: 8px 0;
+}
+
+/* 코인 포인트 정보 스타일 */
+.point-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  font-size: 25px;
+}
+
+.coin-icon {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+.points-amount {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #ff9900;
+  margin: 0;
+}
+
+.price-amount {
+  color: black;
+  margin: 0;
+  font-weight: bold;
+  font-size: 20px;
+}

@@ -1,0 +1,196 @@
+.wrapper{
+    margin: 10px 80px 0 80px;
+    font-size: 14px;
+    color: #202124;
+    display: flex;
+}
+
+.section{
+    margin-bottom: 50px;    
+    position: relative;
+}
+
+.section h1{
+    margin: 30px 0;
+}
+
+.imgbox{
+    width: 240px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 20px;
+    margin: 20px 0 10px 0;
+    position: relative;
+}
+
+.imgDark {
+  filter: brightness(80%);
+  transition: 0.2s;
+}
+
+
+.cameraIcon {
+  position: absolute;
+  bottom: 100px;
+  right: 85px;
+  font-size: 40px;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.cameraIcon:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+button{
+    border:none;
+}
+
+.modify{
+    width: 240px;
+    background-color: #dcdcdcaa;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: rgba(0,0,0,0.6);
+    cursor: pointer;
+}
+
+.click{
+    background-color: #0062ffe3;
+    color:white;
+}
+
+.title{
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.data{
+    font-size: 20px;
+}
+
+.inputStyle {
+    font-size: 18px;
+    font-family: inherit;
+    color: #202124;
+    padding: 10px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 350px;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+.inputStyle:focus {
+    border-color: #4A8CFF;
+    background-color: #fff;
+}
+
+.textareaStyle {
+    font-size: 18px;
+    font-family: inherit;
+    color: #202124;
+    padding: 10px 15px;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    width: 350px;
+    height: 120px;
+    outline: none;
+    resize: none;
+    transition: all 0.15s ease;
+}
+
+.textareaStyle:focus {
+    border-color: #4A8CFF;
+    background-color: #fff;
+}
+
+.genderContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.genderBox {
+    width: 175px;
+    height: 50px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background: #f8f9fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+    color: #333;
+    gap: 8px;
+}
+
+.genderBox.selected {
+    border: 1px solid #4A8CFF;
+    background: #eaf2ff;
+    font-weight: 500;
+}
+
+.genderIcon {
+    font-size: 18px;
+    padding-left: -10px;
+}
+
+.errorText {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 6px;
+    margin-bottom: -26px;
+}
+
+.readonlyBox {
+  font-size: 18px;
+  font-family: inherit;
+  color: #202124;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border:1px solid #e6e6e6;
+  width: 350px;
+  min-height: 48px;   
+  display: flex;
+  align-items: center; 
+  box-sizing: border-box;
+}
+
+.readonlyTextarea {
+  font-size: 18px;
+  font-family: inherit;
+  color: #202124;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  border:1px solid #e6e6e6;
+  width: 350px;
+  min-height: 120px;
+  box-sizing: border-box;
+  white-space: pre-wrap;  
+  word-break: break-word; 
+  display: block;
+}
+
+.placeholder {
+  color: #bcbcbc;
+  font-size: 17px;
+}

@@ -1,0 +1,197 @@
+.page {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  font-family: "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+.request-layout {
+  max-width: 1100px;
+  margin: 60px auto 80px;
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 40px;
+}
+
+/* Content Area */
+.request-content {
+  background: #fff;
+  padding: 40px 60px 50px;
+  border: 1px solid #e5e5e5;
+}
+
+.request-title {
+  font-size: 20px;
+  margin-bottom: 24px;
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+  font-weight: bold;
+  margin-right: 30px;
+}
+
+/* Tabs */
+.request-tabs {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.request-tab {
+  border: none;
+  border-radius: 50px;
+  padding: 8px 22px;
+  background: #e5e5e5;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.15s;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.request-tab:hover {
+  background: #d8d8d8;
+}
+
+.request-tab--active {
+  background: #4d4d4d;
+  color: #fff;
+}
+
+/* 새로운 요청 카운트 */
+.new-request-count {
+  background: #ff4d4f; /* 빨간색 */
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+/* Status Legend (공통) */
+.status-legend {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  font-size: 12px;
+  color: #555;
+  margin-bottom: 18px;
+  padding-right: 10px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.status-dot--accepted {
+  background: #20b24b; /* 초록 */
+}
+
+.status-dot--rejected {
+  background: #ff4d4f; /* 빨강 */
+}
+
+.status-dot--pending {
+  background: #ffb700; /* 주황 (응답 없음/대기) */
+}
+
+/* Common List */
+.request-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.request-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.request-row-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.request-row-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.request-row-status-label {
+  color: #555;
+}
+
+/* 상대 정보 확인하기 버튼  */
+
+.info-button {
+  border: none;
+  padding: 6px 16px;
+  background: #f2f2f2;
+  color: #4d4d4d;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.info-button:disabled {
+  color: #b0b0b0;
+  cursor: not-allowed;
+  background: #f2f2f2;
+}
+
+/* 수락·거절 버튼 (pill-button)  */
+
+.pill-button {
+  background: #fff;
+  border-radius: 50px;
+  padding: 5px 18px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.15s;
+  border: 1px solid;
+  font-weight: 600;
+}
+
+.pill-button--accept {
+  color: #20b24b; /* 초록 */
+  border-color: #20b24b;
+}
+.pill-button--accept:hover {
+  background: #e8f5e9;
+}
+
+.pill-button--reject {
+  color: #555; /* 진한 회색 */
+  border-color: #555;
+}
+.pill-button--reject:hover {
+  background: #e9e9e9;
+}
+
+/* 요청 내역 없음 */
+.no-requests {
+  text-align: center;
+  padding: 50px;
+  color: #999;
+  font-size: 16px;
+  border: 1px dashed #ddd;
+  margin-top: 20px;
+}

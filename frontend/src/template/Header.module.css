@@ -1,0 +1,396 @@
+.wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 64px;
+    z-index: 1100;
+    border-bottom: 1px solid #E2E2E3;
+    background-color: #fffffffa;
+    backdrop-filter: blur(10px);
+    padding: 0 36px;
+    box-sizing: border-box;
+    color: #202124;
+}
+
+.section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    font-weight: 500;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px;
+    height: 30px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.logo{
+  width: 100px;
+  padding-left: 40px;
+}
+
+.coin{
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+.login, .logout{
+    padding-bottom: 1px;
+}
+
+.logout{
+  all: unset;
+  cursor: pointer; 
+}
+
+
+.join{
+    background-color: #4372FF;
+    color: white;
+    padding-bottom: 1px;
+}
+
+/* 검색창 */
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search input{
+    outline: none;
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.3);
+    padding: 7px 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    width: 250px;
+    height: 20px;
+}
+
+.search input:focus {
+  border: 2px solid #3b82f6;
+  outline: none;
+}
+
+.search button[type="submit"]{
+    display: none;
+}
+
+.searchicon:hover{
+    cursor: pointer;
+}
+
+.hidden{
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* 서비스 */
+.serviceWrapper {
+  position: relative;
+}
+
+.serviceBtn {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    border-radius: 8px;
+    padding-left: 50px;
+    cursor: pointer;
+}
+
+.dropdownMenu {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  position: absolute;
+  top: 30px;
+  left: 20px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 100;
+  overflow: hidden;
+}
+
+.dropdownMenu li {
+  padding: 10px 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  width: 250px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+
+.dropdownMenu li:hover {
+  background: #f1f1f1;
+}
+
+.dropdownMenu li div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.dropdownMenu img{
+    width: 120px;
+    border-radius: 10px;
+}
+
+/* 검색 추천 박스 */
+.suggestionBox {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  width: 280px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  list-style: none;
+  z-index: 20;
+}
+
+.suggestionItem {
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.suggestionItem:hover {
+  background-color: #f1f3f4;
+}
+
+/* 왼쪽 아바타 */
+.suggestionAvatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+/* 가운데 텍스트 */
+.suggestionCenter {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.suggestionName {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.suggestionSkill {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestionRight {
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+}
+
+.noResult {
+  padding: 12px 14px;
+  color: #888;
+  text-align: center;
+  font-size: 14px;
+}
+
+.clearButton {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: #888;
+  cursor: pointer;
+  padding: 0;
+}
+
+.clearButton:hover {
+  color: #555;
+}
+
+/* 알림 */
+.notiWrapper {
+  position: relative;
+}
+
+.bellWrapper {
+  position: relative;
+  cursor: pointer;
+}
+
+.bellIcon {
+  font-size: 1.1rem;
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -5px;
+  background: #ff3b30;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 1.5px;
+}
+
+.notiDropdown {
+  position: absolute;
+  top: 35px;
+  right: 0;
+  width: 340px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  z-index: 50;
+  overflow: hidden;
+}
+
+.notiHeader {
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+}
+
+.notiList {
+  max-height: 400px;
+  min-width: 340px;
+  overflow-y: auto;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.emptyNoti {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+
+.notiItem {
+  padding: 12px 15px;
+  margin: 0 20px;
+  margin-bottom : 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.notiToggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 토글 스위치 */
+.notiToggle input {
+  display: none;
+}
+
+.slider {
+  width: 34px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 16px;
+  position: relative;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background: white;
+  border-radius: 50%;
+  left: 2.5px;
+  top: 2px;
+  transition: transform 0.2s ease;
+}
+
+/* 체크 시 */
+.notiToggle input:checked + .slider {
+  background-color: #4372FF;
+}
+
+.notiToggle input:checked + .slider::before {
+  transform: translateX(14px);
+}
+
+/* REQUEST */
+.request {
+  background-color: #E1FDD2;
+  transition: background-color 0.15s ease;
+}
+.request:hover {
+  background-color: #D2EEBF;
+}
+
+/* ACCEPTED */
+.accept {
+  background-color: #FDFFBA;
+  transition: background-color 0.15s ease;
+}
+.accept:hover {
+  background-color: #F0F29F;
+}
+
+/* DECLINED */
+.decline {
+  background-color: #EBEBEB;
+  transition: background-color 0.15s ease;
+}
+.decline:hover {
+  background-color: #DADADA;
+}
+
+.notiTime {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
