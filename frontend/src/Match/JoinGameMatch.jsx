@@ -215,6 +215,7 @@ const JoinGameMatch = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       alert("게임 메이트 등록이 완료되었습니다.");
+      navigate("/");
     } catch (e) {
       console.error("등록 실패:", e);
       alert(
