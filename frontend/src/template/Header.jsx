@@ -170,7 +170,7 @@ const Header = () => {
       fetchCoinbalance();
       const intervalId = setInterval(() => {
         fetchCoinbalance();
-      }, 10000);
+      }, 1000);
       return () => clearInterval(intervalId);
     }
   }, [isLoggedIn]);
