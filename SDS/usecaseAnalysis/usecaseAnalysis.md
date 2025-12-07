@@ -15,20 +15,22 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 
 아래 기능들은 본 시스템의 핵심 사용자 경험 흐름을 구성한다:
 
-1. 로그인
-2. 로그아웃
-3. 회원가입
-4. 매칭수락
-5. 매칭거절
-6. 게임 메이트 검색
-7. 프로필 관리
-8. 게임 메이트 등록
-9. 알림 시스템
-10. 즐겨찾기
-11. 코인 충전
-12. 코인 환불
-13. 게임 메이트 상세정보 확인
-14. 리뷰 작성
+1. 회원가입
+2. 로그인
+3. 로그아웃
+4. 프로필 관리
+5. 게임 메이트 등록/수정
+6. 추천 유저 확인
+7. 게임 메이트 검색
+8. 게임 메이트 상세정보 확인
+9. 즐겨찾기
+10. 매칭수락
+11. 매칭거절
+12. 매치 신청
+13. 리뷰 작성
+14. 코인 충전
+15. 코인 환불
+16. 알림 시스템
 
 ### Use Case Diagram
 
@@ -211,19 +213,19 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>GameMatch</td></tr>
 <tr><td>Level</td><td>game-s-cord</td></tr>
 <tr><td>Author</td><td>백유진</td></tr>
-<tr><td>Last Update</td><td>2025. 11. 03</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>사용자가 로그인 상태여야 한다.</td></tr>
 <tr><td>Trigger</td><td>사용자가 헤더의 로그아웃 버튼을 클릭한다.</td></tr>
-<tr><td>Success Post Condition</td><td>사용자의 로그인 세션이 만료되고, 더 이상 웹 서비스를 이용할 수 없다.</td></tr>
-<tr><td>Failed Post Condition</td><td>로그아웃이 실패하면 현재 세션이 유지된다.</td></tr>
+<tr><td>Success Post Condition</td><td>사용자의 로그인 토큰이 만료되고, 더 이상 웹 서비스를 이용할 수 없다.</td></tr>
+<tr><td>Failed Post Condition</td><td>로그아웃이 실패하면 현재 토큰이 유지된다.</td></tr>
 
 <!-- MAIN -->
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
 <tr><td width="30%">Step</td><td>Action</td></tr>
 <tr><td>1</td><td>사용자가 헤더의 로그아웃 버튼을 클릭한다.</td></tr>
-<tr><td>2</td><td>시스템은 현재 세션을 종료한다.</td></tr>
+<tr><td>2</td><td>시스템은 사용자에게 부여된 로그인 토큰을 만료한다.</td></tr>
 <tr><td>3</td><td>시스템은 로그아웃 완료 후 메인 페이지로 리다이렉트한다.</td></tr>
 
 <!-- EXTENSION -->
@@ -232,14 +234,14 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 
 <tr>
   <td rowspan="3" align="center">2</td>
-  <td><b>2a</b> 세션 종료 실패 시</td>
+  <td><b>2a</b> 토큰 만료 실패 시</td>
 </tr>
 <tr><td>2a.1 오류 메시지를 표시한다.</td></tr>
 <tr><td>2a.2 사용자가 다시 로그아웃 시도를 할 수 있다.</td></tr>
 
 <!-- RELATED -->
 <tr><th colspan="2">RELATED INFORMATION</th></tr>
-<tr><td>Performance</td><td>세션 종료 처리 및 리다이렉트 ≤ 1 second</td></tr>
+<tr><td>Performance</td><td>토큰 만료 처리 및 리다이렉트 ≤ 1 second</td></tr>
 <tr><td>Frequency</td><td>하루 평균 1~3회</td></tr>
 <tr><td>Concurrency</td><td>동시 로그아웃 요청 시 최신 요청을 기준으로 세션을 안전하게 만료 처리</td></tr>
 <tr><td>Due Date</td><td>2025. 11. 24</td></tr>
@@ -338,7 +340,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 </tr>
 <tr><td>3a.1 등록을 제한하고 오류 메시지를 표시한다.</td></tr>
 
-<tr><td><b>3b</b> 요금이 최대 범위를 벗어난 경우</td></tr>
+<tr><td><b>3b</b> 요금이 2000코인을 벗어난 경우</td></tr>
 <tr><td>3b.1 등록을 제한하고 요금 범위 안내 메시지를 표시한다.</td></tr>
 
 <tr>
@@ -356,8 +358,42 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 
 </table>
 
+<h3>Use Case #6 : 추천 유저 확인</h3>
+
+<table border="1" width="100%" cellspacing="0" cellpadding="6">
+
+<tr><th colspan="2">GENERAL CHARACTERISTICS</th></tr>
+<tr><td width="30%">Summary</td><td>사용자는 홈에서 게임별 추천 유저를 확인할 수 있다.</td></tr>
+<tr><td>Scope</td><td>game-s-cord</td></tr>
+<tr><td>Level</td><td>User Level</td></tr>
+<tr><td>Author</td><td>이성진</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
+<tr><td>Status</td><td>Analysis</td></tr>
+<tr><td>Primary Actor</td><td>User</td></tr>
+<tr><td>Preconditions</td><td>사용자는 서비스에 접속해야 한다.</td></tr>
+<tr><td>Trigger</td><td>사용자가 홈 화면에 진입한다.</td></tr>
+<tr><td>Success Post Condition</td><td>사용자는 게임별 추천 유저 목록을 홈 화면에서 확인한다.</td></tr>
+<tr><td>Failed Post Condition</td><td>네트워크 오류 등으로 인해 정보를 불러올 수 없고 오류 메시지가 표시된다.</td></tr>
+
+<tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
+<tr><td>1</td><td>사용자가 홈 화면에 진입한다.</td></tr>
+<tr><td>2</td><td>시스템은 게임별 인기 유저 목록을 조회한다.</td></tr>
+<tr><td>3</td><td>시스템은 추천 유저 목록을 사용자에게 표시한다.</td></tr>
+<tr><td>4</td><td>Use case 종료.</td></tr>
+
+<tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
+<tr><td>2</td><td><b>2a</b> 시스템이 추천 유저 목록을 가져오지 못하면 오류 메시지가 표시된다..</td></tr>
+
+<tr><th colspan="2">RELATED INFORMATION</th></tr>
+<tr><td>Performance</td><td>≤ 1 second</td></tr>
+<tr><td>Frequency</td><td>일 평균 약 5,000회</td></tr>
+<tr><td>Concurrency</td><td>최대 5,000명 동시 사용자 처리 가능</td></tr>
+<tr><td>Due Date</td><td>2025. 12. 03</td></tr>
+
+</table>
+
 <br>
-<h3>Use Case #6 : 게임 메이트 검색</h3>
+<h3>Use Case #7 : 게임 메이트 검색</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -367,7 +403,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>백유진</td></tr>
-<tr><td>Last Update</td><td>2025. 11. 03</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>사용자가 로그인 상태여야 한다.</td></tr>
@@ -380,7 +416,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td width="30%">Step</td><td>Action</td></tr>
 <tr><td>1</td><td>사용자가 게임 종류를 검색한다.</td></tr>
 <tr><td>2</td><td>시스템은 해당 게임에 등록된 게임 메이트 목록을 표시한다.</td></tr>
-<tr><td>3</td><td>사용자가 티어/랭크, 정렬순순, 성별 등으로 필터링할 수 있다.</td></tr>
+<tr><td>3</td><td>사용자가 게임 종류, 인기순, 가격 높은 순, 가격 낮은 순, 성별 등으로 필터링할 수 있다.</td></tr>
 <tr><td>4</td><td>시스템은 필터링 조건에 맞는 게임 메이트 목록을 갱신하여 표시한다.</td></tr>
 
 <!-- EXTENSION -->
@@ -391,7 +427,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
   <td rowspan="4" align="center">4</td>
   <td><b>4a</b> 조건에 맞는 게임 메이트가 없는 경우</td>
 </tr>
-<tr><td>4a.1 “조건에 맞는 게임 메이트가 없습니다”라는 메시지를 표시한다.</td></tr>
+<tr><td>4a.1 “검색 결과가 없습니다.”라는 메시지를 표시한다.</td></tr>
 
 <tr><td><b>4b</b> 게임 메이트 목록 로드에 실패할 경우</td></tr>
 <tr><td>4b.1 오류 메시지를 표시하고 다시 시도하도록 안내한다.</td></tr>
@@ -404,7 +440,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 11. 24</td></tr>
 
 </table>
-<h3>Use Case #7 : 게임 메이트 상세 정보 확인</h3>
+<h3>Use Case #8 : 게임 메이트 상세 정보 확인</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -413,12 +449,12 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>이성진</td></tr>
-<tr><td>Last Update</td><td>2025. 10. 27</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>사용자는 로그인 상태여야 한다.</td></tr>
 <tr><td>Trigger</td><td>사용자가 게임 메이트 프로필을 클릭한다.</td></tr>
-<tr><td>Success Post Condition</td><td>게임 메이트의 정보(프로필, 자기소개, 별점 등)를 확인할 수 있다.</td></tr>
+<tr><td>Success Post Condition</td><td>게임 메이트의 정보(프로필, 자기소개, 별점, 플레이 가능한 게임 정보, 플레이 시간대 등)를 확인할 수 있다.</td></tr>
 <tr><td>Failed Post Condition</td><td>정보를 불러올 수 없고 이전 화면으로 돌아간다.</td></tr>
 
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
@@ -438,7 +474,8 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #8 : 즐겨찾기</h3>
+
+<h3>Use Case #9 : 즐겨찾기</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -451,7 +488,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>사용자는 로그인 상태여야 한다.</td></tr>
-<tr><td>Trigger</td><td>사용자가 상세 프로필에서 즐겨찾기 버튼을 클릭한다.</td></tr>
+<tr><td>Trigger</td><td>사용자가 원하는 게임 메이트 프로필에서 즐겨찾기 버튼을 클릭한다.</td></tr>
 <tr><td>Success Post Condition</td><td>즐겨찾기 상태가 업데이트된다.</td></tr>
 <tr><td>Failed Post Condition</td><td>상태 변경 실패 메시지를 표시하고 기존 상태 유지.</td></tr>
 
@@ -463,7 +500,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>5</td><td>Use case 종료.</td></tr>
 
 <tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
-<tr><td>2</td><td><b>2a</b> DB 업데이트 실패 → “즐겨찾기 변경 실패” 메시지 표시.</td></tr>
+<tr><td>2</td><td><b>2a</b> DB 업데이트 실패 → “즐겨찾기 처리 중 오류가 발생했습니다.” 메시지 표시.</td></tr>
 
 <tr><th colspan="2">RELATED INFORMATION</th></tr>
 <tr><td>Performance</td><td>≤ 500 ms</td></tr>
@@ -472,7 +509,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #9 : 매칭 수락</h3>
+<h3>Use Case #10 : 매칭 수락</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -506,7 +543,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #10 : 매칭 거절</h3>
+<h3>Use Case #11 : 매칭 거절</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -515,7 +552,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>이성진</td></tr>
-<tr><td>Last Update</td><td>2025. 11. 04</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>요청 목록에 대기 중인 매칭 요청이 존재해야 한다.</td></tr>
@@ -524,7 +561,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Failed Post Condition</td><td>상태 변경이 실패하고 기존 상태가 유지된다.</td></tr>
 
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
-<tr><td>1</td><td>사용자가 요청 목록에서 특정 요청을 선택한다.</td></tr>
+<tr><td>1</td><td>사용자가 요청 목록을 선택한다.</td></tr>
 <tr><td>2</td><td>사용자는 거절 버튼을 클릭한다.</td></tr>
 <tr><td>3</td><td>시스템은 요청 상태를 '거절됨'으로 변경한다.</td></tr>
 <tr><td>4</td><td>시스템은 신청자에게 거절 알림을 전송한다.</td></tr>
@@ -540,7 +577,44 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #11 : 코인 충전</h3>
+
+<h3>Use Case #12 : 매칭 신청</h3>
+
+<table border="1" width="100%" cellspacing="0" cellpadding="6">
+
+<tr><th colspan="2">GENERAL CHARACTERISTICS</th></tr>
+<tr><td width="30%">Summary</td><td>사용자는 원하는 게임 메이트에게 매칭을 요청할 수 있다.</td></tr>
+<tr><td>Scope</td><td>game-s-cord</td></tr>
+<tr><td>Level</td><td>User Level</td></tr>
+<tr><td>Author</td><td>이성진</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
+<tr><td>Status</td><td>Analysis</td></tr>
+<tr><td>Primary Actor</td><td>User</td></tr>
+<tr><td>Preconditions</td><td>사용자는 로그인 상태여야 하며 신청에 필요한 코인 잔액이 충분해야 한다. </td></tr>
+<tr><td>Trigger</td><td>사용자가 게임 메이트 프로필 페이지에서 '매칭 신청' 버튼을 클릭한다.</td></tr>
+<tr><td>Success Post Condition</td><td>상대방(메이트)에게 매칭 요청 알림이 전달된다.</td></tr>
+<tr><td>Failed Post Condition</td><td>코인 잔액 부족, 또는 서버 오류로 인해 매칭 신청이 실패하고, 신청자의 코인 상태는 변동이 없다.</td></tr>
+
+<tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
+<tr><td>1</td><td>사용자가 매칭을 신청할 메이트의 프로필 페이지에 진입한다.</td></tr>
+<tr><td>2</td><td>사용자는 원하는 게임, 시간 등의 정보를 확인하고 '매칭 신청' 버튼을 클릭한다.</td></tr>
+<tr><td>3</td><td>시스템은 신청자의 코인 잔액이 충분한지 확인한다.</td></tr>
+<tr><td>4</td><td>시스템은 매칭 요청 정보를 DB에 '대기' 상태로 저장한다.</td></tr>
+<tr><td>5</td><td>시스템은 상대방(메이트)에게 매칭 요청 알림을 전송한다.</td></tr>
+<tr><td>6</td><td>시스템은 사용자에게 "매칭 신청이 완료되었습니다." 메시지를 표시한다.</td></tr>
+<tr><td>7</td><td>Use case 종료.</td></tr>
+
+<tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
+<tr><td>3</td><td><b>3a</b> 코인이 부족할 경우 "매치 신청에 실패했습니다." 메시지를 표시한다.</td></tr>
+
+<tr><th colspan="2">RELATED INFORMATION</th></tr>
+<tr><td>Performance</td><td>≤ 500 ms</td></tr>
+<tr><td>Frequency</td><td>회원당 하루 평균 3~5회</td></tr>
+<tr><td>Concurrency</td><td>DB Lock 필요</td></tr>
+<tr><td>Due Date</td><td>2025. 12. 03</td></tr>
+
+</table>
+<h3>Use Case #13 : 코인 충전</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -549,23 +623,23 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>이성진</td></tr>
-<tr><td>Last Update</td><td>2025. 10. 27</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>사용자는 로그인 상태여야 한다.</td></tr>
 <tr><td>Trigger</td><td>사용자가 코인 충전 페이지에 진입한다.</td></tr>
 <tr><td>Success Post Condition</td><td>코인이 정상적으로 충전되어 계정에 반영된다.</td></tr>
-<tr><td>Failed Post Condition</td><td>충전 실패 메시지를 표시하고 기존 잔액 유지.</td></tr>
+<tr><td>Failed Post Condition</td><td>충전 실패 메시지를 표시한다.</td></tr>
 
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
 <tr><td>1</td><td>사용자가 충전할 금액을 선택한다.</td></tr>
 <tr><td>2</td><td>사용자는 결제 수단을 선택하고 결제를 진행한다.</td></tr>
 <tr><td>3</td><td>시스템은 결제 성공 여부를 확인한다.</td></tr>
-<tr><td>4</td><td>결제 성공 시 코인을 계정에 추가하고 내역을 기록한다.</td></tr>
+<tr><td>4</td><td>결제 성공 시 성공 메시지를 표시한 후 코인을 계정에 추가하고 내역을 기록한 후에 2초 뒤에 코인 충전 내역 페이지로 이동한다.</td></tr>
 <tr><td>5</td><td>Use case 종료.</td></tr>
 
 <tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
-<tr><td>3</td><td><b>3a</b> PG 결제 실패 → “결제 실패” 메시지 표시 후 사용자 재시도 가능.</td></tr>
+<tr><td>3</td><td><b>3a</b> 결제 실패시 “결제 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.” 메시지 표시 후 사용자가 재시도 가능하다.</td></tr>
 
 <tr><th colspan="2">RELATED INFORMATION</th></tr>
 <tr><td>Performance</td><td>≤ 500 ms</td></tr>
@@ -575,34 +649,32 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 
 </table>
 
-<h3>Use Case #12 : 코인 환불</h3>
+<h3>Use Case #14 : 코인 환불</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
 <tr><th colspan="2">GENERAL CHARACTERISTICS</th></tr>
-<tr><td width="30%">Summary</td><td>사용자는 24시간 내 미사용 코인에 대해 환불 요청을 할 수 있다.</td></tr>
+<tr><td width="30%">Summary</td><td>사용자는 코인을 환불 요청을 할 수 있다.</td></tr>
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>이성진</td></tr>
-<tr><td>Last Update</td><td>2025. 11. 04</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>환불 가능한 충전 내역이 존재해야 한다.</td></tr>
 <tr><td>Trigger</td><td>사용자가 환불 버튼을 클릭한다.</td></tr>
-<tr><td>Success Post Condition</td><td>PG 환불 완료 & 계정 코인 차감 완료.</td></tr>
+<tr><td>Success Post Condition</td><td> 계정 코인 차감 완료.</td></tr>
 <tr><td>Failed Post Condition</td><td>환불 실패 메시지 표시 & 기존 잔액 유지.</td></tr>
 
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
 <tr><td>1</td><td>사용자가 충전 내역을 조회한다.</td></tr>
 <tr><td>2</td><td>사용자는 환불 가능한 내역을 선택한다.</td></tr>
-<tr><td>3</td><td>시스템은 환불 가능 여부를 검증한다.</td></tr>
-<tr><td>4</td><td>시스템은 PG사에 환불 요청을 보낸다.</td></tr>
-<tr><td>5</td><td>환불 완료 시 코인을 차감하고 알림을 전송한다.</td></tr>
-<tr><td>6</td><td>Use case 종료.</td></tr>
+<tr><td>3</td><td>사용자가 환불하기 버튼을 누른다.</td></tr>
+<tr><td>4</td><td>환불 완료 시 코인을 차감한다.</td></tr>
+<tr><td>5</td><td>Use case 종료.</td></tr>
 
 <tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
-<tr><td>3</td><td><b>3a</b> 사용된 코인 → “환불 불가” 메시지 표시.</td></tr>
-<tr><td>4</td><td><b>4a</b> PG 환불 실패 → “환불 처리 실패” 안내.</td></tr>
+<tr><td>3</td><td><b>3a</b> 환불 처리 중 오류 발생 시 “환불 권한이 없거나, 인증 정보가 만료되었습니다.” 메시지를 표시한다. </td></tr>
 
 <tr><th colspan="2">RELATED INFORMATION</th></tr>
 <tr><td>Performance</td><td>≤ 1.5 seconds</td></tr>
@@ -611,7 +683,8 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #13 : 리뷰 작성</h3>
+
+<h3>Use Case #15 : 리뷰 작성</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
@@ -620,7 +693,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Scope</td><td>game-s-cord</td></tr>
 <tr><td>Level</td><td>User Level</td></tr>
 <tr><td>Author</td><td>이성진</td></tr>
-<tr><td>Last Update</td><td>2025. 10. 27</td></tr>
+<tr><td>Last Update</td><td>2025. 12. 07</td></tr>
 <tr><td>Status</td><td>Analysis</td></tr>
 <tr><td>Primary Actor</td><td>User</td></tr>
 <tr><td>Preconditions</td><td>해당 메이트와의 매칭 이용 기록이 존재해야 한다.</td></tr>
@@ -629,14 +702,15 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Failed Post Condition</td><td>리뷰 저장 실패 메시지 표시.</td></tr>
 
 <tr><th colspan="2">MAIN SUCCESS SCENARIO</th></tr>
-<tr><td>1</td><td>사용자가 리뷰 작성 화면을 연다.</td></tr>
-<tr><td>2</td><td>사용자는 별점과 리뷰 내용을 입력한다.</td></tr>
-<tr><td>3</td><td>사용자가 등록 버튼을 클릭한다.</td></tr>
+<tr><td>1</td><td>서비스를 이용한 후 사용자가 해당 메이트의 프로필에 들어간다.</td></tr>
+<tr><td>2</td><td>사용자는 별모양 버튼을 클릭해 1~5사이의 별점을 부여한다.</td></tr>
+<tr><td>2</td><td>사용자는 리뷰 내용을 입력한다.</td></tr>
+<tr><td>3</td><td>사용자가 리뷰 등록 버튼을 클릭한다.</td></tr>
 <tr><td>4</td><td>시스템은 리뷰를 저장하고 평균 별점을 갱신한다.</td></tr>
 <tr><td>5</td><td>Use case 종료.</td></tr>
 
 <tr><th colspan="2">EXTENSION SCENARIOS</th></tr>
-<tr><td>3</td><td><b>3a</b> 별점 미입력 → “평점은 필수입니다.” 메시지 표시.</td></tr>
+<tr><td>4</td><td><b>4a</b> 리뷰 미입력 → “리뷰를 입력해주세요.” 메시지 표시.</td></tr>
 
 <tr><th colspan="2">RELATED INFORMATION</th></tr>
 <tr><td>Performance</td><td>≤ 1 second</td></tr>
@@ -645,7 +719,7 @@ Use Case Diagram은 시스템 내 주요 행위자(Actor)와 Use Case 간의 관
 <tr><td>Due Date</td><td>2025. 12. 03</td></tr>
 
 </table>
-<h3>Use Case #14 : 알림 시스템</h3>
+<h3>Use Case #16 : 알림 시스템</h3>
 
 <table border="1" width="100%" cellspacing="0" cellpadding="6">
 
